@@ -1,0 +1,505 @@
+# -*- mode: org; fill-column: 80; -*-
+#+options: ':t *:t -:t ::t <:t H:3 \n:nil ^:t arch:headline
+#+options: author:t broken-links:mark c:nil creator:t
+#+options: d:(not "LOGBOOK") date:t e:t email:t f:t inline:t num:t
+#+options: p:t pri:nil prop:nil stat:t tags:t tasks:ttex:t
+#+options: timestamp:t title:t toc:t todo:t |:t
+#+title: Yewscion Guix Channel
+#+date: 2021-09-22T01:49EDT
+#+author: Christopher Rodriguez
+#+email: yewscion@gmail.com
+#+language: en
+#+select_tags: export
+#+exclude_tags: noexport
+#+creator: Emacs 28.0.50 (Org mode 9.4.6)
+#+options: html-link-use-abs-url:nil html-postamble:auto
+#+options: html-preamble:t html-scripts:t html-style:t
+#+options: html5-fancy:t tex:t
+#+html_doctype: html5
+#+html_container: div
+#+description: The literate programming file for the Yewscion Guix Channel project.
+#+keywords: lp,lisp,Yewscion Guix Channel
+#+html_link_home:
+#+html_link_up:
+#+html_mathjax:
+#+html_equation_reference_format: \eqref{%s}
+#+html_head:
+#+html_head_extra:
+#+subtitle:
+#+infojs_opt:
+#+latex_header:
+#+texinfo_filename: doc/Yewscion Guix Channel
+#+texinfo_class: info
+#+texinfo_header:
+#+texinfo_post_header:
+#+subtitle: My Own Personal Guix Channel.
+#+texinfo_dir_category: Personal Stuff
+#+texinfo_dir_title: Yewscion Guix Channel
+#+texinfo_dir_desc: My Own Personal Guix Channel.
+#+texinfo_printed_title: Yewscion Guix Channel
+#+man_class:
+#+man_class_options:
+#+export_file_name: doc/Yewscion Guix Channel
+#+PROPERTY: header-args:text :eval never
+#+PROPERTY: header-args:markdown :eval never
+#+PROPERTY: header-args:fundamental :eval never
+#+PROPERTY: header-args:lisp :noweb yes :mkdirp yes
+* Concept
+  This is a literate programming filemade to support the Yewscion Guix
+  Channel project.
+
+  This section is reserved for a high-level abstract description of
+  what the project is. In particular, the overview should walk through
+  the program flow as much as possible, to ensure clarity of thought
+  before code work begins.
+** Overview
+  I wanted a channel for Guix of my own, so while I'm working on
+  packaging things or deviating from the choices made in GNU Guix's
+  main channel I can easily access my packages (and pass them to my
+  build farm).
+* Generic Project Files
+  These files exist in every repository, or should, anyway. As this is
+  a literate programming file, however, they are also included
+  here. While they can mostly stand for themselves, I will add a
+  sentence or two about each, as well as any deviations in this
+  specific repo.
+** README
+   This is the all-important gateway into the repository. I follow
+   [[https://www.makeareadme.com/][Make a README]]'s specification in all of my projects, as I think it
+   is important to standardize such an outward-facing part of the
+   documentation.
+
+   #+begin_src markdown :tangle "README.md" :eval never
+     # Yewscion Guix Channel
+
+     My Own Personal Guix Channel.
+
+     ## Installation
+
+     To use this Channel, follow the [documentation][b] for adding a new
+     channel. Add the following to `~/.config/guix/channels.scm`.
+
+     ```scheme
+     ;; Add variant packages to those Guix provides.
+     (cons
+       (channel
+         (name 'yewscion)
+         (url "https://git.sr.ht/~yewscion/yewscion-guix-channel")
+         (introduction
+           (make-channel-introduction
+             ""
+             (openpgp-fingerprint
+               ""))))
+       %default-channels)
+     ```
+
+     ## Usage
+
+     ```bash
+     guix pull
+     ```
+
+     ## Contributing
+
+     Pull Requests are welcome, as are bugfixes and extensions. Please open
+     issues as needed. If You contribute a feature, needs to be tests and
+     documentation.
+
+     ## License
+
+     [LGPL-3.0][c]
+
+     [a]: https://common-lisp.net/project/asdf/asdf.html#Configuring-ASDF-to-find-your-systems
+
+     [b]: https://guix.gnu.org/manual/en/html_node/Specifying-Additional-Channels.html
+
+     [c]: https://choosealicense.com/licenses/lgpl-3.0/
+   #+end_src
+** LICENSE
+   I am a huge supporter of [[https://en.wikipedia.org/wiki/Free_software][Free Software]], and as such generally use
+   licenses to support that stance.
+
+   I want to avoid my code being locked away into something someone
+   else isdoing, but I also want to allow others to benefit from my
+   work without obligation on their part to subscribe to my beliefs. I
+   use the [[https://www.gnu.org/licenses/lgpl-3.0.en.html][GNU Lesser General Public License]] for most of my work
+   because of this. However, if You want to debate licenses, I am open
+   to a casual, friendly discussion.
+
+
+   #+begin_src fundamental :tangle "LICENSE" :eval never
+                        GNU LESSER GENERAL PUBLIC LICENSE
+                            Version 3, 29 June 2007
+
+      Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
+      Everyone is permitted to copy and distribute verbatim copies
+      of this license document, but changing it is not allowed.
+
+
+       This version of the GNU Lesser General Public License incorporates
+     the terms and conditions of version 3 of the GNU General Public
+     License, supplemented by the additional permissions listed below.
+
+       0. Additional Definitions.
+
+       As used herein, "this License" refers to version 3 of the GNU Lesser
+     General Public License, and the "GNU GPL" refers to version 3 of the GNU
+     General Public License.
+
+       "The Library" refers to a covered work governed by this License,
+     other than an Application or a Combined Work as defined below.
+
+       An "Application" is any work that makes use of an interface provided
+     by the Library, but which is not otherwise based on the Library.
+     Defining a subclass of a class defined by the Library is deemed a mode
+     of using an interface provided by the Library.
+
+       A "Combined Work" is a work produced by combining or linking an
+     Application with the Library.  The particular version of the Library
+     with which the Combined Work was made is also called the "Linked
+     Version".
+
+       The "Minimal Corresponding Source" for a Combined Work means the
+     Corresponding Source for the Combined Work, excluding any source code
+     for portions of the Combined Work that, considered in isolation, are
+     based on the Application, and not on the Linked Version.
+
+       The "Corresponding Application Code" for a Combined Work means the
+     object code and/or source code for the Application, including any data
+     and utility programs needed for reproducing the Combined Work from the
+     Application, but excluding the System Libraries of the Combined Work.
+
+       1. Exception to Section 3 of the GNU GPL.
+
+       You may convey a covered work under sections 3 and 4 of this License
+     without being bound by section 3 of the GNU GPL.
+
+       2. Conveying Modified Versions.
+
+       If you modify a copy of the Library, and, in your modifications, a
+     facility refers to a function or data to be supplied by an Application
+     that uses the facility (other than as an argument passed when the
+     facility is invoked), then you may convey a copy of the modified
+     version:
+
+        a) under this License, provided that you make a good faith effort to
+        ensure that, in the event an Application does not supply the
+        function or data, the facility still operates, and performs
+        whatever part of its purpose remains meaningful, or
+
+        b) under the GNU GPL, with none of the additional permissions of
+        this License applicable to that copy.
+
+       3. Object Code Incorporating Material from Library Header Files.
+
+       The object code form of an Application may incorporate material from
+     a header file that is part of the Library.  You may convey such object
+     code under terms of your choice, provided that, if the incorporated
+     material is not limited to numerical parameters, data structure
+     layouts and accessors, or small macros, inline functions and templates
+     (ten or fewer lines in length), you do both of the following:
+
+        a) Give prominent notice with each copy of the object code that the
+        Library is used in it and that the Library and its use are
+        covered by this License.
+
+        b) Accompany the object code with a copy of the GNU GPL and this license
+        document.
+
+       4. Combined Works.
+
+       You may convey a Combined Work under terms of your choice that,
+     taken together, effectively do not restrict modification of the
+     portions of the Library contained in the Combined Work and reverse
+     engineering for debugging such modifications, if you also do each of
+     the following:
+
+        a) Give prominent notice with each copy of the Combined Work that
+        the Library is used in it and that the Library and its use are
+        covered by this License.
+
+        b) Accompany the Combined Work with a copy of the GNU GPL and this license
+        document.
+
+        c) For a Combined Work that displays copyright notices during
+        execution, include the copyright notice for the Library among
+        these notices, as well as a reference directing the user to the
+        copies of the GNU GPL and this license document.
+
+        d) Do one of the following:
+
+            0) Convey the Minimal Corresponding Source under the terms of this
+            License, and the Corresponding Application Code in a form
+            suitable for, and under terms that permit, the user to
+            recombine or relink the Application with a modified version of
+            the Linked Version to produce a modified Combined Work, in the
+            manner specified by section 6 of the GNU GPL for conveying
+            Corresponding Source.
+
+            1) Use a suitable shared library mechanism for linking with the
+            Library.  A suitable mechanism is one that (a) uses at run time
+            a copy of the Library already present on the user's computer
+            system, and (b) will operate properly with a modified version
+            of the Library that is interface-compatible with the Linked
+            Version.
+
+        e) Provide Installation Information, but only if you would otherwise
+        be required to provide such information under section 6 of the
+        GNU GPL, and only to the extent that such information is
+        necessary to install and execute a modified version of the
+        Combined Work produced by recombining or relinking the
+        Application with a modified version of the Linked Version. (If
+        you use option 4d0, the Installation Information must accompany
+        the Minimal Corresponding Source and Corresponding Application
+        Code. If you use option 4d1, you must provide the Installation
+        Information in the manner specified by section 6 of the GNU GPL
+        for conveying Corresponding Source.)
+
+       5. Combined Libraries.
+
+       You may place library facilities that are a work based on the
+     Library side by side in a single library together with other library
+     facilities that are not Applications and are not covered by this
+     License, and convey such a combined library under terms of your
+     choice, if you do both of the following:
+
+        a) Accompany the combined library with a copy of the same work based
+        on the Library, uncombined with any other library facilities,
+        conveyed under the terms of this License.
+
+        b) Give prominent notice with the combined library that part of it
+        is a work based on the Library, and explaining where to find the
+        accompanying uncombined form of the same work.
+
+       6. Revised Versions of the GNU Lesser General Public License.
+
+       The Free Software Foundation may publish revised and/or new versions
+     of the GNU Lesser General Public License from time to time. Such new
+     versions will be similar in spirit to the present version, but may
+     differ in detail to address new problems or concerns.
+
+       Each version is given a distinguishing version number. If the
+     Library as you received it specifies that a certain numbered version
+     of the GNU Lesser General Public License "or any later version"
+     applies to it, you have the option of following the terms and
+     conditions either of that published version or of any later version
+     published by the Free Software Foundation. If the Library as you
+     received it does not specify a version number of the GNU Lesser
+     General Public License, you may choose any version of the GNU Lesser
+     General Public License ever published by the Free Software Foundation.
+
+       If the Library as you received it specifies that a proxy can decide
+     whether future versions of the GNU Lesser General Public License shall
+     apply, that proxy's public statement of acceptance of any version is
+     permanent authorization for you to choose that version for the
+     Library.
+   #+end_src
+** Changelog
+   All updates to this repository should be logged here. I follow [[https://keepachangelog.com/][Keep
+   a Changelog]]'s recommendations here, because again, standardization
+   is importantfor outward-facing documentation.
+
+   It's worth noting here that I will keep the links updated to the
+   [[https://sr.ht/][Sourcehut]] repository commits, as that is the main place I will be
+   uploading the source to share.
+   #+begin_src markdown :tangle "Changelog.md"
+     # Changelog
+     All notable changes to this project will be documented in this file.
+
+     The format is based on [Keep a
+     Changelog](https://keepachangelog.com/en/1.0.0/), and this project
+     adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+     ## [Unreleased]
+     ### Added
+         - Basic Literate Programming File
+     ### Changed
+         - Nothing
+     ### Removed
+         - Nothing
+
+     [Unreleased]: https://git.sr.ht/~yewscion/yewscion-guix-channel/log
+   #+end_src
+** AUTHORS
+   If You contribute to this repo, Your information belongs in this
+   file. I will attempt to ensure this, but if You'd like to simply
+   include Your information here in any pull requests, I am more than
+   happy to accept that.
+
+   #+begin_src text :tangle "AUTHORS"
+     # This is the list of the Yewscion Guix Channel project's significant contributors.
+     #
+     # This does not necessarily list everyone who has contributed code.
+     # To see the full list of contributors, see the revision history in
+     # source control.
+     Christopher Rodriguez <yewscion@gmail.com>
+   #+end_src
+** .gitignore
+   This is an important file for any git repository. I generate mine
+   using [[https://www.toptal.com/developers/gitignore][gitignore.io]] right now, and add to it as neededduring work on
+   the project.
+
+   #+begin_src fundamental :tangle ".gitignore"
+     # Created by https://www.toptal.com/developers/gitignore/api/emacs,linux,scheme
+     # Edit at https://www.toptal.com/developers/gitignore?templates=emacs,linux,scheme
+
+     ### Emacs ###
+     # -*- mode: gitignore; -*-
+     ,*~
+     \#*\#
+     /.emacs.desktop
+     /.emacs.desktop.lock
+     ,*.elc
+     auto-save-list
+     tramp
+     .\#*
+
+     # Org-mode
+     .org-id-locations
+     ,*_archive
+
+     # flymake-mode
+     ,*_flymake.*
+
+     # eshell files
+     /eshell/history
+     /eshell/lastdir
+
+     # elpa packages
+     /elpa/
+
+     # reftex files
+     ,*.rel
+
+     # AUCTeX auto folder
+     /auto/
+
+     # cask packages
+     .cask/
+     dist/
+
+     # Flycheck
+     flycheck_*.el
+
+     # server auth directory
+     /server/
+
+     # projectiles files
+     .projectile
+
+     # directory configuration
+     .dir-locals.el
+
+     # network security
+     /network-security.data
+
+
+     ### Linux ###
+
+     # temporary files which can be created if a process still has a handle open of a deleted file
+     .fuse_hidden*
+
+     # KDE directory preferences
+     .directory
+
+     # Linux trash folder which might appear on any partition or disk
+     .Trash-*
+
+     # .nfs files are created when an open file is removed but is still being accessed
+     .nfs*
+
+     ### Scheme ###
+     ,*.ss~
+     ,*.ss#*
+     .#*.ss
+
+     ,*.scm~
+     ,*.scm#*
+     .#*.scm
+
+     # End of https://www.toptal.com/developers/gitignore/api/emacs,linux,scheme
+   #+end_src
+* Language Project Files
+  There are none for this, as a Channel is just a Git Repo of Guix
+  Package Files.
+
+* Code
+  Here are all of the actual packages that will live in this repository.
+
+** Adlmidi
+   This is the first package I made, since I use Adlmidi nearly every day. It is
+   probably pretty rough, but everyone starts somewhere.
+
+   #+begin_src scheme :tangle adlmidi.scm
+     (define-module (gnu packages adlmidi)
+       #:use-module (guix packages)
+       #:use-module (gnu packages sdl)
+       #:use-module (gnu packages pkg-config)
+       #:use-module (guix download)
+       #:use-module (guix build-system gnu)
+       #:use-module (guix licenses)
+       #:use-module (guix git-download)
+       #:use-module (guix utils)
+       #:use-module (guix store)
+       #:use-module (guix gexp))
+     (define-public adlmidi
+       (let ((commit "0b87eee9df14fe24f1827a695a712ccb6c11e980")
+             (revision "1"))
+         (package
+          (name "adlmidi")
+          (version (git-version "1.2.6" revision commit))
+          (source (origin
+                   (method git-fetch)
+                   (uri (git-reference
+                         (url "https://github.com/bisqwit/adlmidi")
+                         (commit commit)))
+                   (file-name (git-file-name name version))
+                   (sha256
+                    (base32
+                     "0f23fzapfah6hl6mz214d5xqfkm06lxafn9msfanlrr70br75pvl"))))
+          (build-system gnu-build-system)
+          (arguments
+           `(#:tests? #f
+             #:phases (modify-phases %standard-phases
+                                     (delete 'configure)
+                                     (delete 'check)
+                                     (delete 'patch-shebangs)
+                                     (delete 'validate-documentation-location)
+                                     (delete 'delete-info-dir-file)
+                                     (delete 'patch-dot-desktop-files)
+                                     (delete 'reset-gzip-timestamps)
+                                     (delete 'compress-documentation)
+                                     (replace 'install
+                                              (lambda* (#:key outputs #:allow-other-keys)
+                                                (let* ((out (assoc-ref outputs "out"))
+                                                       (dest (string-append out "/bin")))
+                                                  (mkdir-p dest)
+                                                  (install-file "adlmidi" dest)
+                                                  (install-file "dumpbank" dest)
+                                                  (install-file "dumpmiles" dest)
+                                                  (install-file "gen_adldata" dest)
+                                                  #t))))))
+          (inputs `(("sdl2" ,sdl2)
+                    ("pkg-config" ,pkg-config)))
+         (synopsis "ADLMIDI is a MIDI player that uses OPL3 emulation.")
+         (description
+          "A cli midi file player that emulates OPL3 chips instead of using
+     soundfonts.")
+         (home-page "https://github.com/bisqwit/adlmidi")
+         (license gpl3))))
+     adlmidi
+   #+end_src
+
+** Tests
+   While I'm sure there is a testing framework of some sort for this sort of
+   thing, I am not yet familiar enough with it to make use of it in an effective
+   way.
+* Links                                                            :noexport:
+** Export Docs
+   #+begin_src elisp
+     (org-texinfo-export-to-info)
+     (org-man-export-to-man)
+     (org-html-export-to-html)
+     (org-ascii-export-to-ascii)
+     (org-latex-export-to-pdf)
+     #+end_src
