@@ -14,7 +14,7 @@
   )
 (define-public hledger-ui
   (package
-  (name "ghc-hledger-ui")
+  (name "hledger-ui")
   (version "1.21")
   (source
     (origin
