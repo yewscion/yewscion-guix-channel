@@ -1,4 +1,4 @@
-(define-module (gnu packages adlmidi)
+(define-module (adlmidi)
   #:use-module (guix packages)
   #:use-module (gnu packages sdl)
   #:use-module (gnu packages pkg-config)
