@@ -12,7 +12,7 @@
   (let ((commit "a5dbf6c1b19c163d2f137abb9172ea2d0250abef")
         (revision "1"))
     (package
-     (name "owl-lisp")
+     (name "owl")
      (version (git-version "0.2" revision commit))
      (source (origin
               (method git-fetch)
