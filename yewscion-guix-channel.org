@@ -430,7 +430,7 @@
    This is the first package I made, since I use Adlmidi nearly every day. It is
    probably pretty rough, but everyone starts somewhere.
 
-   #+begin_src scheme :tangle adlmidi-old.scm
+   #+begin_src scheme :tangle adlmidi.scm
      (define-module (adlmidi)
        #:use-module (guix packages)
        #:use-module (gnu packages sdl)
