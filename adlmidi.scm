@@ -10,11 +10,11 @@
   #:use-module (guix store)
   #:use-module (guix gexp))
 (define-public adlmidi
-  (let ((commit "0b87eee9df14fe24f1827a695a712ccb6c11e980")
-        (revision "1"))
+  (let ((commit "8aa85de66d6dbf95c4d89091491257103b7d0601")
+        (revision "2"))
     (package
      (name "adlmidi")
-     (version (git-version "1.2.6" revision commit))
+     (version (git-version "1.2.6.1" revision commit))
      (source (origin
               (method git-fetch)
               (uri (git-reference
@@ -23,7 +23,7 @@
               (file-name (git-file-name name version))
               (sha256
                (base32
-                "0f23fzapfah6hl6mz214d5xqfkm06lxafn9msfanlrr70br75pvl"))))
+                "016vkplgq8pmznh5kzv8zbybdq6har7wyvj4qhjg3pp4lz2sc76r"))))
      (build-system gnu-build-system)
      (arguments
       `(#:tests? #f
@@ -46,9 +46,9 @@
                                              (install-file "dumpmiles" dest)
                                              (install-file "gen_adldata" dest)
                                              #t))))))
-     (inputs `(("sdl2" ,sdl2)
-               ("pkg-config" ,pkg-config)))
-    (synopsis "ADLMIDI is a MIDI player that uses OPL3 emulation.")
+     (inputs `(("sdl2" ,sdl2)))
+     (native-inputs `("pkg-config" ,pkg-config)))
+    (synopsis "A MIDI player that emulates OPL3")
     (description
      "A cli midi file player that emulates OPL3 chips instead of using
 soundfonts.")
