@@ -1,4 +1,4 @@
-(define-module (owl)
+(define-module (owl-lisp)
   #:use-module (guix packages)
   #:use-module (guix download)
   #:use-module (guix build-system gnu)
@@ -7,12 +7,12 @@
   #:use-module (guix utils)
   #:use-module (guix store)
   #:use-module (guix gexp)
-  #:use-module (gnu packages base))
-(define-public owl
+  #:use-module (gnu packages base)
+(define-public owl-lisp
   (let ((commit "a5dbf6c1b19c163d2f137abb9172ea2d0250abef")
         (revision "1"))
     (package
-     (name "owl")
+     (name "owl-lisp")
      (version (git-version "0.2" revision commit))
      (source (origin
               (method git-fetch)
@@ -41,4 +41,4 @@
      is mainly based on the applicative subset of the R7RS standard.")
      (home-page "https://github.com/bisqwit/adlmidi")
      (license bsd-3))))
-owl
+owl-lisp
