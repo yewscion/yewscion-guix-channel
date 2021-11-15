@@ -47,7 +47,7 @@
                                              (install-file "gen_adldata" dest)
                                              #t))))))
      (inputs `(("sdl2" ,sdl2)))
-     (native-inputs `("pkg-config" ,pkg-config))
+     (native-inputs `(("pkg-config" ,pkg-config)))
     (synopsis "A MIDI player that emulates OPL3")
     (description
      "A cli midi file player that emulates OPL3 chips instead of using
