@@ -7,7 +7,7 @@
   #:use-module (guix utils)
   #:use-module (guix store)
   #:use-module (guix gexp)
-  #:use-module (gnu packages base)
+  #:use-module (gnu packages base))
 (define-public owl-lisp
   (let ((commit "a5dbf6c1b19c163d2f137abb9172ea2d0250abef")
         (revision "1"))
@@ -40,5 +40,5 @@
       "Owl Lisp is a functional dialect of the Scheme programming language. It
      is mainly based on the applicative subset of the R7RS standard.")
      (home-page "https://github.com/bisqwit/adlmidi")
-     (license bsd-3)))))
+     (license bsd-3))))
 owl-lisp

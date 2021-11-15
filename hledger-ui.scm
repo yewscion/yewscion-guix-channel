@@ -10,8 +10,7 @@
   #:use-module (gnu packages haskell-check)
   #:use-module (gnu packages haskell-web)
   #:use-module (gnu packages haskell-xyz)
-  #:use-module (gnu packages finance)
-  )
+  #:use-module (gnu packages finance))
 (define-public hledger-ui
   (package
   (name "hledger-ui")
