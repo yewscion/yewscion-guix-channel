@@ -7,9 +7,16 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 ### Added
-    - Basic Literate Programming File
+    - Basic Literate Programming File & Repo
+    - Adlmidi Package
+    - Owl Lisp Package
+    - NewLISP Package
+    - Hitlist of Software I'd Like to Package (.hitlist)
+    - `keyring` repo.
+    - Guix Authorizations for both rodnchr and yewscion GPG Keys.
 ### Changed
-    - Nothing
+    - README.md now includes introduction information.
+    - Repo now under AGPL-3.0 instead of LGPL-3.0
 ### Removed
     - Nothing
 

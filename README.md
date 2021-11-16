@@ -8,16 +8,17 @@ To use this Channel, follow the [documentation][b] for adding a new
 channel. Add the following to `~/.config/guix/channels.scm`.
 
 ```scheme
-;; Add variant packages to those Guix provides.
-(cons
-  (channel
-    (name 'yewscion)
-    (url "https://git.sr.ht/~yewscion/yewscion-guix-channel")
-    (introduction
-      (make-channel-introduction
-        "407c1abf0423ec76bbaf9f058d762f41f60466fe"
-        (openpgp-fingerprint
-          "F39C D463 49A5 76F8 8EF9  2479 1102 102E BE7C 3AE4"))))
+;; Add yewscion's variant packages to those Guix provides.
+(cons* (channel
+   (name 'yewscion)
+   (url "https://git.sr.ht/~yewscion/yewscion-guix-channel")
+   (branch "trunk")
+   ;; Enable signature verification:
+   (introduction
+    (make-channel-introduction
+     "3274a13809e8bad53e550970d684035519818ea0"
+     (openpgp-fingerprint
+      "6E3D E92C 3D0A 0A4D 1CDD  33EC 8EF2 971E D0D0 35B8"))))
   %default-channels)
 ```
 
@@ -35,10 +36,10 @@ documentation.
 
 ## License
 
-[LGPL-3.0][c]
+[AGPL-3.0][c]
 
 [a]: https://common-lisp.net/project/asdf/asdf.html#Configuring-ASDF-to-find-your-systems
 
 [b]: https://guix.gnu.org/manual/en/html_node/Specifying-Additional-Channels.html
 
-[c]: https://choosealicense.com/licenses/lgpl-3.0/
+[c]: https://choosealicense.com/licenses/agpl-3.0/
