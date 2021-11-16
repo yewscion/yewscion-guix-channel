@@ -39,6 +39,6 @@
      (description
       "Owl Lisp is a functional dialect of the Scheme programming language. It
      is mainly based on the applicative subset of the R7RS standard.")
-     (home-page "https://github.com/bisqwit/adlmidi")
+     (home-page "https://gitlab.com/owl-lisp/owl")
      (license bsd-3))))
 owl-lisp
