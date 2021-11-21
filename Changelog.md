@@ -14,6 +14,7 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
     - Hitlist of Software I'd Like to Package (.hitlist)
     - `keyring` repo
     - Guix Authorizations for both rodnchr and yewscion GPG Keys
+    - Yewscion Scripts Package
 ### Changed
     - README.md now includes introduction information
     - Repo now under AGPL-3.0 instead of LGPL-3.0
