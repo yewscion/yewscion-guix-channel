@@ -11,7 +11,7 @@
   #:use-module (guix store)
   #:use-module (guix gexp))
 (define-public yewscion-scripts
-  (let ((commit "7f1e5e675adfefaa971db3d3985a4830d3f0a44e")
+  (let ((commit "e17bb748ed3e726c9d24283aaf676d98de5d47b8")
         (revision "1"))
     (package
      (name "yewscion-scripts")
@@ -24,7 +24,7 @@
               (file-name (git-file-name name version))
               (sha256
                (base32
-                "0g2r8zx4ddb0yxld5m9mklkwz8iwmcwsl3gqijmkrlcnkzjacv1f"))))
+                "1vnfyz8naz5v08qd573g5v5m6pzazl4ffvirkcrwy6zddbqng62a"))))
      (build-system gnu-build-system)
      (arguments
       `(#:tests? #f))
