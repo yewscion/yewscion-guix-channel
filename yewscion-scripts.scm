@@ -11,11 +11,11 @@
   #:use-module (guix store)
   #:use-module (guix gexp))
 (define-public yewscion-scripts
-  (let ((commit "e17bb748ed3e726c9d24283aaf676d98de5d47b8")
+  (let ((commit "ea195c52825013424996dd7f583a27c999d9e4f0")
         (revision "1"))
     (package
      (name "yewscion-scripts")
-     (version (git-version "0.0.0" revision commit))
+     (version (git-version "0.1.0" revision commit))
      (source (origin
               (method git-fetch)
               (uri (git-reference
@@ -24,15 +24,15 @@
               (file-name (git-file-name name version))
               (sha256
                (base32
-                "1vnfyz8naz5v08qd573g5v5m6pzazl4ffvirkcrwy6zddbqng62a"))))
+                "015jh740prj08fvndqnci0db9xn17jhr604a8jdfp15m6sjlj0jx"))))
      (build-system gnu-build-system)
      (arguments
       `(#:tests? #f))
-     (inputs `(("autoconf" ,autoconf)
-               ("automake" ,automake)))
      (native-inputs `(("pkg-config" ,pkg-config)
-                      ("guile" ,guile-3.0)))
-    (synopsis "A Collection of Utility Scripts")
+                      ("guile" ,guile-3.0)
+                      ("autoconf" ,autoconf)
+                      ("automake" ,automake)))
+    (synopsis "Utility Scripts from yewscion")
     (description
      "A personal collection of scripts written to aid with system administration tasks.")
     (home-page "https://git.sr.ht/~yewscion/yewscion-scripts")
