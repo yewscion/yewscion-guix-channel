@@ -925,7 +925,7 @@ flycheck_*.el
 #+begin_src scheme :eval never :tangle .guix-authorizations
 ; -*- scheme -*-
 (authorizations
- (version 1)               ;current file format version
+ (version 2)               ;current file format version
  (("09DF 58DE 3CB2 049D 5DF0  05BF 929E 9F75 D492 8BCF"
    (name "rodnchr"))
   ("6E3D E92C 3D0A 0A4D 1CDD  33EC 8EF2 971E D0D0 35B8"
@@ -1038,7 +1038,7 @@ adlmidi
 
 (define-public gnu-apl
   (package
-    (name "apl")
+    (name "gnu-apl")
     (version "1.8")
     (source
      (origin

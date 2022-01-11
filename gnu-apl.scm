@@ -31,7 +31,7 @@
 
 (define-public gnu-apl
   (package
-    (name "apl")
+    (name "gnu-apl")
     (version "1.8")
     (source
      (origin
