@@ -11,6 +11,7 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
     - Adlmidi Package
     - Owl Lisp Package
     - NewLISP Package
+    - gnu-apl Package (alternative to upstream, due to slow bugfixes)
     - Hitlist of Software I'd Like to Package (.hitlist)
     - `keyring` repo
     - Guix Authorizations for both rodnchr and yewscion GPG Keys

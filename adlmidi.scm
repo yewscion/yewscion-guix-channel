@@ -48,10 +48,10 @@
                                              #t))))))
      (inputs `(("sdl2" ,sdl2)))
      (native-inputs `(("pkg-config" ,pkg-config)))
-    (synopsis "A MIDI player that emulates OPL3")
-    (description
-     "A cli midi file player that emulates OPL3 chips instead of using
+     (synopsis "A MIDI player that emulates OPL3")
+     (description
+      "A cli midi file player that emulates OPL3 chips instead of using
 soundfonts.")
-    (home-page "https://github.com/bisqwit/adlmidi")
-    (license gpl3))))
+     (home-page "https://github.com/bisqwit/adlmidi")
+     (license gpl3))))
 adlmidi

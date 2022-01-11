@@ -49,5 +49,4 @@
     (synopsis "Battery Indicator for StumpWM")
     (description "This StumpWM Module provides modeline support for a battery indicator.")
     (license gpl3+)))
-
 sbcl-stumpwm-battery-portable
