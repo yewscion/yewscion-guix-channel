@@ -1349,7 +1349,7 @@ newlisp
   #:use-module (guix store)
   #:use-module (guix gexp))
 (define-public yewscion-scripts
-  (let ((commit "85564668fce19472e8258274f592aa55d1677787")
+  (let ((commit "44eb5ae6170815e9fc47c0976a47953bf0a92676")
         (revision "1"))
     (package
      (name "yewscion-scripts")
@@ -1362,8 +1362,9 @@ newlisp
               (file-name (git-file-name name version))
               (sha256
                (base32
-                "1rnp54ix3f24jnvjk00c94v2l5sih5bsgd83wm2s9m81kw4nscn1"))))
+                "02avbvlsn31akv50wmnxli5n70733fvgh9lydvx1qn05l2cg01h6"))))
      (build-system gnu-build-system)
+
      (arguments
       `(#:tests? #f))
      (native-inputs `(("pkg-config" ,pkg-config)
