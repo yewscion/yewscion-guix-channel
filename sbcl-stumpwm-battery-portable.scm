@@ -45,8 +45,11 @@
            (lambda _
              (chdir "modeline/battery-portable"))))))
     (home-page
-     "https://github.com/stumpwm/stumpwm-contrib/tree/master/modeline/battery-portable")
+     (string-append
+      "https://github.com/stumpwm/stumpwm-contrib/"
+      "tree/master/modeline/battery-portable"))
     (synopsis "Battery Indicator for StumpWM")
-    (description "This StumpWM Module provides modeline support for a battery indicator.")
+    (description
+     "This StumpWM Module provides modeline support for a battery indicator.")
     (license gpl3+)))
 sbcl-stumpwm-battery-portable

@@ -4,8 +4,8 @@ My Own Personal Guix Channel.
 
 ## Installation
 
-To use this Channel, follow the [documentation][b] for adding a new
-channel. Add the following to `~/.config/guix/channels.scm`.
+To use this Channel, follow the [documentation][b] for adding a new channel. Add
+the following to `~/.config/guix/channels.scm`.
 
 ```scheme
 ;; Add yewscion's variant packages to those Guix provides.
@@ -30,9 +30,8 @@ guix pull
 
 ## Contributing
 
-Pull Requests are welcome, as are bugfixes and extensions. Please open
-issues as needed. If You contribute a feature, needs to be tests and
-documentation.
+Pull Requests are welcome, as are bugfixes and extensions. Please open issues as
+needed. If You contribute a feature, needs to be tests and documentation.
 
 ## License
 

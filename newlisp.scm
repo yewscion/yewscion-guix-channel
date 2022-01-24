@@ -40,6 +40,9 @@
      (synopsis
       "A LISP like, general purpose scripting language")
      (description
-      "newLISP is a scripting language for developing web applications and programs in general and in the domains of artificial intelligence (AI) and statistics.")
+      (string-append
+       "newLISP is a scripting language for developing web applications "
+       "and programs in general and in the domains of artificial "
+       "intelligence (AI) and statistics."))
      (license gpl3))))
 newlisp
