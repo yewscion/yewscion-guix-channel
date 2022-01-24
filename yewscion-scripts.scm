@@ -16,15 +16,16 @@
     (package
      (name "yewscion-scripts")
      (version (git-version "0.1.0" revision commit))
-     (source (origin
-              (method git-fetch)
-              (uri (git-reference
-                    (url "https://git.sr.ht/~yewscion/yewscion-scripts")
-                    (commit commit)))
-              (file-name (git-file-name name version))
-              (sha256
-               (base32
-                "13qv0lczrdl71nhyws3fdbcd47qbmzfw4qifvdrxjav693hm10s"))))
+     (source
+      (origin
+       (method git-fetch)
+       (uri (git-reference
+             (url "https://git.sr.ht/~yewscion/yewscion-scripts")
+             (commit commit)))
+       (file-name (git-file-name name version))
+       (sha256
+        (base32
+         "13qv0lczrdl71nhyws3fdbcd47qbmzfw4qifvdrxjav693hm10sj"))))
      (build-system gnu-build-system)
 
      (arguments
