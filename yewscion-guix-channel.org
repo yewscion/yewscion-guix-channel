@@ -45,39 +45,36 @@
 #+PROPERTY: header-args:fundamental :eval never
 #+PROPERTY: header-args:lisp :noweb yes :mkdirp yes
 * Concept
-  This is a literate programming filemade to support the Yewscion Guix
-  Channel project.
+This is a literate programming file made to support the Yewscion Guix Channel
+project.
 
-  This section is reserved for a high-level abstract description of
-  what the project is. In particular, the overview should walk through
-  the program flow as much as possible, to ensure clarity of thought
-  before code work begins.
+This section is reserved for a high-level abstract description of what the
+project is. In particular, the overview should walk through the program flow as
+much as possible, to ensure clarity of thought before code work begins.
 ** Overview
-  I wanted a channel for Guix of my own, so while I'm working on
-  packaging things or deviating from the choices made in GNU Guix's
-  main channel I can easily access my packages (and pass them to my
-  build farm).
+I wanted a channel for Guix of my own, so while I'm working on packaging things
+or deviating from the choices made in GNU Guix's main channel I can easily
+access my packages (and pass them to my build farm).
 * Generic Project Files
-  These files exist in every repository, or should, anyway. As this is
-  a literate programming file, however, they are also included
-  here. While they can mostly stand for themselves, I will add a
-  sentence or two about each, as well as any deviations in this
-  specific repo.
+These files exist in every repository, or should, anyway. As this is a literate
+programming file, however, they are also included here. While they can mostly
+stand for themselves, I will add a sentence or two about each, as well as any
+deviations in this specific repo.
 ** README
-   This is the all-important gateway into the repository. I follow
-   [[https://www.makeareadme.com/][Make a README]]'s specification in all of my projects, as I think it
-   is important to standardize such an outward-facing part of the
-   documentation.
+This is the all-important gateway into the repository. I follow
+[[https://www.makeareadme.com/][Make a README]]'s specification in all of my projects, as I think it
+is important to standardize such an outward-facing part of the
+documentation.
 
-   #+begin_src markdown :tangle README.md :eval never
+#+begin_src markdown :tangle README.md :eval never
 # Yewscion Guix Channel
 
 My Own Personal Guix Channel.
 
 ## Installation
 
-To use this Channel, follow the [documentation][b] for adding a new
-channel. Add the following to `~/.config/guix/channels.scm`.
+To use this Channel, follow the [documentation][b] for adding a new channel. Add
+the following to `~/.config/guix/channels.scm`.
 
 ```scheme
 ;; Add yewscion's variant packages to those Guix provides.
@@ -102,9 +99,8 @@ guix pull
 
 ## Contributing
 
-Pull Requests are welcome, as are bugfixes and extensions. Please open
-issues as needed. If You contribute a feature, needs to be tests and
-documentation.
+Pull Requests are welcome, as are bugfixes and extensions. Please open issues as
+needed. If You contribute a feature, needs to be tests and documentation.
 
 ## License
 
@@ -115,15 +111,16 @@ documentation.
 [b]: https://guix.gnu.org/manual/en/html_node/Specifying-Additional-Channels.html
 
 [c]: https://choosealicense.com/licenses/agpl-3.0/
-   #+end_src
+#+end_src
+
 ** LICENSE
-   I am a huge supporter of [[https://en.wikipedia.org/wiki/Free_software][Free Software]], and as such generally use licenses to
-   support that stance.  I use the [[https://www.gnu.org/licenses/agpl-3.0.en.html][GNU Affero General Public License]] for most of
-   my work because of this. However, if You want to debate licenses, I am open
-   to a casual, friendly discussion.
+I am a huge supporter of [[https://en.wikipedia.org/wiki/Free_software][Free Software]], and as such generally use licenses to
+support that stance.  I use the [[https://www.gnu.org/licenses/agpl-3.0.en.html][GNU Affero General Public License]] for most of my
+work because of this. However, if You want to debate licenses, I am open to a
+casual, friendly discussion.
 
 
-   #+begin_src fundamental :tangle "LICENSE" :eval never
+#+begin_src fundamental :tangle LICENSE :eval never
                     GNU AFFERO GENERAL PUBLIC LICENSE
                        Version 3, 19 November 2007
 
@@ -785,22 +782,24 @@ specific requirements.
 if any, to sign a "copyright disclaimer" for the program, if necessary.
 For more information on this, and how to apply and follow the GNU AGPL, see
 <https://www.gnu.org/licenses/>.
-   #+end_src
-** Changelog
-   All updates to this repository should be logged here. I follow [[https://keepachangelog.com/][Keep
-   a Changelog]]'s recommendations here, because again, standardization
-   is importantfor outward-facing documentation.
+#+end_src
 
-   It's worth noting here that I will keep the links updated to the
-   [[https://sr.ht/][Sourcehut]] repository commits, as that is the main place I will be
-   uploading the source to share.
-   #+begin_src markdown :tangle "Changelog.md"
+** Changelog
+All updates to this repository should be logged here. I follow [[https://keepachangelog.com/][Keep a
+Changelog]]'s recommendations here, because again, standardization is importantfor
+outward-facing documentation.
+
+It's worth noting here that I will keep the links updated to the [[https://sr.ht/][Sourcehut]]
+repository commits, as that is the main place I will be uploading the source to
+share.
+
+#+begin_src markdown :tangle "Changelog.md"
 # Changelog
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a
-Changelog](https://keepachangelog.com/en/1.0.0/), and this project
-adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic
+Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 ### Added
@@ -821,27 +820,28 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
     - Nothing
 
 [Unreleased]: https://git.sr.ht/~yewscion/yewscion-guix-channel/log
-   #+end_src
+#+end_src
+
 ** AUTHORS
-   If You contribute to this repo, Your information belongs in this
-   file. I will attempt to ensure this, but if You'd like to simply
-   include Your information here in any pull requests, I am more than
-   happy to accept that.
+If You contribute to this repo, Your information belongs in this file. I will
+attempt to ensure this, but if You'd like to simply include Your information
+here in any pull requests, I am more than happy to accept that.
 
-   #+begin_src text :tangle "AUTHORS"
-# This is the list of the Yewscion Guix Channel project's significant contributors.
+#+begin_src text :tangle "AUTHORS"
+# This is the list of the Yewscion Guix Channel project's significant
+# contributors.
 #
-# This does not necessarily list everyone who has contributed code.
-# To see the full list of contributors, see the revision history in
-# source control.
-Christopher Rodriguez <yewscion@gmail.com>
-   #+end_src
-** .gitignore
-   This is an important file for any git repository. I generate mine
-   using [[https://www.toptal.com/developers/gitignore][gitignore.io]] right now, and add to it as neededduring work on
-   the project.
+# This does not necessarily list everyone who has contributed code.  To see the
+# full list of contributors, see the revision history in source control.
 
-   #+begin_src fundamental :tangle ".gitignore"
+Christopher Rodriguez <yewscion@gmail.com>
+#+end_src
+
+** .gitignore
+This is an important file for any git repository. I generate mine using
+[[https://www.toptal.com/developers/gitignore][gitignore.io]] right now, and add to it as needed during work on the project.
+
+#+begin_src fundamental :tangle .gitignore
 # Created by https://www.toptal.com/developers/gitignore/api/emacs,linux,scheme
 # Edit at https://www.toptal.com/developers/gitignore?templates=emacs,linux,scheme
 
@@ -898,16 +898,16 @@ flycheck_*.el
 
 ### Linux ###
 
-# temporary files which can be created if a process still has a handle open of a deleted file
+# temporary files
 .fuse_hidden*
 
 # KDE directory preferences
 .directory
 
-# Linux trash folder which might appear on any partition or disk
+# Linux trash folder
 .Trash-*
 
-# .nfs files are created when an open file is removed but is still being accessed
+# .nfs files
 .nfs*
 
 ### Scheme ###
@@ -920,8 +920,10 @@ flycheck_*.el
 .#*.scm
 
 # End of https://www.toptal.com/developers/gitignore/api/emacs,linux,scheme
-   #+end_src
+#+end_src
+
 * Language Project Files
+
 #+begin_src scheme :eval never :tangle .guix-authorizations
 ; -*- scheme -*-
 (authorizations
@@ -935,14 +937,15 @@ flycheck_*.el
   ("24C4 1BBD 8571 BD9D 1E17  FF38 5D9E 8581 A195 CF7B"
    (name "yewscion2"))))
 #+end_src
+
 * Code
-  Here are all of the actual packages that will live in this repository.
+Here are all of the actual packages that will live in this repository.
 
 ** Adlmidi
-   This is the first package I made, since I use Adlmidi nearly every day. It is
-   probably pretty rough, but everyone starts somewhere.
+This is the first package I made, since I use Adlmidi nearly every day. It is
+probably pretty rough, but everyone starts somewhere.
 
-   #+begin_src scheme :tangle adlmidi.scm
+#+begin_src scheme :tangle adlmidi.scm
 (define-module (adlmidi)
   #:use-module (guix packages)
   #:use-module (gnu packages sdl)
@@ -1000,9 +1003,10 @@ soundfonts.")
      (home-page "https://github.com/bisqwit/adlmidi")
      (license gpl3))))
 adlmidi
-   #+end_src
+#+end_src
    
 ** GNU APL
+
 #+begin_src scheme :tangle gnu-apl.scm
 ;;; GNU Guix --- Functional package management for GNU
 ;;; Copyright © 2013 Nikita Karetnikov <nikita@karetnikov.org>
@@ -1065,8 +1069,8 @@ adlmidi
 an implementation of the ISO standard 13751.")
     (license gpl3+)))
 gnu-apl
-
 #+end_src
+
 ** Hledger-ui
 
 #+begin_src scheme :tangle hledger-ui.scm
@@ -1329,12 +1333,16 @@ owl-lisp
      (synopsis
       "A LISP like, general purpose scripting language")
      (description
-      "newLISP is a scripting language for developing web applications and programs in general and in the domains of artificial intelligence (AI) and statistics.")
+      (string-append
+       "newLISP is a scripting language for developing web applications "
+       "and programs in general and in the domains of artificial "
+       "intelligence (AI) and statistics."))
      (license gpl3))))
 newlisp
 #+end_src
 
 ** Yewscion Scripts
+
 #+begin_src scheme :tangle yewscion-scripts.scm
 (define-module (yewscion-scripts)
   #:use-module (guix packages)
@@ -1373,7 +1381,9 @@ newlisp
                       ("automake" ,automake)))
     (synopsis "Utility Scripts from yewscion")
     (description
-     "A personal collection of scripts written to aid with system administration tasks.")
+     (string-append
+      "A personal collection of scripts written to aid with system "
+      "administration tasks."))
     (home-page "https://git.sr.ht/~yewscion/yewscion-scripts")
     (license gpl3))))
 yewscion-scripts
@@ -1429,12 +1439,54 @@ yewscion-scripts
            (lambda _
              (chdir "modeline/battery-portable"))))))
     (home-page
-     "https://github.com/stumpwm/stumpwm-contrib/tree/master/modeline/battery-portable")
+     (string-append
+      "https://github.com/stumpwm/stumpwm-contrib/"
+      "tree/master/modeline/battery-portable"))
     (synopsis "Battery Indicator for StumpWM")
-    (description "This StumpWM Module provides modeline support for a battery indicator.")
+    (description
+     "This StumpWM Module provides modeline support for a battery indicator.")
     (license gpl3+)))
 sbcl-stumpwm-battery-portable
 #+end_src
+
+** duf
+
+#+begin_src scheme
+(define-module (duf)
+  #:use-module (guix build-system go)
+  #:use-module (guix packages)
+  #:use-module (guix download)
+  #:use-module (guix licenses)
+  #:use-module (guix git-download)
+  #:use-module (guix utils)
+  #:use-module (guix store)
+  #:use-module (guix gexp))
+(define-public duf
+  (let ((commit "9d0af0403b2169813cab50388fa03b3fcb5d0edc")
+        (revision "1"))
+    (package
+     (name "duf")
+     (version (git-version "0.7.0" revision commit))
+     (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/muesli/duf.git")
+                    (commit commit)))
+              (file-name (git-file-name name version))
+              (sha256
+               (base32
+                "0v7rq5bh5y9i1pn8629p4rvnzsnvg3vv0n1v1x4r01ngx8a4cn0p"))))
+     (build-system go-build-system)
+     (arguments
+      `(#:import-path "github.com/muesli/duf"))
+     (synopsis "Disk Usage/Free Utility")
+     (description
+      "A modern version of df with extended features and written in Go.")
+     (home-page "https://github.com/muesli/duf")
+     (license bsd-3))))
+duf
+#+end_src
+
 ** Tests
    While I'm sure there is a testing framework of some sort for this sort of
    thing, I am not yet familiar enough with it to make use of it in an effective
