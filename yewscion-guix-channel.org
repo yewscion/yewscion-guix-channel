@@ -1489,6 +1489,176 @@ sbcl-stumpwm-battery-portable
 duf
 #+end_src
 
+** JabRef
+
+#+begin_src scheme :tangle jabref.scm
+(define-module (jabref)
+  #:use-module (guix packages)
+  #:use-module (guix download)
+  #:use-module (guix licenses)
+  #:use-module (guix git-download)
+  #:use-module (guix utils)
+  #:use-module (guix store)
+  #:use-module (guix gexp))
+(define-public jabref
+  (let ((commit "27a05c73a7794097563236292d59eeeb8bc89063")
+        (revision "1"))
+    (package
+     (name "jabref")
+     (version (git-version "5.5" revision commit))
+     (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/JabRef/jabref.git")
+                    (commit commit)))
+              (file-name (git-file-name name version))
+              (sha256
+               (base32
+                "0v7rq5bh5y9i1pn8629p4rvnzsnvg3vv0n1v1x4r01ngx8a4cn0p"))))
+     (build-system go-build-system)
+     (arguments
+      `(#:import-path "github.com/muesli/duf"))
+     (synopsis "Disk Usage/Free Utility")
+     (description
+      "A modern version of df with extended features and written in Go.")
+     (home-page "https://github.com/muesli/duf")
+     (license bsd-3))))
+duf
+#+end_src
+
+** archivebox
+#+begin_src scheme :tangle archivebox.scm
+(define-module (sbcl-stumpwm-battery-portable)
+  #:use-module (guix packages)
+  #:use-module (guix licenses)
+  #:use-module (guix git-download)
+  #:use-module (gnu packages wm)
+  #:use-module (guix build-system asdf)
+  #:use-module (gnu packages lisp-check)
+  #:use-module (gnu packages lisp-xyz))
+
+(define stumpwm-contrib
+  (let ((commit "a7dc1c663d04e6c73a4772c8a6ad56a34381096a")
+        (revision "3"))
+    (package
+      (name "stumpwm-contrib")
+      (version (git-version "0.0.1" revision commit)) ;no upstream release
+      (source
+       (origin
+         (method git-fetch)
+         (uri (git-reference
+               (url "https://github.com/stumpwm/stumpwm-contrib")
+               (commit commit)))
+         (file-name (git-file-name name version))
+         (sha256
+          (base32 "09akdaaya7lga5lzbq1aj1filsyjwvflghkidpmr0nk0jz5xx1g7"))))
+      (build-system asdf-build-system/sbcl)
+      (inputs
+       `(("stumpwm" ,stumpwm "lib")))
+      (home-page "https://github.com/stumpwm/stumpwm-contrib")
+      (synopsis "StumpWM interactive shell")
+      (description "This package provides a StumpWM interactive shell.")
+      (license (list gpl2+ gpl3+ bsd-2)))))
+
+(define-public sbcl-stumpwm-battery-portable
+  (package
+    (inherit stumpwm-contrib)
+    (name "sbcl-stumpwm-battery-portable")
+    (inputs
+     `(("stumpwm" ,stumpwm "lib")))
+    (arguments
+     '(#:asd-systems '("battery-portable")
+       #:tests? #f
+       #:phases
+       (modify-phases %standard-phases
+         (add-after 'unpack 'chdir
+           (lambda _
+             (chdir "modeline/battery-portable"))))))
+    (home-page
+     (string-append
+      "https://github.com/stumpwm/stumpwm-contrib/"
+      "tree/master/modeline/battery-portable"))
+    (synopsis "Battery Indicator for StumpWM")
+    (description
+     "This StumpWM Module provides modeline support for a battery indicator.")
+    (license gpl3+)))
+sbcl-stumpwm-battery-portable
+#+end_src
+
+** uxn
+#+begin_src elisp :tangle uxn.scm
+(define-module (uxn)
+  #:use-module (guix packages)
+  #:use-module (gnu packages sdl)
+  #:use-module (guix download)
+  #:use-module (guix build-system gnu)
+  #:use-module (guix licenses)
+  #:use-module (guix git-download)
+  #:use-module (guix utils)
+  #:use-module (guix store)
+  #:use-module (guix gexp))
+(define-public uxn
+  (let ((commit "f87c15c8b5274546a2198c35f5a6e30094f8f004")
+        (revision "4"))
+    (package
+     (name "uxn")
+     (version (git-version "android-1.5" revision commit))
+     (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://git.sr.ht/~rabbits/uxn")
+                    (commit commit)))
+              (file-name (git-file-name name version))
+              (sha256
+               (base32
+                "00fjzjswyd88na0grylsjxq9bp7z5sk9a6xiwwm30wxflszvqm3g"))))
+     (build-system gnu-build-system)
+     (arguments
+      `(#:tests? #f
+        #:phases (modify-phases %standard-phases
+                                (delete 'configure)
+                                (delete 'check)
+                                (delete 'patch-shebangs)
+                                (delete 'validate-documentation-location)
+                                (delete 'delete-info-dir-file)
+                                (delete 'patch-dot-desktop-files)
+                                (delete 'reset-gzip-timestamps)
+                                (replace 'build
+                                         (lambda* (#:key inputs outputs #:allow-other-keys)
+                                           (setenv "HOME" "./")
+                                           (setenv "CC" "gcc")
+                                           (invoke "bash" "build.sh" "--install" "--no-run")
+                                           (invoke "./bin/uxncli" "./bin/asma.rom" "./projects/examples/demos/piano.tal" "./bin/piano.rom")))
+                                (replace 'install
+                                         (lambda* (#:key outputs #:allow-other-keys)
+                                           (let* ((out (assoc-ref outputs "out"))
+                                                  (dest-bin (string-append out "/bin"))
+                                                  (dest-lib (string-append out "/share"))
+                                                  (dest-rom (string-append dest-lib "/rom")))
+                                             (mkdir-p dest-bin)
+                                             (mkdir-p dest-lib)
+                                             (install-file "./bin/uxnasm" dest-bin)
+                                             (install-file "./bin/uxncli" dest-bin)
+                                             (install-file "./bin/uxnemu" dest-bin)
+                                             (install-file "./bin/launcher.rom" dest-rom)
+                                             (install-file "./bin/asma.rom" dest-rom)
+                                             (install-file "./bin/piano.rom" dest-rom)
+                                             (copy-recursively "./projects" (string-append dest-lib "/projects/"))
+                                             (copy-recursively "./etc" (string-append dest-lib "/etc"))
+                                             (install-file "README.md" (string-append dest-lib "/doc"))
+                                             #t))))))
+     (inputs `(("sdl2" ,sdl2)))
+     (synopsis "A virtual machine with 32 instructions")
+     (description
+      "This personal computer is capable of hosting small graphical
+applications, programmable in a unique assembly language. It was designed with
+an implementation-first mindset with a focus on creating portable tools and
+games.")
+     (home-page "https://wiki.xxiivv.com/site/uxn.html")
+     (license isc))))
+uxn
+
+#+end_src
 ** Tests
    While I'm sure there is a testing framework of some sort for this sort of
    thing, I am not yet familiar enough with it to make use of it in an effective
