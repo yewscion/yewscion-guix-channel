@@ -1660,8 +1660,8 @@ uxn
 
 #+end_src
 
-** COMMENT orca
-#+begin_src elisp :tangle orca.scm
+** orca
+#+begin_src elisp :tangle orca-lang.scm
 (define-module (orca-lang)
   #:use-module (guix packages)
   #:use-module (gnu packages ncurses)
