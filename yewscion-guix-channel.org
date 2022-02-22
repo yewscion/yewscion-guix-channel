@@ -1599,7 +1599,7 @@ sbcl-stumpwm-battery-portable
   #:use-module (guix gexp))
 (define-public uxn
   (let ((commit "f87c15c8b5274546a2198c35f5a6e30094f8f004")
-        (revision "4"))
+        (revision "5"))
     (package
      (name "uxn")
      (version (git-version "android-1.5" revision commit))
@@ -1684,7 +1684,7 @@ uxn
   #:use-module (guix gexp))
 (define-public orca-lang
   (let ((commit "5ba56ca67baae3db140f8b7a2b2fc46bbac5602f")
-        (revision "2"))
+        (revision "3"))
     (package
      (name "orca-lang")
      (version (git-version "git" revision commit))

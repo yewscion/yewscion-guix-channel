@@ -10,7 +10,7 @@
   #:use-module (guix gexp))
 (define-public uxn
   (let ((commit "f87c15c8b5274546a2198c35f5a6e30094f8f004")
-        (revision "4"))
+        (revision "5"))
     (package
      (name "uxn")
      (version (git-version "android-1.5" revision commit))

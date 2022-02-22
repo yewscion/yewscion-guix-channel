@@ -12,7 +12,7 @@
   #:use-module (guix gexp))
 (define-public orca-lang
   (let ((commit "5ba56ca67baae3db140f8b7a2b2fc46bbac5602f")
-        (revision "2"))
+        (revision "3"))
     (package
      (name "orca-lang")
      (version (git-version "git" revision commit))
