@@ -1762,7 +1762,7 @@ orca-lang
   #:use-module (guix store)
   #:use-module (guix gexp))
 (define-public genpro
-  (let ((commit "dac5e05d7b478b6c116eaed312c533e4ccb848c7")
+  (let ((commit "f799576c6dace8c4787b9d2e4b563bdde5a46449")
         (revision "1"))
     (package
      (name "genpro")
@@ -1776,7 +1776,7 @@ orca-lang
        (file-name (git-file-name name version))
        (sha256
         (base32
-         "1ingqcmzqzzrqsb59h7vgw13xf8g9j65bq3ibg19l3bb15c491nb"))))
+         "1r0m9v0dngnjw95h57l66pk0vywai6h66clpgjhn3lvgcjgc1jag"))))
      (build-system gnu-build-system)
 
      (arguments
