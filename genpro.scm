@@ -13,7 +13,7 @@
   #:use-module (guix store)
   #:use-module (guix gexp))
 (define-public genpro
-  (let ((commit "f799576c6dace8c4787b9d2e4b563bdde5a46449")
+  (let ((commit "0f9a6487d563e7f451cdfb9c305a4d8c61be10fd")
         (revision "1"))
     (package
      (name "genpro")
@@ -27,7 +27,7 @@
        (file-name (git-file-name name version))
        (sha256
         (base32
-         "1r0m9v0dngnjw95h57l66pk0vywai6h66clpgjhn3lvgcjgc1jag"))))
+         "0amqj7nd7dncpk0siskc36bs6l1bqmrnrjng52k310qgfck5jyyr"))))
      (build-system gnu-build-system)
 
      (arguments
