@@ -14,7 +14,7 @@
 ;;; You should have received a copy of the GNU General Public License
 ;;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-(define-module (mthl packages eclipse-java)
+(define-module (eclipse-java)
   #:use-module (guix packages)
   #:use-module (gnu packages base)
   #:use-module (gnu packages compression)
