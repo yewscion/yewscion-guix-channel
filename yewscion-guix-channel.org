@@ -1451,81 +1451,6 @@ yewscion-scripts
 sbcl-stumpwm-battery-portable
 #+end_src
 
-** duf
-
-#+begin_src scheme
-(define-module (duf)
-  #:use-module (guix build-system go)
-  #:use-module (guix packages)
-  #:use-module (guix download)
-  #:use-module (guix licenses)
-  #:use-module (guix git-download)
-  #:use-module (guix utils)
-  #:use-module (guix store)
-  #:use-module (guix gexp))
-(define-public duf
-  (let ((commit "9d0af0403b2169813cab50388fa03b3fcb5d0edc")
-        (revision "1"))
-    (package
-     (name "duf")
-     (version (git-version "0.7.0" revision commit))
-     (source (origin
-              (method git-fetch)
-              (uri (git-reference
-                    (url "https://github.com/muesli/duf.git")
-                    (commit commit)))
-              (file-name (git-file-name name version))
-              (sha256
-               (base32
-                "0v7rq5bh5y9i1pn8629p4rvnzsnvg3vv0n1v1x4r01ngx8a4cn0p"))))
-     (build-system go-build-system)
-     (arguments
-      `(#:import-path "github.com/muesli/duf"))
-     (synopsis "Disk Usage/Free Utility")
-     (description
-      "A modern version of df with extended features and written in Go.")
-     (home-page "https://github.com/muesli/duf")
-     (license bsd-3))))
-duf
-#+end_src
-
-** JabRef
-
-#+begin_src scheme :tangle jabref.scm
-(define-module (jabref)
-  #:use-module (guix packages)
-  #:use-module (guix download)
-  #:use-module (guix licenses)
-  #:use-module (guix git-download)
-  #:use-module (guix utils)
-  #:use-module (guix store)
-  #:use-module (guix gexp))
-(define-public jabref
-  (let ((commit "27a05c73a7794097563236292d59eeeb8bc89063")
-        (revision "1"))
-    (package
-     (name "jabref")
-     (version (git-version "5.5" revision commit))
-     (source (origin
-              (method git-fetch)
-              (uri (git-reference
-                    (url "https://github.com/JabRef/jabref.git")
-                    (commit commit)))
-              (file-name (git-file-name name version))
-              (sha256
-               (base32
-                "0v7rq5bh5y9i1pn8629p4rvnzsnvg3vv0n1v1x4r01ngx8a4cn0p"))))
-     (build-system go-build-system)
-     (arguments
-      `(#:import-path "github.com/muesli/duf"))
-     (synopsis "Disk Usage/Free Utility")
-     (description
-      "A modern version of df with extended features and written in Go.")
-     (home-page "https://github.com/muesli/duf")
-     (license bsd-3))))
-duf
-#+end_src
-
 ** archivebox
 #+begin_src scheme :tangle archivebox.scm
 (define-module (sbcl-stumpwm-battery-portable)
@@ -1881,12 +1806,11 @@ Based on code released [[https://lists.gnu.org/archive/html/help-guix/2018-07/ms
             (method url-fetch)
             (uri (string-append
                   "https://www.eclipse.org/downloads/download.php?";
-                  "r=1&nf=1&file=/technology/epp/downloads/release/"
-                  version "/3a/" name "-"
-                  version "-3a-linux-gtk-x86_64.tar.gz"))
+                  "r=1&nf=1&file=/oomph/epp/2022-03/R/"
+                  "eclipse-inst-jre-linux64.tar.gz"))
             (sha256
              (base32
-              "0m7y7jfm059w01x9j5b5qkinjjmhkyygpjabhjf19fg2smxmwcim"))))
+              "0iw214ls64iw4a8lg5rxj2klla8g8v4qnvvlxxpzipyhf8v0jdzj"))))
    (build-system trivial-build-system)
    (arguments
     `(#:modules ((guix build utils))
@@ -1934,6 +1858,42 @@ and an extensible plug-in system for customizing the environment.")
    (home-page "https://www.eclipse.org/")
    (license license:mpl2.0)))
 eclipse-java
+#+end_src
+** python-pygments-pseudocode-std
+#+begin_src scheme :tangle python-pygments-lexer-pseudocode-std.scm
+(define-module (python-pygments-lexer-pseudocode-std)
+  #:use-module (guix packages)
+  #:use-module (gnu packages python)
+  #:use-module (gnu packages python-xyz)
+  #:use-module (guix download)
+  #:use-module (guix build-system python)
+  #:use-module ((guix licenses) :prefix license:)
+  #:use-module (guix git-download)
+  #:use-module (guix utils)
+  #:use-module (guix store)
+  #:use-module (guix gexp))
+(define-public python-pygments-lexer-pseudocode-std
+  (let ((commit "607c42125b2b31cd767389cf51d521c8ea984eab")
+        (revision "2"))
+    (package
+     (name "python-pygments-lexer-pseudocode-std")
+     (version (git-version "1.0.0" revision commit))
+     (source
+      (origin
+       (method git-fetch)
+       (uri (git-reference
+             (url "https://git.sr.ht/~yewscion/pygments-lexer-pseudocode-std")
+             (commit commit)))
+       (sha256
+        (base32
+         "10py6xghyifz6rx1qn327029mx5zm463nsia602pryazamaxcrfw"))))
+  (build-system python-build-system)
+  (propagated-inputs (list python-pygments))
+  (home-page "https://git.sr.ht/~yewscion/pygments-lexer-pseudocode-std")
+  (synopsis "Pygments Lexer for a standard pseudocode")
+  (description "A Lexer for Pygments, following what could be considered a standard pseudocode.")
+  (license license:agpl3))))
+python-pygments-lexer-pseudocode-std
 #+end_src
 ** Tests
    While I'm sure there is a testing framework of some sort for this sort of
