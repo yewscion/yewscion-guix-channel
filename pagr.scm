@@ -1,4 +1,4 @@
-(define-module (git pagr)
+(define-module (pagr)
   #:use-module (guix packages)
   #:use-module (gnu packages pkg-config)
   #:use-module (gnu packages autotools)

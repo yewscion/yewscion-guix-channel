@@ -1897,7 +1897,7 @@ python-pygments-lexer-pseudocode-std
 #+end_src
 ** pagr
 #+begin_src scheme :tangle pagr.scm
-(define-module (git pagr)
+(define-module (pagr)
   #:use-module (guix packages)
   #:use-module (gnu packages pkg-config)
   #:use-module (gnu packages autotools)
