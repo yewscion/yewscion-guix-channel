@@ -11,7 +11,7 @@
   #:use-module (guix store)
   #:use-module (guix gexp))
 (define-public yewscion-scripts
-  (let ((commit "fd182374e5ec43554dc27e459ad8ac9fcd8e17c6")
+  (let ((commit "6b74d81401204997ebd31ecda46043ad6be8198c")
         (revision "1"))
     (package
      (name "yewscion-scripts")
@@ -25,7 +25,7 @@
        (file-name (git-file-name name version))
        (sha256
         (base32
-         "12w6n5068gh9pqxgibfwsfaf0fkbhxxy62r39i1libsmnxriac2i"))))
+         "0n240jmfmafjrmk7hr6zx1fqw9wwkbr65spkakx8ac0c4as992hb"))))
      (build-system gnu-build-system)
 
      (arguments
@@ -40,5 +40,5 @@
       "A personal collection of scripts written to aid with system "
       "administration tasks."))
     (home-page "https://git.sr.ht/~yewscion/yewscion-scripts")
-    (license gpl3))))
+    (license agpl3))))
 yewscion-scripts
