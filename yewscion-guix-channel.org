@@ -2221,8 +2221,8 @@ Philipp Lehmann’s etoolbox.")
     (home-page "https://ctan.org/pkg/catchfile")
     (synopsis "Catch an external file into a macro")
     (description
-     " This package catches the contents of a file and puts it in a macro. It
-requires e-TeX. Both LaTeX and plain TeX are supported. ")
+     "This package catches the contents of a file and puts it in a macro. It
+requires e-TeX. Both LaTeX and plain TeX are supported.")
     (license license:lppl1.3)))
 (define-public texlive-latex-comment
   (let ((template (simple-texlive-package
@@ -2248,12 +2248,32 @@ Other ‘comment’ environments are defined and selected/deselected with
 used as \\versiona … \\endversiona or \\begin{versiona} … \\end{versiona} with the
 opening and closing commands again on a line of their own.")
       (license license:gpl2))))
+(define-public texlive-generic-xstring
+  (let ((template (simple-texlive-package
+                   "texlive-generic-xstring"
+                   (list "/doc/generic/xstring/"
+                         "/tex/generic/xstring/")
+                   (base32
+                    "1azpq855kq1l4686bjp8haxim5c8wycz1b6lcg5q7x8kb4g9sppn")
+                   #:trivial? #t)))
+    (package
+      (inherit template)
+      (home-page "https://ctan.org/pkg/xstring")
+      (synopsis "https://ctan.org/pkg/xstring")
+      (description " The package provides macros for manipulating strings —
+testing a string’s contents, extracting substrings, substitution of substrings
+and providing numbers such as string length, position of, or number of
+recurrences of, a substring.
 
+The package works equally in Plain TeX and LaTeX (though e-TeX is always
+required). The strings to be processed may contain (expandable) macros. ")
+      (license license:lppl1.3c))))
 texlive-latex-lwarp
 texlive-generic-ifptex
 texlive-latex-xpatch
 texlive-latex-catchfile
 texlive-latex-comment
+texlive-generic-xstring
 #+end_src
 ** Tests
    While I'm sure there is a testing framework of some sort for this sort of
