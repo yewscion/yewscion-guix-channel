@@ -2136,15 +2136,12 @@ operating systems and TeX distributions.  A quick-start tutorial is provided.")
                    #:trivial? #t)))
     (package
       (inherit template)
-      (home-page "http://www.ctan.org/pkg/iftex")
-      (synopsis "Determine the currently used TeX engine")
-      (description "This package, which works both for Plain TeX and for
-LaTeX, defines the @code{\\ifPDFTeX}, @code{\\ifXeTeX}, and @code{\\ifLuaTeX}
-conditionals for testing which engine is being used for typesetting.  The
-package also provides the @code{\\RequirePDFTeX}, @code{\\RequireXeTeX}, and
-@code{\\RequireLuaTeX} commands which throw an error if pdfTeX, XeTeX or
-LuaTeX (respectively) is not the engine in use.")
-      (license license:lppl1.3+))))
+      (home-page "https://ctan.org/pkg/ifptex")
+      (synopsis "Check if the engine is pTeX or one of its derivatives")
+      (description "The ifptex package is a counterpart of ifxetex, ifluatex,
+etc. for the ptex engine. The ifuptex package is an alias to ifptex provided for
+backward compatibility. ")
+      (license license:expat))))
 (define-public texlive-latex-xpatch
   (package
     (name "texlive-latex-xpatch")
@@ -2185,7 +2182,7 @@ LuaTeX (respectively) is not the engine in use.")
     (description
      "The package generalises the macro patching commands provided by 
 Philipp Lehmann’s etoolbox.")
-    (license license:lppl1.3c+)))
+    (license license:lppl1.3)))
 (define-public texlive-latex-catchfile
   (package
     (name "texlive-latex-catchfile")
@@ -2226,12 +2223,37 @@ Philipp Lehmann’s etoolbox.")
     (description
      " This package catches the contents of a file and puts it in a macro. It
 requires e-TeX. Both LaTeX and plain TeX are supported. ")
-    (license license:lppl1.3c+)))
+    (license license:lppl1.3)))
+(define-public texlive-latex-comment
+  (let ((template (simple-texlive-package
+                   "texlive-latex-comment"
+                   (list "/doc/latex/comment/"
+                         "/tex/latex/comment/")
+                   (base32
+                    "1c1mqziwxyf1bqzpw6ji65n7ypygm3lyknblxmf0c70w0ivw76pa")
+                   #:trivial? #t)))
+    (package
+      (inherit template)
+      (home-page "https://ctan.org/pkg/comment")
+      (synopsis "Selectively include/exclude portions of text")
+      (description "Selectively include/exclude pieces of text, allowing the
+user to define new, separately controlled, comment versions. All text between
+\\comment ... \\endcomment or \\begin{comment} ... \\end{comment} is discarded. The
+opening and closing commands should appear on a line of their own. No starting
+spaces, nothing after it. This environment should work with arbitrary amounts of
+comment, and the comment can be arbitrary text.
+
+Other ‘comment’ environments are defined and selected/deselected with
+\\includecomment{versiona} and \\excludecoment{versionb} These environments are
+used as \\versiona … \\endversiona or \\begin{versiona} … \\end{versiona} with the
+opening and closing commands again on a line of their own.")
+      (license license:gpl2))))
 
 texlive-latex-lwarp
 texlive-generic-ifptex
 texlive-latex-xpatch
 texlive-latex-catchfile
+texlive-latex-comment
 #+end_src
 ** Tests
    While I'm sure there is a testing framework of some sort for this sort of
