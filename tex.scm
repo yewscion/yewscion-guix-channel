@@ -201,5 +201,59 @@ package also provides the @code{\\RequirePDFTeX}, @code{\\RequireXeTeX}, and
 LuaTeX (respectively) is not the engine in use.")
       (license license:lppl1.3+))))
 
+(define-public texlive-latex-xpatch
+  (package
+    (name "texlive-latex-xpatch")
+    (version (string-append
+              (number->string %texlive-revision)
+             "-1"))
+    (source
+     (texlive-origin
+      name
+      (number->string %texlive-revision)
+      (list "doc/latex/xpatch/"
+            "source/latex/xpatch/")
+       (base32 "1q5v8h52kmvwzsdqbr1blqln1mragynsbwk3bcp2icnldzclrj6z")))
+    (build-system texlive-build-system)
+    (arguments
+     `(#:tex-directory "latex/xpatch"
+       #:build-targets '("xpatch.ins")
+       #:phases (modify-phases
+                 %standard-phases
+                 (add-after 'unpack
+                            'set-TEXINPUTS
+                            (lambda _
+                              (let ((cwd (getcwd)))
+                                (setenv "TEXINPUTS"
+                                        (string-append
+                                         cwd
+                                         "/source/latex/xpatch:")))))
+                 (add-after 'install 'install-more
+                            (lambda* (#:key outputs #:allow-other-keys)
+                              (let* ((out
+                                      (assoc-ref outputs "out"))
+                                     (dest-doc
+                                      (string-append out "/share/doc/" ,name ,version)))
+                                (install-file "doc/latex/xpatch/xpatch.pdf" dest-doc)
+                                (install-file "doc/latex/xpatch/README" dest-doc)))))))
+    (home-page "https://ctan.org/macros/latex/contrib/lwarp")
+    (synopsis "Converts LaTeX to HTML")
+    (description
+     "This package converts LaTeX to HTML by using LaTeX to process the user's
+document and generate HTML tags.  External utility programs are only used for
+the final conversion of text and images.  Math may be represented by SVG files
+or MathJax.  Hundreds of LaTeX packages are supported, and their load order is
+automatically verified.  Documents may be produced by LaTeX, LuaLaTeX, XeLaTeX,
+and by several CJK engines, classes, and packages.  A texlua script automates
+compilation, index, glossary, and batch image processing, and also supports
+latexmk.  Configuration is semi-automatic at the first manual compile.  Support
+files are self-generated.  Print and HTML versions of each document may coexist.
+Assistance is provided for HTML import into EPUB conversion software and word
+processors.  Requirements include the commonly-available Poppler utilities, and
+Perl.  Detailed installation instructions are included for each of the major
+operating systems and TeX distributions.  A quick-start tutorial is provided.")
+    (license license:lppl1.3c+)))
+
 texlive-latex-lwarp
 texlive-generic-ifptex
+texlive-latex-xpatch
