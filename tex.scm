@@ -415,6 +415,49 @@ where the figure (or table) would normally have occurred. Float types figure and
 table are recognised by the package, unmodified. Since several packages define
 other types of float, it is possible to register these float types with
 endfloat.")
+    (license license:gpl3)))
+(define-public texlive-latex-minted
+  (package
+    (name "texlive-latex-minted")
+    (version (string-append
+              (number->string %texlive-revision)
+             "-1"))
+    (source
+     (texlive-origin
+      name
+      (number->string %texlive-revision)
+      (list "doc/latex/minted/"
+            "source/latex/minted/")
+       (base32 "15l5lk5fkw6f88rmm784j6k4f0ansrksdc3jnywij90pm57qx2g0")))
+    (build-system texlive-build-system)
+    (arguments
+     `(#:tex-directory "latex/minted"
+       #:build-targets '("minted.ins")
+       #:phases (modify-phases
+                 %standard-phases
+                 (add-after 'unpack
+                            'set-TEXINPUTS
+                            (lambda _
+                              (let ((cwd (getcwd)))
+                                (setenv "TEXINPUTS"
+                                        (string-append
+                                         cwd
+                                         "/source/latex/minted:")))))
+                 (add-after 'install 'install-more
+                            (lambda* (#:key outputs #:allow-other-keys)
+                              (let* ((out
+                                      (assoc-ref outputs "out"))
+                                     (dest-doc
+                                      (string-append out "/share/doc/" ,name ,version)))
+                                (install-file "doc/latex/minted/README" dest-doc)
+                                (install-file "doc/latex/minted/Makefile" dest-doc)
+                                (install-file "doc/latex/minted/minted.pdf" dest-doc)))))))
+    (home-page "https://ctan.org/pkg/minted")
+    (synopsis "Highlighted source code for LaTeX")
+    (description
+     "The package that facilitates expressive syntax highlighting in LaTeX using
+the powerful Pygments library. The package also provides options to customize
+the highlighted source code output using fancyvrb.")
     (license license:lppl1.3)))
 
 texlive-latex-lwarp
@@ -426,3 +469,4 @@ texlive-generic-xstring
 texlive-biblatex-apa
 texlive-latex-setspace
 texlive-latex-endfloat
+texlive-latex-minted
