@@ -353,4 +353,4 @@ texlive-latex-xpatch
 texlive-latex-catchfile
 texlive-latex-comment
 texlive-generic-xstring
-texlive-biblatex-apa2
+texlive-biblatex-apa
