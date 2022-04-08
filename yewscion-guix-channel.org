@@ -2446,6 +2446,23 @@ the highlighted source code output using fancyvrb.")
 breaking and improved math mode. It also patches some fancyvrb internals. Parts
 of fvextra were originally developed as part of pythontex and minted.")
     (license license:lppl1.3)))
+(define-public texlive-latex-lineno
+  (let ((template (simple-texlive-package
+                   "texlive-latex-lineno"
+                   (list "/tex/latex/lineno/"
+                         "/doc/latex/lineno/")
+                   (base32
+                    "061c618kgw4vz9jh8f9vx591n733srafkbrq2qxsjx9szkvzbbki")
+                   #:trivial? #t)))
+    (package
+      (inherit template)
+      (home-page "https://ctan.org/pkg/lineno")
+      (synopsis "Line numbers on paragraphs")
+      (description "Adds line numbers to selected paragraphs with reference
+possible through the LaTeX \\ref and \\pageref cross reference mechanism.
+
+Line numbering may be extended to footnote lines, using the fnlineno package.")
+      (license license:lppl1.3a+))))
 
 texlive-latex-lwarp
 texlive-generic-ifptex
@@ -2458,6 +2475,7 @@ texlive-latex-setspace
 texlive-latex-endfloat
 texlive-latex-minted
 texlive-latex-fvextra
+texlive-latex-lineno
 #+end_src
 
 #+RESULTS:
