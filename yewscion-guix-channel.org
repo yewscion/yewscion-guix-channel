@@ -2522,7 +2522,7 @@ This package replaces datetime.sty which is now obsolete. ")
     (license license:lppl1.3)))
 (define-public texlive-tracklang
   (let ((template (simple-texlive-package
-                   "texlive-latex-tracklang"
+                   "texlive-tracklang"
                    (list "/tex/latex/tracklang/"
                          "/tex/generic/tracklang/"
                          "/doc/generic/tracklang/")
