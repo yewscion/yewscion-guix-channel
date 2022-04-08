@@ -363,6 +363,59 @@ doublespacing. Alternatively the spacing can be changed as required with the
 \\singlespacing, \\onehalfspacing, and \\doublespacing commands. Other size
 spacings also available.")
       (license license:lppl1.3c))))
+(define-public texlive-latex-endfloat
+  (package
+    (name "texlive-latex-endfloat")
+    (version (string-append
+              (number->string %texlive-revision)
+             "-1"))
+    (source
+     (texlive-origin
+      name
+      (number->string %texlive-revision)
+      (list "doc/latex/endfloat/"
+            "source/latex/endfloat/")
+       (base32 "0q1k8qbm704xbgrnaj5dv1rbkfyyzd65m8ybrip334gsmn4223ni")))
+    (build-system texlive-build-system)
+    (arguments
+     `(#:tex-directory "latex/endfloat"
+       #:build-targets '("endfloat.ins")
+       #:phases (modify-phases
+                 %standard-phases
+                 (add-after 'unpack
+                            'set-TEXINPUTS
+                            (lambda _
+                              (let ((cwd (getcwd)))
+                                (setenv "TEXINPUTS"
+                                        (string-append
+                                         cwd
+                                         "/source/latex/endfloat:")))
+                              (delete-file-recursively "source/latex/endfloat/endfloat.drv")))
+                 (add-after 'install 'install-more
+                            (lambda* (#:key outputs #:allow-other-keys)
+                              (let* ((out
+                                      (assoc-ref outputs "out"))
+                                     (dest-doc
+                                      (string-append out "/share/doc/" ,name ,version)))
+                                (install-file "doc/latex/endfloat/README" dest-doc)
+                                (install-file "doc/latex/endfloat/COPYING" dest-doc)
+                                (install-file "doc/latex/endfloat/efxmpl.cfg" dest-doc)
+                                (install-file "doc/latex/endfloat/endfloat.pdf" dest-doc)
+                                (delete-file-recursively (string-append out "/share/texmf-dist/"
+                                                                        "tex/"
+                                                                        "latex/"
+                                                                        "endfloat/"
+                                                                        "efxmpl.cfg"))))))))
+    (home-page "https://ctan.org/pkg/endfloat")
+    (synopsis "Move floats to the end, leaving markers where they belong")
+    (description
+     "Place all floats on pages by themselves at the end of the document,
+optionally leaving markers like “[Figure 3 about here]” in the text near to
+where the figure (or table) would normally have occurred. Float types figure and
+table are recognised by the package, unmodified. Since several packages define
+other types of float, it is possible to register these float types with
+endfloat.")
+    (license license:lppl1.3)))
 
 texlive-latex-lwarp
 texlive-generic-ifptex
@@ -372,3 +425,4 @@ texlive-latex-comment
 texlive-generic-xstring
 texlive-biblatex-apa
 texlive-latex-setspace
+texlive-latex-endfloat
