@@ -2404,6 +2404,48 @@ endfloat.")
 the powerful Pygments library. The package also provides options to customize
 the highlighted source code output using fancyvrb.")
     (license license:lppl1.3)))
+(define-public texlive-latex-fvextra
+  (package
+    (name "texlive-latex-fvextra")
+    (version (string-append
+              (number->string %texlive-revision)
+             "-1"))
+    (source
+     (texlive-origin
+      name
+      (number->string %texlive-revision)
+      (list "doc/latex/fvextra/"
+            "source/latex/fvextra/")
+       (base32 "00p0m643ah7d82k1ilz1nkmnbb733vqcz1paxk5n6y1k6awm1gks")))
+    (build-system texlive-build-system)
+    (arguments
+     `(#:tex-directory "latex/fvextra"
+       #:build-targets '("fvextra.ins")
+       #:phases (modify-phases
+                 %standard-phases
+                 (add-after 'unpack
+                            'set-TEXINPUTS
+                            (lambda _
+                              (let ((cwd (getcwd)))
+                                (setenv "TEXINPUTS"
+                                        (string-append
+                                         cwd
+                                         "/source/latex/fvextra:")))))
+                 (add-after 'install 'install-more
+                            (lambda* (#:key outputs #:allow-other-keys)
+                              (let* ((out
+                                      (assoc-ref outputs "out"))
+                                     (dest-doc
+                                      (string-append out "/share/doc/" ,name ,version)))
+                                (install-file "doc/latex/fvextra/README" dest-doc)
+                                (install-file "doc/latex/fvextra/fvextra.pdf" dest-doc)))))))
+    (home-page "https://ctan.org/pkg/fvextra")
+    (synopsis "Extensions and patches for fancyvrb")
+    (description
+     "fvextra provides several extensions to fancyvrb, including automatic line
+breaking and improved math mode. It also patches some fancyvrb internals. Parts
+of fvextra were originally developed as part of pythontex and minted.")
+    (license license:lppl1.3)))
 
 texlive-latex-lwarp
 texlive-generic-ifptex
@@ -2415,6 +2457,7 @@ texlive-biblatex-apa
 texlive-latex-setspace
 texlive-latex-endfloat
 texlive-latex-minted
+texlive-latex-fvextra
 #+end_src
 
 #+RESULTS:
