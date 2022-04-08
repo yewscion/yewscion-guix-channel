@@ -113,7 +113,7 @@ copied to their outputs; otherwise the TEXLIVE-BUILD-SYSTEM is used."
     (name "texlive-latex-lwarp")
     (version (string-append
               (number->string %texlive-revision)
-             "-1"))
+             "-2"))
     (source
      (texlive-origin
       name
@@ -164,6 +164,11 @@ copied to their outputs; otherwise the TEXLIVE-BUILD-SYSTEM is used."
                                 (install-file "doc/latex/lwarp/lwarp.pdf" dest-doc)
                                 (install-file "doc/latex/lwarp/lwarp_tutorial.txt" dest-doc)
                                 (install-file "doc/latex/lwarp/README.txt" dest-doc)))))))
+    (propagated-inputs (list lua
+                             perl
+                             poppler
+                             xindy
+                             texlive-base))
     (home-page "https://ctan.org/pkg/lwarp")
     (synopsis "Converts LaTeX to HTML")
     (description
@@ -651,7 +656,42 @@ setting is on.
 - en-JE (English – Bailiwick of Jersey) en-IM (English – Isle of Man)
 - en-MT (English – Republic of Malta) en-IE (English – Republic of Ireland)")
     (license license:lppl1.3)))
+(use-modules (gnu packages lisp)
+             (gnu packages lisp-xyz))
+(define-public xindy
+  (let ((revision "1")
+        (package-version "2.5.1"))
+    (package
+     (name "xindy")
+     (version  (string-append package-version "-" revision))
+     (source (origin
+              (method url-fetch)
+              (uri (string-append "http://mirrors.ctan.org/indexing/xindy/base/xindy-"
+                                  package-version ".tar.gz"))
+              (sha256
+               (base32
+                "0hxsx4zw19kmixkmrln17sxgg1ln4pfp4lpfn5v5fyr1nwfyk3ic"))))
+     (build-system gnu-build-system)
+     (native-inputs (list pkg-config
+                          clisp
+                          sed
+                          perl
+                          texlive-fonts-ec
+                          texlive-base
+                          libiconv
+                          texlive-inputenx
+                          texlive-cm-super
+                          texlive-latex-base))
+     (home-page "https://ctan.org/pkg/xindy")
+     (description
+      "Xindy was developed after an impasse had been encountered in the attempt
+to complete internationalisation of makeindex.
 
+Xindy can be used to process indexes for documents marked up using (La)TeX,
+Nroff family and SGML-based languages. Xindy is highly configurable, both in
+markup terms and in terms of the collating order of the text being processed.")
+     (synopsis "A general-purpose index processor")
+     (license license:gpl3))))
 texlive-latex-lwarp
 texlive-generic-ifptex
 texlive-latex-xpatch
@@ -667,3 +707,4 @@ texlive-latex-lineno
 texlive-latex-datetime2
 texlive-tracklang
 texlive-latex-datetime2-english
+xindy
