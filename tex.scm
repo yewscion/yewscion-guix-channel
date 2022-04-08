@@ -692,6 +692,25 @@ Nroff family and SGML-based languages. Xindy is highly configurable, both in
 markup terms and in terms of the collating order of the text being processed.")
      (synopsis "A general-purpose index processor")
      (license license:gpl3))))
+(define-public texlive-latex-everyhook
+  (let ((template (simple-texlive-package
+                   "texlive-latex-everyhook"
+                   (list "/tex/latex/everyhook/"
+                         "/doc/latex/everyhook/")
+                   (base32
+                    "0kpx1shj9qjzdh5qqnmlz6vn0c2lji8068sw3cmzdyvidk03n5g3")
+                   #:trivial? #t)))
+    (package
+      (inherit template)
+      (home-page "https://ctan.org/pkg/everyhook")
+      (synopsis "Hooks for standard TeX token lists")
+      (description "The package takes control of the six TeX token registers
+\\everypar, \\everymath, \\everydisplay, \\everyhbox, \\everyvbox and
+\\everycr. Real hooks for each of the registers may be installed using a stack
+like interface. For backwards compatibility, each of the \\everyX token lists
+can be set without interfering with the hooks.")
+      (license license:lppl1.3))))
+
 texlive-latex-lwarp
 texlive-generic-ifptex
 texlive-latex-xpatch
@@ -708,3 +727,4 @@ texlive-latex-datetime2
 texlive-tracklang
 texlive-latex-datetime2-english
 xindy
+texlive-latex-everyhook
