@@ -2260,7 +2260,7 @@ opening and closing commands again on a line of their own.")
       (inherit template)
       (home-page "https://ctan.org/pkg/xstring")
       (synopsis "https://ctan.org/pkg/xstring")
-      (description " The package provides macros for manipulating strings —
+      (description "The package provides macros for manipulating strings —
 testing a string’s contents, extracting substrings, substitution of substrings
 and providing numbers such as string length, position of, or number of
 recurrences of, a substring.
@@ -2290,7 +2290,24 @@ guide.
 This version of the package requires use of csquotes ≥4.3, BibLaTeX ≥3.4, and
 the biber backend for BibLaTeX ≥2.5.")
       (license license:lppl1.3c))))
-
+(define-public texlive-latex-setspace
+  (let ((template (simple-texlive-package
+                   "texlive-latex-setspace"
+                   (list "/tex/latex/setspace/"
+                         "/doc/latex/setspace/")
+                   (base32
+                    "00ik8qgkw3ivh3z827zjf7gbwkbsmdcmv22c6ap543mpgaqqjcfm")
+                   #:trivial? #t)))
+    (package
+      (inherit template)
+      (home-page "https://ctan.org/pkg/setspace")
+      (synopsis "Set space between lines")
+      (description "Provides support for setting the spacing between lines in a
+document. Package options include singlespacing, onehalfspacing, and
+doublespacing. Alternatively the spacing can be changed as required with the
+\\singlespacing, \\onehalfspacing, and \\doublespacing commands. Other size
+spacings also available.")
+      (license license:lppl1.3c))))
 
 texlive-latex-lwarp
 texlive-generic-ifptex
@@ -2299,6 +2316,7 @@ texlive-latex-catchfile
 texlive-latex-comment
 texlive-generic-xstring
 texlive-biblatex-apa
+texlive-latex-setspace
 #+end_src
 
 #+RESULTS:
