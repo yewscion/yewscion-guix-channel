@@ -323,9 +323,34 @@ recurrences of, a substring.
 The package works equally in Plain TeX and LaTeX (though e-TeX is always
 required). The strings to be processed may contain (expandable) macros. ")
       (license license:lppl1.3c))))
+(define-public texlive-biblatex-apa
+  (let ((template (simple-texlive-package
+                   "texlive-biblatex-apa"
+                   (list "/tex/latex/biblatex-apa/"
+                         "/doc/latex/biblatex-apa/")
+                   (base32
+                    "0ivf7xbzj4xd57sqfbi87hbr73rraqifkzvx06yxgq0gmzz0x6wl")
+                   #:trivial? #t)))
+    (package
+      (inherit template)
+      (home-page "https://ctan.org/pkg/biblatex-apa")
+      (synopsis "BibLaTeX citation and reference style for APA")
+      (description "This is a fairly complete BibLaTeX style (citations and
+references) for APA (American Psychological Association) publications. It
+implements and automates most of the guidelines in the APA 7th edition style
+guide for citations and references. An example document is also given which
+typesets every citation and reference example in the APA 7th edition style
+guide.
+
+This version of the package requires use of csquotes ≥4.3, BibLaTeX ≥3.4, and
+the biber backend for BibLaTeX ≥2.5.")
+      (license license:lppl1.3c))))
+
+
 texlive-latex-lwarp
 texlive-generic-ifptex
 texlive-latex-xpatch
 texlive-latex-catchfile
 texlive-latex-comment
 texlive-generic-xstring
+texlive-biblatex-apa2
