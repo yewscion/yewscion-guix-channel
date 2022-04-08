@@ -2463,6 +2463,63 @@ possible through the LaTeX \\ref and \\pageref cross reference mechanism.
 
 Line numbering may be extended to footnote lines, using the fnlineno package.")
       (license license:lppl1.3a+))))
+(define-public texlive-latex-datetime2
+  (package
+    (name "texlive-latex-datetime2")
+    (version (string-append
+              (number->string %texlive-revision)
+             "-1"))
+    (source
+     (texlive-origin
+      name
+      (number->string %texlive-revision)
+      (list "doc/latex/datetime2/"
+            "source/latex/datetime2/")
+       (base32 "068l3zj9d5h6j078xsxqmzvfbj599xfcnkd7v4an31d1v21x2qc7")))
+    (build-system texlive-build-system)
+    (arguments
+     `(#:tex-directory "latex/datetime2"
+       #:build-targets '("datetime2.ins")
+       #:phases (modify-phases
+                 %standard-phases
+                 (add-after 'unpack
+                            'set-TEXINPUTS
+                            (lambda _
+                              (let ((cwd (getcwd)))
+                                (setenv "TEXINPUTS"
+                                        (string-append
+                                         cwd
+                                         "/source/latex/datetime2:")))))
+                 (add-after 'install 'install-more
+                            (lambda* (#:key outputs #:allow-other-keys)
+                              (let* ((out
+                                      (assoc-ref outputs "out"))
+                                     (dest-doc
+                                      (string-append out "/share/doc/" ,name ,version)))
+                                (install-file "doc/latex/datetime2/README" dest-doc)
+                                (install-file "doc/latex/datetime2/CHANGES" dest-doc)
+                                (mkdir-p (string-append dest-doc "/samples/"))
+                                (copy-recursively "doc/latex/datetime2/samples" (string-append dest-doc "/samples/"))
+                                (install-file "doc/latex/datetime2/datetime2.pdf" dest-doc)))))))
+    (home-page "https://ctan.org/pkg/datetime2")
+    (synopsis "Formats for dates, times and time zones")
+    (description
+     "This package provides commands for formatting dates, times and time zones
+and redefines \\today to use the same formatting style. In addition to \\today,
+you can also use \\DTMcurrenttime (current time) or \\DTMnow (current date and
+time). Dates and times can be saved for later use.
+
+The accompanying datetime2-calc package can be used to convert date-times to
+UTC+00:00.
+
+Language and regional support is provided by independently maintained and
+installed modules.
+
+The datetime2-calc package uses the pgfcalendar package (part of the PGF/TikZ
+bundle).
+
+This package replaces datetime.sty which is now obsolete. ")
+    (license license:lppl1.3)))
 
 texlive-latex-lwarp
 texlive-generic-ifptex
@@ -2476,6 +2533,7 @@ texlive-latex-endfloat
 texlive-latex-minted
 texlive-latex-fvextra
 texlive-latex-lineno
+texlive-latex-datetime2
 #+end_src
 
 #+RESULTS:
