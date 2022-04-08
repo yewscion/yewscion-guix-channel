@@ -597,6 +597,60 @@ which languages have been requested by the user.
 
 Generic TeX code is in tracklang.tex for non-LaTeX users.")
       (license license:lppl1.3))))
+(define-public texlive-latex-datetime2-english
+  (package
+    (name "texlive-latex-datetime2-english")
+    (version (string-append
+              (number->string %texlive-revision)
+             "-1"))
+    (source
+     (texlive-origin
+      name
+      (number->string %texlive-revision)
+      (list "doc/latex/datetime2-english/"
+            "source/latex/datetime2-english/")
+       (base32 "1nh1lmbgaf4axkvcqkf70gsyr51m3wpjmqc6gvsqv8i3461s0gik")))
+    (build-system texlive-build-system)
+    (arguments
+     `(#:tex-directory "latex/datetime2-english"
+       #:build-targets '("datetime2-english.ins")
+       #:phases (modify-phases
+                 %standard-phases
+                 (add-after 'unpack
+                            'set-TEXINPUTS
+                            (lambda _
+                              (let ((cwd (getcwd)))
+                                (setenv "TEXINPUTS"
+                                        (string-append
+                                         cwd
+                                         "/source/latex/datetime2-english:")))))
+                 (add-after 'install 'install-more
+                            (lambda* (#:key outputs #:allow-other-keys)
+                              (let* ((out
+                                      (assoc-ref outputs "out"))
+                                     (dest-doc
+                                      (string-append out "/share/doc/" ,name ,version)))
+                                (install-file "doc/latex/datetime2-english/README" dest-doc)
+                                (install-file "doc/latex/datetime2-english/CHANGES" dest-doc)
+                                (install-file "doc/latex/datetime2-english/datetime2-english-sample.pdf" (string-append dest-doc "/samples/"))
+                                (install-file "doc/latex/datetime2-english/datetime2-english-sample.tex" (string-append dest-doc "/samples/"))
+                                (install-file "doc/latex/datetime2-english/datetime2-english.pdf" dest-doc)))))))
+    (home-page "https://ctan.org/pkg/datetime2-english")
+    (synopsis "English language module for the datetime2 package")
+    (description
+     "This module provides the following styles that can be set using
+\\DTMsetstyle provided by datetime2.sty. The region not only determines the
+date/time format but also the time zone abbreviations if the zone mapping
+setting is on.
+
+- english (English – no region) 
+- en-GB (English – United Kingdom of Great Britain and Northern Ireland) 
+- en-US (English – United States of America)
+- en-CA (English – Canada) en-AU (English – Commonwealth of Australia)
+- en-NZ (English – New Zealand) en-GG (English – Bailiwick of Guernsey)
+- en-JE (English – Bailiwick of Jersey) en-IM (English – Isle of Man)
+- en-MT (English – Republic of Malta) en-IE (English – Republic of Ireland)")
+    (license license:lppl1.3)))
 
 texlive-latex-lwarp
 texlive-generic-ifptex
@@ -612,3 +666,4 @@ texlive-latex-fvextra
 texlive-latex-lineno
 texlive-latex-datetime2
 texlive-tracklang
+texlive-latex-datetime2-english
