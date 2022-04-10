@@ -571,7 +571,6 @@ time). Dates and times can be saved for later use.
 
 The accompanying datetime2-calc package can be used to convert date-times to
 UTC+00:00.
-
 Language and regional support is provided by independently maintained and
 installed modules.
 
@@ -710,6 +709,24 @@ markup terms and in terms of the collating order of the text being processed.")
 like interface. For backwards compatibility, each of the \\everyX token lists
 can be set without interfering with the hooks.")
       (license license:lppl1.3))))
+(define-public texlive-svn-prov
+  (let ((template (simple-texlive-package
+                   "texlive-svn-prov"
+                   (list "/tex/latex/svn-prov/"
+                         "/doc/latex/svn-prov/")
+                   (base32
+                    "19vgp4bzj3i33yw35a6sg4pkbsv0ynxpg65ffm69gd4kqhqm934v")
+                   #:trivial? #t)))
+    (package
+      (inherit template)
+     (home-page "https://ctan.org/pkg/svn-prov")
+     (description
+      "The package introduces Subversion variants of the standard LaTeX macros
+\\ProvidesPackage, \\ProvidesClass and \\ProvidesFile where the file name and date
+is extracted from Subversion Id keywords. The file name may also be given
+explicitly as an optional argument.")
+     (synopsis "Subversion variants of \\Provides... macros")
+     (license license:lppl))))
 
 texlive-latex-lwarp
 texlive-generic-ifptex
@@ -728,3 +745,4 @@ texlive-tracklang
 texlive-latex-datetime2-english
 xindy
 texlive-latex-everyhook
+texlive-svn-prov
