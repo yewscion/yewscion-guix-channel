@@ -786,6 +786,55 @@ standard foating environments figure and table.")
       "\\printlength{length} prints the value of a LaTeX length in the units specified by \\uselengthunit{unit} (‘unit’ may be any TeX length unit except for scaled point, viz., any of: pt, pc, in, mm, cm, bp, dd or cc). When the unit is pt, the printed length value will include any stretch or shrink; otherwise these are not printed. The ‘unit’ argument may also be PT, in which case length values will be printed in point units but without any stretch or shrink values.")
      (synopsis "Print lengths using specified units")
      (license license:lppl))))
+(define-public texlive-latex-cleveref
+  (package
+    (name "texlive-latex-cleveref")
+    (version (string-append
+              (number->string %texlive-revision)
+             "-1"))
+    (source
+     (texlive-origin
+      name
+      (number->string %texlive-revision)
+      (list "doc/latex/cleveref/"
+            "source/latex/cleveref/")
+       (base32 "1sycqkdvpv3aha6dh6syghh3lh3zzlld610r2ypd50dpdvj0vl7z")))
+    (build-system texlive-build-system)
+    (arguments
+     `(#:tex-directory "latex/cleveref"
+       #:build-targets '("cleveref.ins")
+       #:phases (modify-phases
+                 %standard-phases
+                 (add-after 'unpack
+                            'set-TEXINPUTS
+                            (lambda _
+                              (let ((cwd (getcwd)))
+                                (setenv "TEXINPUTS"
+                                        (string-append
+                                         cwd
+                                         "/source/latex/cleveref:")))))
+                 (add-after 'install 'install-more
+                            (lambda* (#:key outputs #:allow-other-keys)
+                              (let* ((out
+                                      (assoc-ref outputs "out"))
+                                     (dest-doc
+                                      (string-append out "/share/doc/" ,name ,version)))
+                                (install-file "doc/latex/cleveref/README" dest-doc)
+                                (install-file "doc/latex/cleveref/cleveref.pdf" dest-doc)))))))
+    (home-page "https://ctan.org/pkg/cleveref")
+    (synopsis "Intelligent cross-referencing")
+    (description
+     "The package enhances LaTeX’s cross-referencing features, allowing the
+format of references to be determined automatically according to the type of
+reference. The formats used may be customised in the preamble of a document;
+babel support is available (though the choice of languages remains limited:
+currently Danish, Dutch, English, French, German, Italian, Norwegian, Russian,
+Spanish and Ukranian).
+
+The package also offers a means of referencing a list of references, each
+formatted according to its type. In such lists, it can collapse sequences of
+numerically-consecutive labels to a reference range.")
+    (license license:lppl1.2)))
 
 texlive-latex-lwarp
 texlive-generic-ifptex
@@ -807,3 +856,4 @@ texlive-latex-everyhook
 texlive-svn-prov
 texlive-latex-newfloat
 texlive-latex-printlen
+texlive-latex-cleveref
