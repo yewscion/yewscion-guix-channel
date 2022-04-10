@@ -2672,6 +2672,50 @@ is extracted from Subversion Id keywords. The file name may also be given
 explicitly as an optional argument.")
      (synopsis "Subversion variants of \\Provides... macros")
      (license license:lppl))))
+(define-public texlive-latex-newfloat
+  (package
+    (name "texlive-latex-newfloat")
+    (version (string-append
+              (number->string %texlive-revision)
+             "-1"))
+    (source
+     (texlive-origin
+      name
+      (number->string %texlive-revision)
+      (list "doc/latex/newfloat/"
+            "source/latex/newfloat/")
+       (base32 "1j6h4q8lf6ksfdygm6d13j5zkmlq7f9xmly0vhyjmd3bsfqmidmi")))
+    (build-system texlive-build-system)
+    (arguments
+     `(#:tex-directory "latex/newfloat"
+       #:build-targets '("newfloat.ins")
+       #:phases (modify-phases
+                 %standard-phases
+                 (add-after 'unpack
+                            'set-TEXINPUTS
+                            (lambda _
+                              (let ((cwd (getcwd)))
+                                (setenv "TEXINPUTS"
+                                        (string-append
+                                         cwd
+                                         "/source/latex/newfloat:")))))
+                 (add-after 'install 'install-more
+                            (lambda* (#:key outputs #:allow-other-keys)
+                              (let* ((out
+                                      (assoc-ref outputs "out"))
+                                     (dest-doc
+                                      (string-append out "/share/doc/" ,name ,version)))
+                                (install-file "doc/latex/newfloat/README" dest-doc)
+                                (install-file "doc/latex/newfloat/CHANGELOG" dest-doc)
+                                (install-file "doc/latex/newfloat/SUMMARY" dest-doc)
+                                (install-file "doc/latex/newfloat/newfloat.pdf" dest-doc)))))))
+    (home-page "https://ctan.org/pkg/newfloat")
+    (synopsis "Define new floating environments")
+    (description
+     "The package offers the command \\DeclareFloatingEnvironment, which the
+user may use to define new floating environments which behave like the LaTeX
+standard foating environments figure and table.")
+    (license license:lppl1.3)))
 
 texlive-latex-lwarp
 texlive-generic-ifptex
@@ -2691,6 +2735,7 @@ texlive-latex-datetime2-english
 xindy
 texlive-latex-everyhook
 texlive-svn-prov
+texlive-latex-newfloat
 #+end_src
 
 #+RESULTS:
