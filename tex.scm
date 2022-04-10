@@ -771,6 +771,21 @@ explicitly as an optional argument.")
 user may use to define new floating environments which behave like the LaTeX
 standard foating environments figure and table.")
     (license license:lppl1.3)))
+(define-public texlive-latex-printlen
+  (let ((template (simple-texlive-package
+                   "texlive-latex-printlen"
+                   (list "/tex/latex/printlen/"
+                         "/doc/latex/printlen/")
+                   (base32
+                    "0pha10m0zgsp4zs100kjlf1zgdj2dsb1i1a6ng3wamhbq8l0508l")
+                   #:trivial? #t)))
+    (package
+      (inherit template)
+     (home-page "https://ctan.org/pkg/latex-printlen")
+     (description
+      "\\printlength{length} prints the value of a LaTeX length in the units specified by \\uselengthunit{unit} (‘unit’ may be any TeX length unit except for scaled point, viz., any of: pt, pc, in, mm, cm, bp, dd or cc). When the unit is pt, the printed length value will include any stretch or shrink; otherwise these are not printed. The ‘unit’ argument may also be PT, in which case length values will be printed in point units but without any stretch or shrink values.")
+     (synopsis "Print lengths using specified units")
+     (license license:lppl))))
 
 texlive-latex-lwarp
 texlive-generic-ifptex
@@ -791,3 +806,4 @@ xindy
 texlive-latex-everyhook
 texlive-svn-prov
 texlive-latex-newfloat
+texlive-latex-printlen
