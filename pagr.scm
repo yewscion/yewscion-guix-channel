@@ -11,7 +11,7 @@
   #:use-module (guix store)
   #:use-module (guix gexp))
 (define-public pagr
-  (let ((commit "1c445e5811ef134a51c3cfd6b28af17d68c07cef")
+  (let ((commit "2b90c2d27c5397555b04f30db31cb4b008636ecb")
         (revision "1"))
     (package
      (name "pagr")
@@ -25,7 +25,7 @@
        (file-name (git-file-name name version))
        (sha256
         (base32
-         "1bj67c0k8z85cga06118ksa5cpizq4y47l82i09kwrsjgn0fdhd9"))))
+         "1p4dsmwds2zf20fiar6bjwd8cw8mpzr9z584gas7xxm5f40wxz63"))))
      (build-system gnu-build-system)
 
      (arguments
@@ -41,3 +41,4 @@
       "remotes."))
     (home-page "https://git.sr.ht/~yewscion/pagr")
     (license agpl3))))
+pagr
