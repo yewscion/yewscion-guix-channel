@@ -440,7 +440,10 @@ spacings also available.")
                                "source/latex/endfloat/endfloat.drv")))
                  (add-after 'install 'install-more
                             (lambda* (#:key outputs #:allow-other-keys)
-                              (let* ((dest-doc
+                              (let* ((out (string-append
+                                           (assoc-ref outputs "out")
+                                           "/share/texmf-dist/tex/latex/"))
+                                     (dest-doc
                                       (string-append (assoc-ref outputs "doc")
                                                      "/share/doc/"
                                                      ,name "-"
@@ -461,11 +464,7 @@ spacings also available.")
                                                              dest-doc)
                                 (delete-file-recursively
                                  (string-append out
-                                                "/share/texmf-dist/"
-                                                "tex/"
-                                                "latex/"
-                                                "endfloat/"
-                                                "efxmpl.cfg"))))))))
+                                                "endfloat/efxmpl.cfg"))))))))
     (home-page "https://ctan.org/pkg/endfloat")
     (synopsis "Move floats to the end, leaving markers where they belong")
     (description
