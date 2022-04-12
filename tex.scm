@@ -113,7 +113,7 @@ copied to their outputs; otherwise the TEXLIVE-BUILD-SYSTEM is used."
     (name "texlive-latex-lwarp")
     (version (string-append
               (number->string %texlive-revision)
-             "-2"))
+             "-1"))
     (source
      (texlive-origin
       name
@@ -126,44 +126,64 @@ copied to their outputs; otherwise the TEXLIVE-BUILD-SYSTEM is used."
     (arguments
      `(#:tex-directory "latex/lwarp"
        #:build-targets '("lwarp.ins")
-       #:phases (modify-phases
-                 %standard-phases
-                 (add-after 'unpack
-                            'set-TEXINPUTS
-                            (lambda _
-                              (let ((cwd (getcwd)))
-                                (setenv "TEXINPUTS"
-                                        (string-append
-                                         cwd
-                                         "/source/latex/lwarp:")))))
-                 (add-before 'install 'bin-script
-                             (lambda* (#:key outputs #:allow-other-keys)
-                               (call-with-output-file "lwarpmk"
-                                 (lambda (port)
-                                   (let* ((out
-                                           (assoc-ref outputs "out")))
-                                     (display (string-append
-                                               "#!/bin/bash\n"
-                                               "exec -a \"$0\" \""
-                                               out
-                                               "/share/texmf-dist/scripts/lwarp/lwarpmk.lua\" \"$@\"")
+       #:phases
+       (modify-phases
+        %standard-phases
+        (add-after 'unpack
+                   'set-TEXINPUTS
+                   (lambda _
+                     (let ((cwd (getcwd)))
+                       (setenv "TEXINPUTS"
+                               (string-append
+                                cwd
+                                "/source/latex/lwarp:")))))
+        (add-before 'install
+                    'bin-script
+                    (lambda* (#:key outputs #:allow-other-keys)
+                      (call-with-output-file "lwarpmk"
+                        (lambda (port)
+                          (let* ((out
+                                  (string-append
+                                   (assoc-ref outputs "out")
+                                   "/share/texmf-dist/scripts")))
+                            (display
+                             (string-append
+                              "#!/bin/bash\n"
+                              "exec -a \"$0\" \""
+                              out
+                              "/lwarp/lwarpmk.lua\" \"$@\"")
                                               port))))
-                               (chmod "lwarpmk" #o755)))
-                 (add-after 'install 'install-more
-                            (lambda* (#:key outputs #:allow-other-keys)
-                              (let* ((out
-                                      (assoc-ref outputs "out"))
-                                     (dest-bin
-                                      (string-append out "/bin"))
-                                     (dest-doc
-                                      (string-append out "/share/doc/" ,name ,version))
-                                     (dest-script
-                                      (string-append out "/share/texmf-dist/scripts/lwarp/")))
-                                (install-file "lwarpmk" dest-bin)
-                                (install-file "scripts/lwarp/lwarpmk.lua" dest-script)
-                                (install-file "doc/latex/lwarp/lwarp.pdf" dest-doc)
-                                (install-file "doc/latex/lwarp/lwarp_tutorial.txt" dest-doc)
-                                (install-file "doc/latex/lwarp/README.txt" dest-doc)))))))
+                      (chmod "lwarpmk" #o755)))
+        (add-after 'install
+                   'install-more
+                   (lambda* (#:key outputs #:allow-other-keys)
+                     (let*
+                         ((out
+                           (assoc-ref outputs
+                                      "out"))
+                          (dest-bin
+                           (string-append out
+                                          "/bin"))
+                          (dest-doc
+                           (string-append out
+                                          "/share/doc/" ,name ,version))
+                          (dest-script
+                           (string-append out
+                                          "/share/texmf-dist/scripts/lwarp/"))
+                          (source-doc "doc/latex/lwarp/"))
+                       (install-file "lwarpmk"
+                                     dest-bin)
+                       (install-file "scripts/lwarp/lwarpmk.lua"
+                                     dest-script)
+                       (install-file (string-append source-doc
+                                                    "lwarp.pdf")
+                                                    dest-doc)
+                       (install-file (string-append source-doc
+                                                    "lwarp_tutorial.txt")
+                                                    dest-doc)
+                       (install-file (string-append source-doc
+                                                    "/README.txt")
+                                                    dest-doc)))))))
     (propagated-inputs (list lua
                              perl
                              poppler
@@ -199,15 +219,15 @@ operating systems and TeX distributions.  A quick-start tutorial is provided.")
       (home-page "https://ctan.org/pkg/ifptex")
       (synopsis "Check if the engine is pTeX or one of its derivatives")
       (description "The ifptex package is a counterpart of ifxetex, ifluatex,
-etc. for the ptex engine. The ifuptex package is an alias to ifptex provided for
-backward compatibility. ")
+etc. for the ptex engine.  The ifuptex package is an alias to ifptex provided for
+backward compatibility.")
       (license license:expat))))
 (define-public texlive-latex-xpatch
   (package
     (name "texlive-latex-xpatch")
     (version (string-append
               (number->string %texlive-revision)
-             "-2"))
+             "-1"))
     (source
      (texlive-origin
       name
@@ -229,18 +249,26 @@ backward compatibility. ")
                                         (string-append
                                          cwd
                                          "/source/latex/xpatch:")))))
-                 (add-after 'install 'install-more
+                 (add-after 'install
+                            'install-more
                             (lambda* (#:key outputs #:allow-other-keys)
                               (let* ((out
                                       (assoc-ref outputs "out"))
                                      (dest-doc
-                                      (string-append out "/share/doc/" ,name ,version)))
-                                (install-file "doc/latex/xpatch/xpatch.pdf" dest-doc)
-                                (install-file "doc/latex/xpatch/README" dest-doc)))))))
+                                      (string-append out "/share/doc/"
+                                                     ,name ,version))
+                                     (source-doc
+                                      "doc/latex/xpatch/"))
+                                (install-file (string-append source-doc
+                                                             "xpatch.pdf")
+                                                             dest-doc)
+                                (install-file (string-append source-doc
+                                                             "README")
+                                                             dest-doc)))))))
     (home-page "https://ctan.org/pkg/xpatch")
     (synopsis "Extending etoolbox patching commands")
     (description
-     "The package generalises the macro patching commands provided by 
+     "The package generalises the macro patching commands provided by
 Philipp Lehmann’s etoolbox.")
     (license license:lppl1.3)))
 (define-public texlive-latex-catchfile
@@ -275,14 +303,21 @@ Philipp Lehmann’s etoolbox.")
                               (let* ((out
                                       (assoc-ref outputs "out"))
                                      (dest-doc
-                                      (string-append out "/share/doc/" ,name ,version)))
-                                (install-file "doc/latex/catchfile/catchfile.pdf" dest-doc)
-                                (install-file "doc/latex/catchfile/README.md" dest-doc)))))))
+                                      (string-append out "/share/doc/"
+                                                     ,name ,version))
+                                     (source-doc
+                                      "doc/latex/catchfile/"))
+                                (install-file (string-append source-doc
+                                                             "catchfile.pdf")
+                                                             dest-doc)
+                                (install-file (string-append source-doc
+                                                             "README.md")
+                                                             dest-doc)))))))
     (home-page "https://ctan.org/pkg/catchfile")
     (synopsis "Catch an external file into a macro")
     (description
-     "This package catches the contents of a file and puts it in a macro. It
-requires e-TeX. Both LaTeX and plain TeX are supported.")
+     "This package catches the contents of a file and puts it in a macro.  It
+requires e-TeX.  Both LaTeX and plain TeX are supported.")
     (license license:lppl1.3)))
 (define-public texlive-latex-comment
   (let ((template (simple-texlive-package
@@ -297,16 +332,16 @@ requires e-TeX. Both LaTeX and plain TeX are supported.")
       (home-page "https://ctan.org/pkg/comment")
       (synopsis "Selectively include/exclude portions of text")
       (description "Selectively include/exclude pieces of text, allowing the
-user to define new, separately controlled, comment versions. All text between
-\\comment ... \\endcomment or \\begin{comment} ... \\end{comment} is discarded. The
-opening and closing commands should appear on a line of their own. No starting
-spaces, nothing after it. This environment should work with arbitrary amounts of
-comment, and the comment can be arbitrary text.
+user to define new, separately controlled, comment versions.  All text between
+\\comment ...  \\endcomment or \\begin{comment} ...  \\end{comment} is
+discarded.  The opening and closing commands should appear on a line of their
+own.  No starting spaces, nothing after it.  This environment should work with
+arbitrary amounts of comment, and the comment can be arbitrary text.
 
 Other ‘comment’ environments are defined and selected/deselected with
 \\includecomment{versiona} and \\excludecoment{versionb} These environments are
-used as \\versiona … \\endversiona or \\begin{versiona} … \\end{versiona} with the
-opening and closing commands again on a line of their own.")
+used as \\versiona … \\endversiona or \\begin{versiona} … \\end{versiona} with
+the opening and closing commands again on a line of their own.")
       (license license:gpl2))))
 (define-public texlive-generic-xstring
   (let ((template (simple-texlive-package
@@ -319,14 +354,14 @@ opening and closing commands again on a line of their own.")
     (package
       (inherit template)
       (home-page "https://ctan.org/pkg/xstring")
-      (synopsis "https://ctan.org/pkg/xstring")
+      (synopsis "String manipulation for (La)TeX.")
       (description "The package provides macros for manipulating strings —
 testing a string’s contents, extracting substrings, substitution of substrings
 and providing numbers such as string length, position of, or number of
 recurrences of, a substring.
 
 The package works equally in Plain TeX and LaTeX (though e-TeX is always
-required). The strings to be processed may contain (expandable) macros. ")
+required).  The strings to be processed may contain (expandable) macros.")
       (license license:lppl1.3c))))
 (define-public texlive-biblatex-apa
   (let ((template (simple-texlive-package
@@ -341,9 +376,9 @@ required). The strings to be processed may contain (expandable) macros. ")
       (home-page "https://ctan.org/pkg/biblatex-apa")
       (synopsis "BibLaTeX citation and reference style for APA")
       (description "This is a fairly complete BibLaTeX style (citations and
-references) for APA (American Psychological Association) publications. It
+references) for APA (American Psychological Association) publications.  It
 implements and automates most of the guidelines in the APA 7th edition style
-guide for citations and references. An example document is also given which
+guide for citations and references.  An example document is also given which
 typesets every citation and reference example in the APA 7th edition style
 guide.
 
@@ -363,9 +398,9 @@ the biber backend for BibLaTeX ≥2.5.")
       (home-page "https://ctan.org/pkg/setspace")
       (synopsis "Set space between lines")
       (description "Provides support for setting the spacing between lines in a
-document. Package options include singlespacing, onehalfspacing, and
-doublespacing. Alternatively the spacing can be changed as required with the
-\\singlespacing, \\onehalfspacing, and \\doublespacing commands. Other size
+document.  Package options include singlespacing, onehalfspacing, and
+doublespacing.  Alternatively the spacing can be changed as required with the
+\\singlespacing, \\onehalfspacing, and \\doublespacing commands.  Other size
 spacings also available.")
       (license license:lppl1.3c))))
 (define-public texlive-latex-endfloat
@@ -395,30 +430,44 @@ spacings also available.")
                                         (string-append
                                          cwd
                                          "/source/latex/endfloat:")))
-                              (delete-file-recursively "source/latex/endfloat/endfloat.drv")))
+                              (delete-file-recursively
+                               "source/latex/endfloat/endfloat.drv")))
                  (add-after 'install 'install-more
                             (lambda* (#:key outputs #:allow-other-keys)
                               (let* ((out
                                       (assoc-ref outputs "out"))
                                      (dest-doc
-                                      (string-append out "/share/doc/" ,name ,version)))
-                                (install-file "doc/latex/endfloat/README" dest-doc)
-                                (install-file "doc/latex/endfloat/COPYING" dest-doc)
-                                (install-file "doc/latex/endfloat/efxmpl.cfg" dest-doc)
-                                (install-file "doc/latex/endfloat/endfloat.pdf" dest-doc)
-                                (delete-file-recursively (string-append out "/share/texmf-dist/"
-                                                                        "tex/"
-                                                                        "latex/"
-                                                                        "endfloat/"
-                                                                        "efxmpl.cfg"))))))))
+                                      (string-append out "/share/doc/"
+                                                     ,name ,version))
+                                     (source-doc
+                                      "doc/latex/endfloat/"))
+                                (install-file (string-append source-doc
+                                                             "README")
+                                                             dest-doc)
+                                (install-file (string-append source-doc
+                                                             "COPYING")
+                                                             dest-doc)
+                                (install-file (string-append source-doc
+                                                             "efxmpl.cfg")
+                                                             dest-doc)
+                                (install-file (string-append source-doc
+                                                             "endfloat.pdf")
+                                                             dest-doc)
+                                (delete-file-recursively
+                                 (string-append out
+                                                "/share/texmf-dist/"
+                                                "tex/"
+                                                "latex/"
+                                                "endfloat/"
+                                                "efxmpl.cfg"))))))))
     (home-page "https://ctan.org/pkg/endfloat")
     (synopsis "Move floats to the end, leaving markers where they belong")
     (description
      "Place all floats on pages by themselves at the end of the document,
 optionally leaving markers like “[Figure 3 about here]” in the text near to
-where the figure (or table) would normally have occurred. Float types figure and
-table are recognised by the package, unmodified. Since several packages define
-other types of float, it is possible to register these float types with
+where the figure (or table) would normally have occurred.  Float types figure
+and table are recognised by the package, unmodified.  Since several packages
+define other types of float, it is possible to register these float types with
 endfloat.")
     (license license:gpl3)))
 (define-public texlive-latex-minted
@@ -453,15 +502,24 @@ endfloat.")
                               (let* ((out
                                       (assoc-ref outputs "out"))
                                      (dest-doc
-                                      (string-append out "/share/doc/" ,name ,version)))
-                                (install-file "doc/latex/minted/README" dest-doc)
-                                (install-file "doc/latex/minted/Makefile" dest-doc)
-                                (install-file "doc/latex/minted/minted.pdf" dest-doc)))))))
+                                      (string-append out "/share/doc/"
+                                                     ,name ,version))
+                                     (source-doc
+                                      "doc/latex/minted/"))
+                                (install-file (string-append source-doc
+                                                             "README")
+                                                             dest-doc)
+                                (install-file (string-append source-doc
+                                                             "Makefile")
+                                                             dest-doc)
+                                (install-file (string-append source-doc
+                                                             "minted.pdf")
+                                                             dest-doc)))))))
     (home-page "https://ctan.org/pkg/minted")
     (synopsis "Highlighted source code for LaTeX")
     (description
      "The package that facilitates expressive syntax highlighting in LaTeX using
-the powerful Pygments library. The package also provides options to customize
+the powerful Pygments library.  The package also provides options to customize
 the highlighted source code output using fancyvrb.")
     (license license:lppl1.3)))
 (define-public texlive-latex-fvextra
@@ -496,15 +554,22 @@ the highlighted source code output using fancyvrb.")
                               (let* ((out
                                       (assoc-ref outputs "out"))
                                      (dest-doc
-                                      (string-append out "/share/doc/" ,name ,version)))
-                                (install-file "doc/latex/fvextra/README" dest-doc)
-                                (install-file "doc/latex/fvextra/fvextra.pdf" dest-doc)))))))
+                                      (string-append out "/share/doc/"
+                                                     ,name ,version))
+                                     (source-doc
+                                      "doc/latex/fvextra/"))
+                                (install-file (string-append source-doc
+                                                             "README")
+                                                             dest-doc)
+                                (install-file (string-append source-doc
+                                                             "fvextra.pdf")
+                                                             dest-doc)))))))
     (home-page "https://ctan.org/pkg/fvextra")
     (synopsis "Extensions and patches for fancyvrb")
     (description
      "fvextra provides several extensions to fancyvrb, including automatic line
-breaking and improved math mode. It also patches some fancyvrb internals. Parts
-of fvextra were originally developed as part of pythontex and minted.")
+breaking and improved math mode.  It also patches some fancyvrb internals.
+Parts of fvextra were originally developed as part of pythontex and minted.")
     (license license:lppl1.3)))
 (define-public texlive-latex-lineno
   (let ((template (simple-texlive-package
@@ -555,29 +620,42 @@ Line numbering may be extended to footnote lines, using the fnlineno package.")
                               (let* ((out
                                       (assoc-ref outputs "out"))
                                      (dest-doc
-                                      (string-append out "/share/doc/" ,name ,version)))
-                                (install-file "doc/latex/datetime2/README" dest-doc)
-                                (install-file "doc/latex/datetime2/CHANGES" dest-doc)
+                                      (string-append out "/share/doc/"
+                                                     ,name ,version))
+                                     (source-doc
+                                      "doc/latex/datetime2/"))
+                                (install-file (string-append source-doc
+                                                             "README")
+                                                             dest-doc)
+                                (install-file (string-append source-doc
+                                                             "CHANGES")
+                                                             dest-doc)
                                 (mkdir-p (string-append dest-doc "/samples/"))
-                                (copy-recursively "doc/latex/datetime2/samples" (string-append dest-doc "/samples/"))
-                                (install-file "doc/latex/datetime2/datetime2.pdf" dest-doc)))))))
+                                (copy-recursively (string-append source-doc
+                                                                 "samples")
+                                                  (string-append dest-doc
+                                                                 "/samples/"))
+                                (install-file (string-append source-doc
+                                                             "datetime2.pdf")
+                                                             dest-doc)))))))
     (home-page "https://ctan.org/pkg/datetime2")
     (synopsis "Formats for dates, times and time zones")
     (description
      "This package provides commands for formatting dates, times and time zones
-and redefines \\today to use the same formatting style. In addition to \\today,
+and redefines \\today to use the same formatting style.  In addition to \\today,
 you can also use \\DTMcurrenttime (current time) or \\DTMnow (current date and
-time). Dates and times can be saved for later use.
+time).  Dates and times can be saved for later use.
 
 The accompanying datetime2-calc package can be used to convert date-times to
 UTC+00:00.
+
 Language and regional support is provided by independently maintained and
 installed modules.
 
 The datetime2-calc package uses the pgfcalendar package (part of the PGF/TikZ
 bundle).
 
-This package replaces datetime.sty which is now obsolete. ")
+This package replaces datetime.sty which is now obsolete.")
     (license license:lppl1.3)))
 (define-public texlive-tracklang
   (let ((template (simple-texlive-package
@@ -596,7 +674,7 @@ This package replaces datetime.sty which is now obsolete. ")
 want a simple interface to find out which languages the user has requested
 through packages such as babel or polyglossia.
 
-This package does not provide any translations! Its purpose is simply to track
+This package does not provide any translations!  Its purpose is simply to track
 which languages have been requested by the user.
 
 Generic TeX code is in tracklang.tex for non-LaTeX users.")
@@ -633,22 +711,42 @@ Generic TeX code is in tracklang.tex for non-LaTeX users.")
                               (let* ((out
                                       (assoc-ref outputs "out"))
                                      (dest-doc
-                                      (string-append out "/share/doc/" ,name ,version)))
-                                (install-file "doc/latex/datetime2-english/README" dest-doc)
-                                (install-file "doc/latex/datetime2-english/CHANGES" dest-doc)
-                                (install-file "doc/latex/datetime2-english/datetime2-english-sample.pdf" (string-append dest-doc "/samples/"))
-                                (install-file "doc/latex/datetime2-english/datetime2-english-sample.tex" (string-append dest-doc "/samples/"))
-                                (install-file "doc/latex/datetime2-english/datetime2-english.pdf" dest-doc)))))))
+                                      (string-append out "/share/doc/"
+                                                     ,name ,version))
+                                     (source-doc
+                                      "doc/latex/datetime2-english/"))
+                                (install-file (string-append source-doc
+                                                             "README")
+                                              dest-doc)
+                                (install-file (string-append source-doc
+                                                             "CHANGES")
+                                              dest-doc)
+                                (install-file (string-append
+                                               source-doc
+                                               "datetime2-english-sample.pdf")
+                                              (string-append
+                                               dest-doc
+                                               "/samples/"))
+                                (install-file (string-append
+                                               source-doc
+                                               "datetime2-english-sample.tex")
+                                              (string-append
+                                               dest-doc
+                                               "/samples/"))
+                                (install-file (string-append
+                                               source-doc
+                                               "datetime2-english.pdf")
+                                              dest-doc)))))))
     (home-page "https://ctan.org/pkg/datetime2-english")
     (synopsis "English language module for the datetime2 package")
     (description
      "This module provides the following styles that can be set using
-\\DTMsetstyle provided by datetime2.sty. The region not only determines the
+\\DTMsetstyle provided by datetime2.sty.  The region not only determines the
 date/time format but also the time zone abbreviations if the zone mapping
 setting is on.
 
-- english (English – no region) 
-- en-GB (English – United Kingdom of Great Britain and Northern Ireland) 
+- english (English – no region)
+- en-GB (English – United Kingdom of Great Britain and Northern Ireland)
 - en-US (English – United States of America)
 - en-CA (English – Canada) en-AU (English – Commonwealth of Australia)
 - en-NZ (English – New Zealand) en-GG (English – Bailiwick of Guernsey)
@@ -665,8 +763,9 @@ setting is on.
      (version  (string-append package-version "-" revision))
      (source (origin
               (method url-fetch)
-              (uri (string-append "http://mirrors.ctan.org/indexing/xindy/base/xindy-"
-                                  package-version ".tar.gz"))
+              (uri (string-append
+                    "http://mirrors.ctan.org/indexing/xindy/base/xindy-"
+                    package-version ".tar.gz"))
               (sha256
                (base32
                 "0hxsx4zw19kmixkmrln17sxgg1ln4pfp4lpfn5v5fyr1nwfyk3ic"))))
@@ -687,9 +786,9 @@ setting is on.
 to complete internationalisation of makeindex.
 
 Xindy can be used to process indexes for documents marked up using (La)TeX,
-Nroff family and SGML-based languages. Xindy is highly configurable, both in
+Nroff family and SGML-based languages.  Xindy is highly configurable, both in
 markup terms and in terms of the collating order of the text being processed.")
-     (synopsis "A general-purpose index processor")
+     (synopsis "General-purpose index processor.")
      (license license:gpl3))))
 (define-public texlive-latex-everyhook
   (let ((template (simple-texlive-package
@@ -705,8 +804,8 @@ markup terms and in terms of the collating order of the text being processed.")
       (synopsis "Hooks for standard TeX token lists")
       (description "The package takes control of the six TeX token registers
 \\everypar, \\everymath, \\everydisplay, \\everyhbox, \\everyvbox and
-\\everycr. Real hooks for each of the registers may be installed using a stack
-like interface. For backwards compatibility, each of the \\everyX token lists
+\\everycr.  Real hooks for each of the registers may be installed using a stack
+like interface.  For backwards compatibility, each of the \\everyX token lists
 can be set without interfering with the hooks.")
       (license license:lppl1.3))))
 (define-public texlive-svn-prov
@@ -722,10 +821,10 @@ can be set without interfering with the hooks.")
      (home-page "https://ctan.org/pkg/svn-prov")
      (description
       "The package introduces Subversion variants of the standard LaTeX macros
-\\ProvidesPackage, \\ProvidesClass and \\ProvidesFile where the file name and date
-is extracted from Subversion Id keywords. The file name may also be given
+\\ProvidesPackage, \\ProvidesClass, and \\ProvidesFile where the file name and
+date is extracted from Subversion Id keywords.  The file name may also be given
 explicitly as an optional argument.")
-     (synopsis "Subversion variants of \\Provides... macros")
+     (synopsis "Subversion variants of \\Provides… macros")
      (license license:lppl))))
 (define-public texlive-latex-newfloat
   (package
@@ -759,11 +858,22 @@ explicitly as an optional argument.")
                               (let* ((out
                                       (assoc-ref outputs "out"))
                                      (dest-doc
-                                      (string-append out "/share/doc/" ,name ,version)))
-                                (install-file "doc/latex/newfloat/README" dest-doc)
-                                (install-file "doc/latex/newfloat/CHANGELOG" dest-doc)
-                                (install-file "doc/latex/newfloat/SUMMARY" dest-doc)
-                                (install-file "doc/latex/newfloat/newfloat.pdf" dest-doc)))))))
+                                      (string-append out "/share/doc/"
+                                                     ,name ,version))
+                                     (source-doc
+                                      "doc/latex/newfloat/"))
+                                (install-file (string-append source-doc
+                                                             "README")
+                                                             dest-doc)
+                                (install-file (string-append source-doc
+                                                             "CHANGELOG")
+                                                             dest-doc)
+                                (install-file (string-append source-doc
+                                                             "SUMMARY")
+                                                             dest-doc)
+                                (install-file (string-append source-doc
+                                                             "newfloat.pdf")
+                                                             dest-doc)))))))
     (home-page "https://ctan.org/pkg/newfloat")
     (synopsis "Define new floating environments")
     (description
@@ -783,8 +893,14 @@ standard foating environments figure and table.")
       (inherit template)
      (home-page "https://ctan.org/pkg/latex-printlen")
      (description
-      "\\printlength{length} prints the value of a LaTeX length in the units specified by \\uselengthunit{unit} (‘unit’ may be any TeX length unit except for scaled point, viz., any of: pt, pc, in, mm, cm, bp, dd or cc). When the unit is pt, the printed length value will include any stretch or shrink; otherwise these are not printed. The ‘unit’ argument may also be PT, in which case length values will be printed in point units but without any stretch or shrink values.")
-     (synopsis "Print lengths using specified units")
+      "Macros to Print LaTeX values in standard units.  \\printlength{length}
+prints the value of a LaTeX length in the units specified by
+\\uselengthunit{unit} (‘unit’ may be any TeX length unit except for scaled
+point, viz., any of: pt, pc, in, mm, cm, bp, dd or cc).  When the unit is pt,
+the printed length value will include any stretch or shrink; otherwise these are
+not printed.  The ‘unit’ argument may also be PT, in which case length values
+will be printed in point units but without any stretch or shrink values.")
+     (synopsis "Print lengths using specified units.")
      (license license:lppl))))
 (define-public texlive-latex-cleveref
   (package
@@ -818,42 +934,49 @@ standard foating environments figure and table.")
                               (let* ((out
                                       (assoc-ref outputs "out"))
                                      (dest-doc
-                                      (string-append out "/share/doc/" ,name ,version)))
-                                (install-file "doc/latex/cleveref/README" dest-doc)
-                                (install-file "doc/latex/cleveref/cleveref.pdf" dest-doc)))))))
+                                      (string-append out "/share/doc/"
+                                                     ,name ,version))
+                                     (source-doc
+                                      "doc/latex/cleveref/"))
+                                (install-file (string-append source-doc
+                                                             "README")
+                                              dest-doc)
+                                (install-file (string-append source-doc
+                                                             "cleveref.pdf")
+                                              dest-doc)))))))
     (home-page "https://ctan.org/pkg/cleveref")
-    (synopsis "Intelligent cross-referencing")
+    (synopsis "intelligent cross-referencing")
     (description
-     "The package enhances LaTeX’s cross-referencing features, allowing the
+     "This package enhances LaTeX’s cross-referencing features, allowing the
 format of references to be determined automatically according to the type of
-reference. The formats used may be customised in the preamble of a document;
+reference.  The formats used may be customised in the preamble of a document;
 babel support is available (though the choice of languages remains limited:
 currently Danish, Dutch, English, French, German, Italian, Norwegian, Russian,
-Spanish and Ukranian).
+Spanish, and Ukranian).
 
-The package also offers a means of referencing a list of references, each
-formatted according to its type. In such lists, it can collapse sequences of
+This package also offers a means of referencing a list of references, each
+formatted according to its type.  In such lists, it can collapse sequences of
 numerically-consecutive labels to a reference range.")
     (license license:lppl1.2)))
 
 texlive-latex-lwarp
-texlive-generic-ifptex
-texlive-latex-xpatch
-texlive-latex-catchfile
-texlive-latex-comment
-texlive-generic-xstring
-texlive-biblatex-apa
-texlive-latex-setspace
-texlive-latex-endfloat
-texlive-latex-minted
-texlive-latex-fvextra
-texlive-latex-lineno
-texlive-latex-datetime2
-texlive-tracklang
-texlive-latex-datetime2-english
-xindy
-texlive-latex-everyhook
-texlive-svn-prov
-texlive-latex-newfloat
-texlive-latex-printlen
-texlive-latex-cleveref
+;; texlive-generic-ifptex
+;; texlive-latex-xpatch
+;; texlive-latex-catchfile
+;; texlive-latex-comment
+;; texlive-generic-xstring
+;; texlive-biblatex-apa
+;; texlive-latex-setspace
+;; texlive-latex-endfloat
+;; texlive-latex-minted
+;; texlive-latex-fvextra
+;; texlive-latex-lineno
+;; texlive-latex-datetime2
+;; texlive-tracklang
+;; texlive-latex-datetime2-english
+;; xindy
+;; texlive-latex-everyhook
+;; texlive-svn-prov
+;; texlive-latex-newfloat
+;; texlive-latex-printlen
+;; texlive-latex-cleveref
