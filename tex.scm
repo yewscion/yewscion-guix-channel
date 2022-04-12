@@ -107,13 +107,16 @@ copied to their outputs; otherwise the TEXLIVE-BUILD-SYSTEM is used."
     (synopsis #f)
     (description #f)
     (license #f)))
-
+;;; Start
+(use-modules (gnu packages lisp)
+             (gnu packages lisp-xyz))
 (define-public texlive-latex-lwarp
   (package
     (name "texlive-latex-lwarp")
     (version (string-append
               (number->string %texlive-revision)
              "-1"))
+    (outputs '("out" "doc"))
     (source
      (texlive-origin
       name
@@ -164,12 +167,12 @@ copied to their outputs; otherwise the TEXLIVE-BUILD-SYSTEM is used."
                           (dest-bin
                            (string-append out
                                           "/bin"))
-                          (dest-doc
-                           (string-append out
-                                          "/share/doc/" ,name ,version))
                           (dest-script
                            (string-append out
                                           "/share/texmf-dist/scripts/lwarp/"))
+                          (dest-doc
+                           (string-append (assoc-ref outputs "doc")
+                                          "/share/doc/" ,name "-" ,version))
                           (source-doc "doc/latex/lwarp/"))
                        (install-file "lwarpmk"
                                      dest-bin)
@@ -219,8 +222,8 @@ operating systems and TeX distributions.  A quick-start tutorial is provided.")
       (home-page "https://ctan.org/pkg/ifptex")
       (synopsis "Check if the engine is pTeX or one of its derivatives")
       (description "The ifptex package is a counterpart of ifxetex, ifluatex,
-etc. for the ptex engine.  The ifuptex package is an alias to ifptex provided for
-backward compatibility.")
+etc. for the ptex engine.  The ifuptex package is an alias to ifptex provided
+for backward compatibility.")
       (license license:expat))))
 (define-public texlive-latex-xpatch
   (package
@@ -228,6 +231,7 @@ backward compatibility.")
     (version (string-append
               (number->string %texlive-revision)
              "-1"))
+    (outputs '("out" "doc"))
     (source
      (texlive-origin
       name
@@ -252,11 +256,11 @@ backward compatibility.")
                  (add-after 'install
                             'install-more
                             (lambda* (#:key outputs #:allow-other-keys)
-                              (let* ((out
-                                      (assoc-ref outputs "out"))
-                                     (dest-doc
-                                      (string-append out "/share/doc/"
-                                                     ,name ,version))
+                              (let* ((dest-doc
+                                      (string-append (assoc-ref outputs "doc")
+                                                     "/share/doc/"
+                                                     ,name "-"
+                                                     ,version))
                                      (source-doc
                                       "doc/latex/xpatch/"))
                                 (install-file (string-append source-doc
@@ -277,6 +281,7 @@ Philipp Lehmann’s etoolbox.")
     (version (string-append
               (number->string %texlive-revision)
              "-1"))
+    (outputs '("out" "doc"))
     (source
      (texlive-origin
       name
@@ -300,11 +305,11 @@ Philipp Lehmann’s etoolbox.")
                                          "/source/latex/catchfile:")))))
                  (add-after 'install 'install-more
                             (lambda* (#:key outputs #:allow-other-keys)
-                              (let* ((out
-                                      (assoc-ref outputs "out"))
-                                     (dest-doc
-                                      (string-append out "/share/doc/"
-                                                     ,name ,version))
+                              (let* ((dest-doc
+                                      (string-append (assoc-ref outputs "doc")
+                                                     "/share/doc/"
+                                                     ,name "-"
+                                                     ,version))
                                      (source-doc
                                       "doc/latex/catchfile/"))
                                 (install-file (string-append source-doc
@@ -409,6 +414,7 @@ spacings also available.")
     (version (string-append
               (number->string %texlive-revision)
              "-1"))
+    (outputs '("out" "doc"))
     (source
      (texlive-origin
       name
@@ -434,11 +440,11 @@ spacings also available.")
                                "source/latex/endfloat/endfloat.drv")))
                  (add-after 'install 'install-more
                             (lambda* (#:key outputs #:allow-other-keys)
-                              (let* ((out
-                                      (assoc-ref outputs "out"))
-                                     (dest-doc
-                                      (string-append out "/share/doc/"
-                                                     ,name ,version))
+                              (let* ((dest-doc
+                                      (string-append (assoc-ref outputs "doc")
+                                                     "/share/doc/"
+                                                     ,name "-"
+                                                     ,version))
                                      (source-doc
                                       "doc/latex/endfloat/"))
                                 (install-file (string-append source-doc
@@ -476,6 +482,7 @@ endfloat.")
     (version (string-append
               (number->string %texlive-revision)
              "-1"))
+    (outputs '("out" "doc"))
     (source
      (texlive-origin
       name
@@ -499,11 +506,11 @@ endfloat.")
                                          "/source/latex/minted:")))))
                  (add-after 'install 'install-more
                             (lambda* (#:key outputs #:allow-other-keys)
-                              (let* ((out
-                                      (assoc-ref outputs "out"))
-                                     (dest-doc
-                                      (string-append out "/share/doc/"
-                                                     ,name ,version))
+                              (let* ( (dest-doc
+                                      (string-append (assoc-ref outputs "doc")
+                                                     "/share/doc/"
+                                                     ,name "-"
+                                                     ,version))
                                      (source-doc
                                       "doc/latex/minted/"))
                                 (install-file (string-append source-doc
@@ -528,6 +535,7 @@ the highlighted source code output using fancyvrb.")
     (version (string-append
               (number->string %texlive-revision)
              "-1"))
+    (outputs '("out" "doc"))
     (source
      (texlive-origin
       name
@@ -551,11 +559,11 @@ the highlighted source code output using fancyvrb.")
                                          "/source/latex/fvextra:")))))
                  (add-after 'install 'install-more
                             (lambda* (#:key outputs #:allow-other-keys)
-                              (let* ((out
-                                      (assoc-ref outputs "out"))
-                                     (dest-doc
-                                      (string-append out "/share/doc/"
-                                                     ,name ,version))
+                              (let* ((dest-doc
+                                      (string-append (assoc-ref outputs "doc")
+                                                     "/share/doc/"
+                                                     ,name "-"
+                                                     ,version))
                                      (source-doc
                                       "doc/latex/fvextra/"))
                                 (install-file (string-append source-doc
@@ -594,6 +602,7 @@ Line numbering may be extended to footnote lines, using the fnlineno package.")
     (version (string-append
               (number->string %texlive-revision)
              "-1"))
+    (outputs '("out" "doc"))
     (source
      (texlive-origin
       name
@@ -617,11 +626,11 @@ Line numbering may be extended to footnote lines, using the fnlineno package.")
                                          "/source/latex/datetime2:")))))
                  (add-after 'install 'install-more
                             (lambda* (#:key outputs #:allow-other-keys)
-                              (let* ((out
-                                      (assoc-ref outputs "out"))
-                                     (dest-doc
-                                      (string-append out "/share/doc/"
-                                                     ,name ,version))
+                              (let* ((dest-doc
+                                      (string-append (assoc-ref outputs "doc")
+                                                     "/share/doc/"
+                                                     ,name "-"
+                                                     ,version))
                                      (source-doc
                                       "doc/latex/datetime2/"))
                                 (install-file (string-append source-doc
@@ -685,6 +694,7 @@ Generic TeX code is in tracklang.tex for non-LaTeX users.")
     (version (string-append
               (number->string %texlive-revision)
              "-1"))
+    (outputs '("out" "doc"))
     (source
      (texlive-origin
       name
@@ -708,11 +718,11 @@ Generic TeX code is in tracklang.tex for non-LaTeX users.")
                                          "/source/latex/datetime2-english:")))))
                  (add-after 'install 'install-more
                             (lambda* (#:key outputs #:allow-other-keys)
-                              (let* ((out
-                                      (assoc-ref outputs "out"))
-                                     (dest-doc
-                                      (string-append out "/share/doc/"
-                                                     ,name ,version))
+                              (let* ((dest-doc
+                                      (string-append (assoc-ref outputs "doc")
+                                                     "/share/doc/"
+                                                     ,name "-"
+                                                     ,version))
                                      (source-doc
                                       "doc/latex/datetime2-english/"))
                                 (install-file (string-append source-doc
@@ -753,8 +763,6 @@ setting is on.
 - en-JE (English – Bailiwick of Jersey) en-IM (English – Isle of Man)
 - en-MT (English – Republic of Malta) en-IE (English – Republic of Ireland)")
     (license license:lppl1.3)))
-(use-modules (gnu packages lisp)
-             (gnu packages lisp-xyz))
 (define-public xindy
   (let ((revision "1")
         (package-version "2.5.1"))
@@ -832,6 +840,7 @@ explicitly as an optional argument.")
     (version (string-append
               (number->string %texlive-revision)
              "-1"))
+    (outputs '("out" "doc"))
     (source
      (texlive-origin
       name
@@ -855,11 +864,11 @@ explicitly as an optional argument.")
                                          "/source/latex/newfloat:")))))
                  (add-after 'install 'install-more
                             (lambda* (#:key outputs #:allow-other-keys)
-                              (let* ((out
-                                      (assoc-ref outputs "out"))
-                                     (dest-doc
-                                      (string-append out "/share/doc/"
-                                                     ,name ,version))
+                              (let* ((dest-doc
+                                      (string-append (assoc-ref outputs "doc")
+                                                     "/share/doc/"
+                                                     ,name "-"
+                                                     ,version))
                                      (source-doc
                                       "doc/latex/newfloat/"))
                                 (install-file (string-append source-doc
@@ -908,6 +917,7 @@ will be printed in point units but without any stretch or shrink values.")
     (version (string-append
               (number->string %texlive-revision)
              "-1"))
+    (outputs '("out" "doc"))
     (source
      (texlive-origin
       name
@@ -931,11 +941,11 @@ will be printed in point units but without any stretch or shrink values.")
                                          "/source/latex/cleveref:")))))
                  (add-after 'install 'install-more
                             (lambda* (#:key outputs #:allow-other-keys)
-                              (let* ((out
-                                      (assoc-ref outputs "out"))
-                                     (dest-doc
-                                      (string-append out "/share/doc/"
-                                                     ,name ,version))
+                              (let* ((dest-doc
+                                      (string-append (assoc-ref outputs "doc")
+                                                     "/share/doc/"
+                                                     ,name "-"
+                                                     ,version))
                                      (source-doc
                                       "doc/latex/cleveref/"))
                                 (install-file (string-append source-doc
@@ -960,23 +970,23 @@ numerically-consecutive labels to a reference range.")
     (license license:lppl1.2)))
 
 texlive-latex-lwarp
-;; texlive-generic-ifptex
-;; texlive-latex-xpatch
-;; texlive-latex-catchfile
-;; texlive-latex-comment
-;; texlive-generic-xstring
-;; texlive-biblatex-apa
-;; texlive-latex-setspace
-;; texlive-latex-endfloat
-;; texlive-latex-minted
-;; texlive-latex-fvextra
-;; texlive-latex-lineno
-;; texlive-latex-datetime2
-;; texlive-tracklang
-;; texlive-latex-datetime2-english
-;; xindy
-;; texlive-latex-everyhook
-;; texlive-svn-prov
-;; texlive-latex-newfloat
-;; texlive-latex-printlen
-;; texlive-latex-cleveref
+texlive-generic-ifptex
+texlive-latex-xpatch
+texlive-latex-catchfile
+texlive-latex-comment
+texlive-generic-xstring
+texlive-biblatex-apa
+texlive-latex-setspace
+texlive-latex-endfloat
+texlive-latex-minted
+texlive-latex-fvextra
+texlive-latex-lineno
+texlive-latex-datetime2
+texlive-tracklang
+texlive-latex-datetime2-english
+xindy
+texlive-latex-everyhook
+texlive-svn-prov
+texlive-latex-newfloat
+texlive-latex-printlen
+texlive-latex-cleveref
