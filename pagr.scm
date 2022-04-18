@@ -11,7 +11,7 @@
   #:use-module (guix store)
   #:use-module (guix gexp))
 (define-public pagr
-  (let ((commit "2b90c2d27c5397555b04f30db31cb4b008636ecb")
+  (let ((commit "d4ba4d67562d16777986e3c7dd6ee044dfa8a070")
         (revision "1"))
     (package
      (name "pagr")
