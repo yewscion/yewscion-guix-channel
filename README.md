@@ -8,7 +8,7 @@ To use this Channel, follow the [documentation][b] for adding a new channel. Add
 the following to `~/.config/guix/channels.scm`.
 
 ```scheme
-;; Add yewscion's variant packages to those Guix provides.
+;;; Add yewscion's variant packages to those Guix provides.
 (cons* (channel
    (name 'yewscion)
    (url "https://git.sr.ht/~yewscion/yewscion-guix-channel")
