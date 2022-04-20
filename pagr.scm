@@ -11,7 +11,7 @@
   #:use-module (guix store)
   #:use-module (guix gexp))
 (define-public pagr
-  (let ((commit "8f204fc3c0107abbd6e92133104b7dfa331f3832")
+  (let ((commit "920945e18202937af0e265c43c1b28cc6b3a75c0")
         (revision "1"))
     (package
      (name "pagr")
@@ -25,15 +25,16 @@
        (file-name (git-file-name name version))
        (sha256
         (base32
-         "187iiwg3dns8yhlx59l49nq1jswjgs4knlflrs0bc5gmvry9n6zc"))))
+         "0iicnfiqx62d3rp2zh3xf6xv19awlccx0zzc31in8jx85a68lhmp"))))
      (build-system gnu-build-system)
 
      (arguments
       `(#:tests? #f))
-     (native-inputs `(("pkg-config" ,pkg-config)
-                      ("guile" ,guile-3.0)
-                      ("autoconf" ,autoconf)
-                      ("automake" ,automake)))
+     (native-inputs (list pkg-config
+                          guile-3.0
+                          guile-git
+                          autoconf
+                          automake))
     (synopsis "Push all git repos")
     (description
      (string-append
