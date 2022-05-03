@@ -2811,6 +2811,20 @@ This package also offers a means of referencing a list of references, each
 formatted according to its type.  In such lists, it can collapse sequences of
 numerically-consecutive labels to a reference range.")
     (license license:lppl1.2)))
+(define-public texlive-latex-readablecv
+  (let ((template (simple-texlive-package
+                   "texlive-latex-readablecv"
+                   (list "/tex/latex/readablecv/"
+                         "/doc/latex/readablecv/")
+                   (base32
+                    "12gjcwmli04pj2cgsj2g0xw2m0vczqs7kq9zirqakbkk7nb7w4g2")
+                   #:trivial? #t)))
+    (package
+      (inherit template)
+      (home-page "https://ctan.org/pkg/readablecv")
+      (synopsis "A highly readable and good looking CV and letter class")
+      (description "This class provides an extremely attractive and highly readable CV structure for LaTeX.")
+      (license license:lppl1.3))))
 
 texlive-latex-lwarp
 texlive-generic-ifptex
@@ -2833,6 +2847,7 @@ texlive-svn-prov
 texlive-latex-newfloat
 texlive-latex-printlen
 texlive-latex-cleveref
+texlive-latex-readablecv
 #+end_src
 
 #+RESULTS:
