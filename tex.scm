@@ -1041,6 +1041,54 @@ memoir class, should also use the memhfixc package (part of this bundle). Note,
 however, that any current version of hyperref actually loads the package
 automatically if it detects that it is running under memoir. ")
     (license license:lppl1.3)))
+(define-public texlive-latex-lipsum
+  (package
+    (name "texlive-latex-lipsum")
+    (version (string-append
+              (number->string %texlive-revision)
+             "-1"))
+    (outputs '("out" "doc"))
+    (source
+     (texlive-origin
+      name
+      (number->string %texlive-revision)
+      (list "doc/latex/lipsum/"
+            "source/latex/lipsum/")
+       (base32 "0qlfvx5684dbcwbsmhk487ppryj7fkr8w2zhqllmhrzhqsqq43w5")))
+    (build-system texlive-build-system)
+    (arguments
+     `(#:tex-directory "latex/lipsum"
+       #:build-targets '("lipsum.ins")
+       #:phases (modify-phases
+                 %standard-phases
+                 (add-after 'unpack
+                            'set-TEXINPUTS
+                            (lambda _
+                              (let ((cwd (getcwd)))
+                                (setenv "TEXINPUTS"
+                                        (string-append
+                                         cwd
+                                         "/source/latex/lipsum:")))))
+                 (add-after 'install 'install-more
+                            (lambda* (#:key outputs #:allow-other-keys)
+                              (let* ((dest-doc
+                                      (string-append (assoc-ref outputs "doc")
+                                                     "/share/doc/"
+                                                     ,name "-"
+                                                     ,version))
+                                     (source-doc
+                                      "doc/latex/lipsum/"))
+                                (install-file (string-append source-doc
+                                                             "README.txt")
+                                              dest-doc)
+                                (install-file (string-append source-doc
+                                                             "lipsum.pdf")
+                                              dest-doc)))))))
+    (home-page "https://ctan.org/pkg/lipsum")
+    (synopsis "Easy access to the Lorem Ipsum and other dummy texts")
+    (description
+     "This package gives you easy access to 150 paragraphs of the Lorem Ipsum dummy text provided by https://lipsum.com, plus a growing list of other dummy texts in different languages.")
+    (license license:lppl1.3)))
 
 texlive-latex-lwarp
 texlive-generic-ifptex
@@ -1064,3 +1112,4 @@ texlive-latex-newfloat
 texlive-latex-printlen
 texlive-latex-cleveref
 texlive-latex-readablecv
+texlive-latex-lipsum
