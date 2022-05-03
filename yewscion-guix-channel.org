@@ -2820,11 +2820,71 @@ numerically-consecutive labels to a reference range.")
                     "12gjcwmli04pj2cgsj2g0xw2m0vczqs7kq9zirqakbkk7nb7w4g2")
                    #:trivial? #t)))
     (package
-      (inherit template)
-      (home-page "https://ctan.org/pkg/readablecv")
-      (synopsis "A highly readable and good looking CV and letter class")
-      (description "This class provides an extremely attractive and highly readable CV structure for LaTeX.")
-      (license license:lppl1.3))))
+     (inherit template)
+     (propagated-inputs 'texlive-latex-memoir)
+     (home-page "https://ctan.org/pkg/readablecv")
+     (synopsis "A highly readable and good looking CV and letter class")
+     (description "This class provides an extremely attractive and highly readable CV structure for LaTeX.")
+     (license license:lppl1.3))))
+(define-public texlive-latex-memoir
+  (package
+    (name "texlive-latex-memoir")
+    (version (string-append
+              (number->string %texlive-revision)
+             "-1"))
+    (outputs '("out" "doc"))
+    (source
+     (texlive-origin
+      name
+      (number->string %texlive-revision)
+      (list "doc/latex/memoir/"
+            "source/latex/memoir/")
+       (base32 "0k95814kvyirlpgy63c3n1pv1b8zsp4fr0568fcaa002cryfgnar")))
+    (build-system texlive-build-system)
+    (arguments
+     `(#:tex-directory "latex/memoir"
+       #:build-targets '("memoir.ins" "mempatch.ins")
+       #:phases (modify-phases
+                 %standard-phases
+                 (add-after 'unpack
+                            'set-TEXINPUTS
+                            (lambda _
+                              (let ((cwd (getcwd)))
+                                (setenv "TEXINPUTS"
+                                        (string-append
+                                         cwd
+                                         "/source/latex/memoir:")))))
+                 (add-after 'install 'install-more
+                            (lambda* (#:key outputs #:allow-other-keys)
+                              (let* ((dest-doc
+                                      (string-append (assoc-ref outputs "doc")
+                                                     "/share/doc/"
+                                                     ,name "-"
+                                                     ,version))
+                                     (source-doc
+                                      "doc/latex/memoir/"))
+                                (install-file (string-append source-doc
+                                                             "README")
+                                              dest-doc)
+                                (install-file (string-append source-doc
+                                                             "setpage-example.pdf")
+                                              dest-doc)))))))
+    (home-page "https://ctan.org/pkg/memoir")
+    (synopsis "Typeset fiction, non-fiction and mathematical books")
+    (description
+     "The memoir class is for typesetting poetry, fiction, non-fiction, and mathematical works.
+
+Permissible document ‘base’ font sizes range from 9 to 60pt. There is a range of
+page-styles and well over a dozen chapter-styles to choose from, as well as
+methods for specifying your own layouts and designs. The class also provides the
+functionality of over thirty of the more popular packages, thus simplifying
+document sources.
+
+Users who wish to use the hyperref package, in a document written with the
+memoir class, should also use the memhfixc package (part of this bundle). Note,
+however, that any current version of hyperref actually loads the package
+automatically if it detects that it is running under memoir. ")
+    (license license:lppl1.3)))
 
 texlive-latex-lwarp
 texlive-generic-ifptex
@@ -2848,6 +2908,7 @@ texlive-latex-newfloat
 texlive-latex-printlen
 texlive-latex-cleveref
 texlive-latex-readablecv
+texlive-latex-memoir
 #+end_src
 
 #+RESULTS:
