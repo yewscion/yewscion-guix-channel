@@ -977,7 +977,7 @@ numerically-consecutive labels to a reference range.")
                    #:trivial? #t)))
     (package
      (inherit template)
-     (propagated-inputs 'texlive-latex-memoir)
+     (propagated-inputs (list texlive-latex-memoir))
      (home-page "https://ctan.org/pkg/readablecv")
      (synopsis "A highly readable and good looking CV and letter class")
      (description "This class provides an extremely attractive and highly readable CV structure for LaTeX.")
@@ -1064,4 +1064,3 @@ texlive-latex-newfloat
 texlive-latex-printlen
 texlive-latex-cleveref
 texlive-latex-readablecv
-texlive-latex-memoir
