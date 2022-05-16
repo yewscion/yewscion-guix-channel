@@ -1,4 +1,4 @@
-(define-module (leiningen)
+(define-module (clojure)
   #:use-module (guix packages)
   #:use-module (guix download)
   #:use-module (guix build-system gnu)
