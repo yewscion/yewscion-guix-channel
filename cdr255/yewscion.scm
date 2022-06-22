@@ -272,7 +272,7 @@
   (description "A Lexer for Pygments, following what could be considered a standard pseudocode.")
   (license license:agpl3))))
 (define-public codechallenge-solutions
-  (let ((commit "907994d899966f848ccd0e639e13b88e91d03d78")
+  (let ((commit "5b0f6af9240d93006e12660c45c95e0d310a6c2f")
         (revision "1"))
     (package
      (name "codechallenge-solutions")
@@ -285,7 +285,7 @@
               (file-name (git-file-name name version))
               (sha256
                (base32
-                "03pv5rj6fskdpwpkhvd2vzinygz6kd6yj33xb1ymnlcr452iwhbv"))))
+                "0kgrvsmbda0c8pza0jqkm5s9zv7jmw64zq3hds03z9vi4qzrn5h0"))))
      (build-system gnu-build-system)
      (arguments
       `(#:tests? #f))
