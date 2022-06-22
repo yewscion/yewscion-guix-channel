@@ -1,4 +1,4 @@
-(define-module (tex)
+(define-module (cdr255 tex)
   #:use-module ((guix licenses) #:prefix license:)
   #:use-module (guix gexp)
   #:use-module (guix packages)
@@ -1089,27 +1089,3 @@ automatically if it detects that it is running under memoir. ")
     (description
      "This package gives you easy access to 150 paragraphs of the Lorem Ipsum dummy text provided by https://lipsum.com, plus a growing list of other dummy texts in different languages.")
     (license license:lppl1.3)))
-
-texlive-latex-lwarp
-texlive-generic-ifptex
-texlive-latex-xpatch
-texlive-latex-catchfile
-texlive-latex-comment
-texlive-generic-xstring
-texlive-biblatex-apa
-texlive-latex-setspace
-texlive-latex-endfloat
-texlive-latex-minted
-texlive-latex-fvextra
-texlive-latex-lineno
-texlive-latex-datetime2
-texlive-tracklang
-texlive-latex-datetime2-english
-xindy
-texlive-latex-everyhook
-texlive-svn-prov
-texlive-latex-newfloat
-texlive-latex-printlen
-texlive-latex-cleveref
-texlive-latex-readablecv
-texlive-latex-lipsum

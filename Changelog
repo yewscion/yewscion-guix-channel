@@ -1,0 +1,81 @@
+# Changelog
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic
+Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+## [1.0.0]
+### Added
+    - Basic Literate Programming File & Repo.
+    - Hitlist of Software I'd Like to Package (.hitlist).
+    - `keyring` branch.
+    - Guix Authorizations for both rodnchr and yewscion GPG Keys.
+    - Standard Project Files.
+    - Packages:
+        - `adlmidi`
+        - `newlisp`
+        - `owl-lisp`
+        - `gnu-apl` (alternative to upstream, due to slow bugfixes)
+        - `carp`
+        - `ghc-open-browser`
+        - `sbcl-stumpwm-battery-portable`
+        - `orca-music`
+        - `uxn`
+        - `texlive-latex-lwarp`
+        - `texlive-generic-ifptex`
+        - `texlive-latex-xpatch`
+        - `texlive-latex-catchfile`
+        - `texlive-latex-comment`
+        - `texlive-generic-xstring`
+        - `texlive-biblatex-apa`
+        - `texlive-latex-setspace`
+        - `texlive-latex-endfloat`
+        - `texlive-latex-minted`
+        - `texlive-latex-fvextra`
+        - `texlive-latex-lineno`
+        - `texlive-latex-datetime2`
+        - `texlive-tracklang`
+        - `texlive-latex-datetime2-english`
+        - `xindy`
+        - `texlive-latex-everyhook`
+        - `texlive-svn-prov`
+        - `texlive-latex-newfloat`
+        - `texlive-latex-printlen`
+        - `texlive-latex-cleveref`
+        - `texlive-latex-readablecv`
+        - `texlive-latex-memoir`
+        - `texlive-latex-lipsum`
+        - `genpro`
+        - `pagr`
+        - `guile-cdr255`
+        - `yewscion-scripts`
+        - `python-pygments-lexer-pseudocode-std`
+    - Work In Progress Packages (Not ready, not public):
+        - `leiningen` (due to upstream choices, compiling from source is very difficult).
+    - Problem Packages (removal ASAP):
+        - `leiningen-ng` (nonguix version due to difficulties packaging leiningen).
+        - `leiningen-jar` (nonguix version due to difficulties packaging leiningen).
+### Changed
+    - README.md now includes introduction information.
+    - Repo now under AGPL-3.0 instead of LGPL-3.0.
+    - Guix Authorizations (Added Above) now in LP File.
+    - Refactored all scattered modules into 4 topical ones under `cdr255/`.
+### Removed
+    - LP file, since it was unnecessary.
+    - Hitlist of software, as it was unneeded.
+    - Packages:
+        - `hledger-ui` (I didn't use it, and it was slowing me down due to
+          haskell).
+        - `ghc-vty` (only needed for `hledger-ui`).
+        - `ghc-brick` (only needed for `hledger-ui`).
+
+[1.0.0]: https://git.sr.ht/~yewscion/yewscion-guix-channel/refs/1.0.0
+[Unreleased]: https://git.sr.ht/~yewscion/yewscion-guix-channel/log
+
+<!-- Local Variables: -->
+<!-- mode: markdown -->
+<!-- coding: utf-8-unix -->
+<!-- End: -->

@@ -1,0 +1,66 @@
+#+TITLE: Yewscion Channel NEWS – history of user-visible changes
+#+STARTUP: content
+* Changes in 1.0.0
+** New Packages
+    - Normal Packages:
+        - =adlmidi=
+        - =newlisp=
+        - =owl-lisp=
+        - =gnu-apl= (alternative to upstream, due to slow bugfixes)
+        - =carp=
+        - =ghc-open-browser=
+        - =sbcl-stumpwm-battery-portable=
+        - =orca-music=
+        - =uxn=
+        - =texlive-latex-lwarp=
+        - =texlive-generic-ifptex=
+        - =texlive-latex-xpatch=
+        - =texlive-latex-catchfile=
+        - =texlive-latex-comment=
+        - =texlive-generic-xstring=
+        - =texlive-biblatex-apa=
+        - =texlive-latex-setspace=
+        - =texlive-latex-endfloat=
+        - =texlive-latex-minted=
+        - =texlive-latex-fvextra=
+        - =texlive-latex-lineno=
+        - =texlive-latex-datetime2=
+        - =texlive-tracklang=
+        - =texlive-latex-datetime2-english=
+        - =xindy=
+        - =texlive-latex-everyhook=
+        - =texlive-svn-prov=
+        - =texlive-latex-newfloat=
+        - =texlive-latex-printlen=
+        - =texlive-latex-cleveref=
+        - =texlive-latex-readablecv=
+        - =texlive-latex-memoir=
+        - =texlive-latex-lipsum=
+        - =genpro=
+        - =pagr=
+        - =guile-cdr255=
+        - =yewscion-scripts=
+        - =python-pygments-lexer-pseudocode-std=
+    - Work In Progress Packages (Not ready, not public):
+        - =leiningen= (due to upstream choices, compiling from source is very difficult).
+    - Problem Packages (removal ASAP):
+        - =leiningen-ng= (nonguix version due to difficulties packaging leiningen).
+        - =leiningen-jar= (nonguix version due to difficulties packaging leiningen).
+
+
+* Postamble
+Copyright © (2022) Christopher Rodriguez <yewscion@gmail.com>
+
+  Copying and distribution of this file, with or without modification,
+  are permitted in any medium without royalty provided the copyright
+  notice and this notice are preserved.
+
+Please send guile cdr255 bug reports to
+[yewscion@gmail.com](mailto:yewscion@gmail.com).
+
+
+
+# Local Variables:
+# mode: org
+# coding: utf-8-unix
+# End:
