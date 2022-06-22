@@ -8,6 +8,11 @@
   #:use-module (gnu packages pkg-config)
   #:use-module (gnu packages sdl)
   #:use-module (gnu packages wm)
+  #:use-module (gnu packages xiph)
+  #:use-module (gnu packages audio)
+  #:use-module (gnu packages pulseaudio)
+  #:use-module (gnu packages base)
+  #:use-module (gnu packages perl)
   #:use-module (guix build-system asdf)
   #:use-module (guix build-system gnu)
   #:use-module (guix download)
@@ -229,3 +234,60 @@ an implementation-first mindset with a focus on creating portable tools and
 games.")
      (home-page "https://wiki.xxiivv.com/site/uxn.html")
      (license license:isc))))
+(define-public my-frotz
+  (package
+    (name "my-frotz")
+    (version "2.54")
+    (source (origin
+              (method url-fetch)
+              (uri (list (string-append
+                          "http://www.ifarchive.org/if-archive/infocom/interpreters/"
+                          "frotz/frotz-" version ".tar.gz")
+                         (string-append
+                          "ftp://ftp.ifarchive.org/if-archive/infocom/interpreters/"
+                          "frotz/frotz-" version ".tar.gz")))
+              (sha256
+               (base32
+                "1vsfq9ryyb4nvzxpnnn40k423k9pdy8k67i8390qz5h0vmxw0fds"))))
+    (build-system gnu-build-system)
+    (arguments
+     `(#:tests? #f                      ; there are no tests
+       #:phases
+       (modify-phases %standard-phases
+         (delete 'configure)
+         (replace 'build
+           (lambda* _
+             ;; Compile.
+             (invoke "make" "frotz")))
+         (add-before 'build 'patch-makefile
+           (lambda* _
+             (let ((makefiles (list
+                               "Makefile"
+                               "src/common/Makefile"
+                               "src/curses/Makefile"
+                               "src/x11/Makefile"
+                               "src/sdl/Makefile"
+                               "src/dumb/Makefile"
+                               "src/blorb/Makefile")))
+               (map (lambda (x)
+                      (substitute* x
+                        (("\\$\\(CC\\)") "gcc")))
+                    makefiles))))
+         (replace 'install
+           (lambda* (#:key outputs #:allow-other-keys)
+             (let* ((out (assoc-ref outputs "out"))
+                    (bin (string-append out "/bin"))
+                    (man (string-append out "/share/man/man6")))
+               (install-file "frotz" bin)
+               (mkdir-p man)
+               (install-file "doc/frotz.6" man)))))))
+    (inputs (list ao libmodplug libsamplerate libsndfile libvorbis ncurses which perl pkg-config))
+    (synopsis "Portable Z-machine interpreter (ncurses version) for text adventure games")
+    (description "Frotz is an interpreter for Infocom games and other Z-machine
+games in the text adventure/interactive fiction genre.  This version of Frotz
+complies with standard 1.0 of Graham Nelson's specification.  It plays all
+Z-code games V1-V8, including V6, with sound support through libao, and uses
+ncurses for text display.")
+    (home-page "http://frotz.sourceforge.net")
+    (license license:gpl2+)))
+my-frotz
