@@ -39,7 +39,6 @@
      (arguments
       `(#:tests? #f))
      (propagated-inputs (list
-                         guile-3.0
                          biber))
      (native-inputs (list
                      pkg-config
