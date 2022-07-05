@@ -20,11 +20,11 @@
   #:use-module (guix utils)
   #:use-module (gnu packages java))
 (define-public genpro
-  (let ((commit "f928b01a5ce4f5d5534442a5d29186b088fa787b")
+  (let ((commit "028ff27687f2a51c6bf9e6c5f08b84304b144611")
         (revision "1"))
     (package
      (name "genpro")
-     (version (git-version "0.0.1" revision commit))
+     (version (git-version "0.1.0" revision commit))
      (source
       (origin
        (method git-fetch)
@@ -34,70 +34,78 @@
        (file-name (git-file-name name version))
        (sha256
         (base32
-         "0yb7d0k48dx2x7as2jqwg5pmblp8bqaxhxwpf8hkdz8jdymvr7k2"))))
+         "0nlnaf9ij7385j6ni87qi0vr93crx8hbpl8zim0nalwxy9z3jifg"))))
      (build-system gnu-build-system)
      (arguments
       `(#:tests? #f))
-     (native-inputs (list pkg-config
-                          guile-3.0
-                          autoconf
-                          automake
-                          biber
-                          python-pygments
-                          texlive-biblatex
-                          texlive-biblatex-apa
-                          texlive-capt-of
-                          texlive-csquotes
-                          texlive-etoolbox
-                          texlive-fontspec
-                          texlive-generic-etexcmds
-                          texlive-generic-gettitlestring
-                          texlive-generic-ifptex
-                          texlive-generic-iftex
-                          texlive-generic-xstring
-                          texlive-ifmtarg
-                          texlive-kpathsea
-                          texlive-latex-catchfile
-                          texlive-latex-cleveref
-                          texlive-latex-comment
-                          texlive-latex-datetime2
-                          texlive-latex-datetime2-english
-                          texlive-latex-endfloat
-                          texlive-latex-environ
-                          texlive-latex-everyhook
-                          texlive-latex-fancyhdr
-                          texlive-latex-fancyvrb
-                          texlive-latex-float
-                          texlive-latex-framed
-                          texlive-latex-fvextra
-                          texlive-latex-geometry
-                          texlive-latex-ifplatform
-                          texlive-latex-kvoptions
-                          texlive-latex-letltxmacro
-                          texlive-latex-lineno
-                          texlive-latex-lwarp
-                          texlive-latex-minted
-                          texlive-latex-newfloat
-                          texlive-latex-newunicodechar
-                          texlive-latex-pdftexcmds
-                          texlive-latex-printlen
-                          texlive-latex-refcount
-                          texlive-latex-setspace
-                          texlive-latex-titlesec
-                          texlive-latex-trimspaces
-                          texlive-latex-upquote
-                          texlive-latex-xkeyval
-                          texlive-latex-xpatch
-                          texlive-libkpathsea
-                          texlive-listings
-                          texlive-lm
-                          texlive-luaotfload
-                          texlive-svn-prov
-                          texlive-tex-gyre
-                          texlive-tracklang
-                          texlive-varwidth
-                          texlive-xcolor
-                          texlive-xifthen))
+     (propagated-inputs (list
+                         guile-3.0
+                         biber))
+     (native-inputs (list
+                     pkg-config
+                     guile-3.0
+                     autoconf
+                     automake
+                     biber
+                     python-pygments
+                     texinfo
+                     texlive-base
+                     texlive-biblatex
+                     texlive-biblatex-apa
+                     texlive-bin
+                     texlive-capt-of
+                     texlive-csquotes
+                     texlive-dvips
+                     texlive-etoolbox
+                     texlive-fontspec
+                     texlive-generic-etexcmds
+                     texlive-generic-gettitlestring
+                     texlive-generic-ifptex
+                     texlive-generic-iftex
+                     texlive-generic-xstring
+                     texlive-ifmtarg
+                     texlive-kpathsea
+                     texlive-latex-catchfile
+                     texlive-latex-cleveref
+                     texlive-latex-comment
+                     texlive-latex-datetime2
+                     texlive-latex-datetime2-english
+                     texlive-latex-endfloat
+                     texlive-latex-environ
+                     texlive-latex-everyhook
+                     texlive-latex-fancyhdr
+                     texlive-latex-fancyvrb
+                     texlive-latex-float
+                     texlive-latex-framed
+                     texlive-latex-fvextra
+                     texlive-latex-geometry
+                     texlive-latex-ifplatform
+                     texlive-latex-kvoptions
+                     texlive-latex-letltxmacro
+                     texlive-latex-lineno
+                     texlive-latex-lwarp
+                     texlive-latex-minted
+                     texlive-latex-newfloat
+                     texlive-latex-newunicodechar
+                     texlive-latex-pdftexcmds
+                     texlive-latex-printlen
+                     texlive-latex-refcount
+                     texlive-latex-setspace
+                     texlive-latex-titlesec
+                     texlive-latex-trimspaces
+                     texlive-latex-upquote
+                     texlive-latex-xkeyval
+                     texlive-latex-xpatch
+                     texlive-libkpathsea
+                     texlive-listings
+                     texlive-lm
+                     texlive-luaotfload
+                     texlive-svn-prov
+                     texlive-tex-gyre
+                     texlive-tracklang
+                     texlive-varwidth
+                     texlive-xcolor
+                     texlive-xifthen))
      (synopsis "Generate and Publish LaTeX files.")
      (description
       (string-append
