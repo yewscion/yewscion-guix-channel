@@ -17,7 +17,7 @@
 (define-public scheme-primer
   (let ((commit "c00e16d43aaa274277d7808767c2506ea4738111")
         (sha "1m6bdzbfiic9xznj7v5v6b445bmhr7a2145glcf3rzspl36ajz7q")
-        (revision "2")
+        (revision "3")
         (tag "0"))
     (package
      (name "scheme-primer")
@@ -43,7 +43,7 @@
                                 (("@titlepage")
                                 "@dircategory The Algorithmic Language Scheme
 @direntry
-* A Scheme Primer: (scheme-primer).
+* A Scheme Primer: (scheme-primer).           Spritely Institute's Scheme Primer
 @end direntry
 @titlepage"))))
                   (add-after 'dir-entry 'compile
