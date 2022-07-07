@@ -17,7 +17,7 @@
 (define-public scheme-primer
   (let ((commit "c00e16d43aaa274277d7808767c2506ea4738111")
         (sha "1m6bdzbfiic9xznj7v5v6b445bmhr7a2145glcf3rzspl36ajz7q")
-        (revision "1")
+        (revision "2")
         (tag "0"))
     (package
      (name "scheme-primer")
@@ -32,10 +32,23 @@
                (base32 sha))))
      (build-system copy-build-system)
      (arguments
-      `(#:phases (modify-phases %standard-phases
-                   (add-after 'unpack 'compile
+      `(#:phases (modify-phases
+                  %standard-phases
+                  (add-after 'unpack 'export
                      (lambda* (#:key inputs outputs #:allow-other-keys)
-                       (system "emacs --batch --eval '(load \"ox-texinfo.el\")' --visit=scheme-primer.org --funcall org-texinfo-export-to-info"))))
+                       (system "emacs --batch --eval '(load \"ox-texinfo.el\")' --visit=scheme-primer.org --funcall org-texinfo-export-to-texinfo")))
+                  (add-after 'export 'dir-entry
+                             (lambda* (#:key inputs outputs #:allow-other-keys)
+                               (substitute* "scheme-primer.texi"
+                                (("@titlepage")
+                                "@dircategory The Algorithmic Language Scheme
+@direntry
+* A Scheme Primer: (scheme-primer).
+@end direntry
+@titlepage"))))
+                  (add-after 'dir-entry 'compile
+                     (lambda* (#:key inputs outputs #:allow-other-keys)
+                       (system "makeinfo scheme-primer.texi"))))
         #:install-plan '(("scheme-primer.info" "share/info/"))))
      (native-inputs (list emacs-no-x
                           emacs-org
