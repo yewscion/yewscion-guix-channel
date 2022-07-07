@@ -43,7 +43,7 @@
                                 (("@titlepage")
                                 "@dircategory The Algorithmic Language Scheme
 @direntry
-* A Scheme Primer: (scheme-primer).           Spritely Institute's Scheme Primer
+* A Scheme Primer: (scheme-primer)Spritely Institute's Scheme Primer.
 @end direntry
 @titlepage"))))
                   (add-after 'dir-entry 'compile
