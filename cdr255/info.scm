@@ -36,14 +36,16 @@
                   %standard-phases
                   (add-after 'unpack 'export
                      (lambda* (#:key inputs outputs #:allow-other-keys)
-                       (system "emacs --batch --eval '(load \"ox-texinfo.el\")' --visit=scheme-primer.org --funcall org-texinfo-export-to-texinfo")))
+                       (system "emacs --batch --eval \
+ '(load \"ox-texinfo.el\")' --visit=scheme-primer.org \
+--funcall org-texinfo-export-to-texinfo")))
                   (add-after 'export 'dir-entry
                              (lambda* (#:key inputs outputs #:allow-other-keys)
                                (substitute* "scheme-primer.texi"
                                 (("@titlepage")
                                 "@dircategory The Algorithmic Language Scheme
 @direntry
-* A Scheme Primer: (scheme-primer)Spritely Institute's Scheme Primer.
+* A Scheme Primer: (scheme-primer). Spritely Institute's Scheme Primer.
 @end direntry
 @titlepage"))))
                   (add-after 'dir-entry 'compile
