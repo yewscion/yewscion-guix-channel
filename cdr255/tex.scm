@@ -1089,3 +1089,60 @@ automatically if it detects that it is running under memoir. ")
     (description
      "This package gives you easy access to 150 paragraphs of the Lorem Ipsum dummy text provided by https://lipsum.com, plus a growing list of other dummy texts in different languages.")
     (license license:lppl1.3)))
+(define-public texlive-latex-venndiagram
+  (package
+    (name "texlive-latex-venndiagram")
+    (version (string-append
+              (number->string %texlive-revision)
+             "-1"))
+    (outputs '("out" "doc"))
+    (source
+     (texlive-origin
+      name
+      (number->string %texlive-revision)
+      (list "doc/latex/venndiagram/"
+            "source/latex/venndiagram/")
+       (base32 "0isdki5qsiy8dskzhnx86sf6z1aln6f2y2zvpizy36qk5jwcji2x")))
+    (build-system texlive-build-system)
+    (arguments
+     `(#:tex-directory "labtex/venndiagram"
+       #:build-targets '("venndiagram.ins")
+       #:phases (modify-phases
+                 %standard-phases
+                 (add-after 'unpack
+                            'set-TEXINPUTS
+                            (lambda _
+                              (let ((cwd (getcwd)))
+                                (setenv "TEXINPUTS"
+                                        (string-append
+                                         cwd
+                                         "/source/latex/venndiagram:")))))
+                 (add-after 'install 'install-more
+                            (lambda* (#:key outputs #:allow-other-keys)
+                              (let* ((dest-doc
+                                      (string-append (assoc-ref outputs "doc")
+                                                     "/share/doc/"
+                                                     ,name "-"
+                                                     ,version))
+                                     (source-doc
+                                      "doc/latex/venndiagram/"))
+                                (install-file (string-append source-doc
+                                                             "README")
+                                              dest-doc)
+                                (install-file (string-append source-doc
+                                                             "CHANGES")
+                                              dest-doc)
+                                (install-file (string-append source-doc
+                                                             "samples/venn-sample.pdf")
+                                              dest-doc)
+                                (install-file (string-append source-doc
+                                                             "samples/venn-sample.tex")
+                                              dest-doc)
+                                (install-file (string-append source-doc
+                                                             "venndiagram.pdf")
+                                              dest-doc)))))))
+    (home-page "https://ctan.org/pkg/lipsum")
+    (synopsis "Creating Venn diagrams with TikZ")
+    (description
+     "The package assists generation of simple two- and three-set Venn diagrams for lectures or assignment sheets.")
+    (license license:lppl)))
