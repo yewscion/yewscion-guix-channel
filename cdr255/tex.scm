@@ -1105,7 +1105,7 @@ automatically if it detects that it is running under memoir. ")
        (base32 "0isdki5qsiy8dskzhnx86sf6z1aln6f2y2zvpizy36qk5jwcji2x")))
     (build-system texlive-build-system)
     (arguments
-     `(#:tex-directory "labtex/venndiagram"
+     `(#:tex-directory "latex/venndiagram"
        #:build-targets '("venndiagram.ins")
        #:phases (modify-phases
                  %standard-phases
