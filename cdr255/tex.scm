@@ -1146,3 +1146,29 @@ automatically if it detects that it is running under memoir. ")
     (description
      "The package assists generation of simple two- and three-set Venn diagrams for lectures or assignment sheets.")
     (license license:lppl)))
+(define-public texlive-babel-russian
+  (let ((template (simple-texlive-package
+                   "texlive-babel-russian"
+                   (list "/source/generic/babel-russian/")
+                   (base32
+                    "12ik2dwkih2g0gqpbg83j0kcfwsb5grccx27grgi0wjazk0nicq6"))))
+    (package
+      (inherit template)
+      (arguments
+       (substitute-keyword-arguments (package-arguments template)
+         ((#:tex-directory _ '())
+          "generic/babel-russian")
+         ((#:build-targets _ '())
+          ''("russianb.ins")) ; TODO: use dtx and build documentation
+         ((#:phases phases) `(modify-phases ,phases
+                               (add-after 'unpack 'chdir
+                                 (lambda _
+                                   (chdir "source/generic/babel-russian")))))))
+      (home-page "https://www.ctan.org/pkg/babel-russian")
+      (synopsis "Babel support for Russian")
+      (description
+       "This package provides the language definition file for support of Russian
+in @code{babel}.  It provides all the necessary macros, definitions and
+settings to typeset Russian documents.")
+      (license license:lppl1.3c+))))
+texlive-babel-russian
