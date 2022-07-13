@@ -9,6 +9,9 @@
   #:use-module (gnu packages python-xyz)
   #:use-module (gnu packages tex)
   #:use-module (gnu packages texinfo)
+  #:use-module (gnu packages base)
+  #:use-module (gnu packages package-management)
+  #:use-module (gnu packages elf)
   #:use-module (gnu packages)
   #:use-module (guix build-system gnu)
   #:use-module (guix build-system python)
@@ -306,3 +309,51 @@
      (home-page
       "https://github.com/yewscion/codechallenge-solutions")
      (license license:agpl3+))))
+(define-public patchelf-wrapper
+  (let* ((tag "0.0.1")
+         (revision "1")
+         (commit "94ae82378b337f1a87c51db81c239e069e2dc283")
+         (hash "0p1nn338pjgbfyrrgwx78n553547y8p9nyhzxacwddcyy6603nkx")
+         (version (git-version tag revision commit)))
+  (package
+  (name "patchelf-wrapper")
+  (version version)
+  (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://git.sr.ht/~yewscion/patchelf-wrapper")
+                    (commit commit)))
+              (file-name (git-file-name name version))
+              (sha256
+               (base32
+                hash))))
+  (build-system gnu-build-system)
+  (arguments
+   `(#:tests? #f
+     #:phases
+     (modify-phases
+      %standard-phases
+      ;; This allows the paths for guile and java to be embedded in the scripts
+      ;; in bin/
+      (add-before
+       'patch-usr-bin-file 'remove-script-env-flags
+       (lambda* (#:key inputs #:allow-other-keys)
+         (substitute*
+          (find-files "./bin")
+          (("#!/usr/bin/env -S guile \\\\\\\\")
+           "#!/usr/bin/env guile \\")
+          (("\"java")
+           (string-append "\"" (search-input-file inputs "/bin/java"))))))
+      ;; Java and Guile programs don't need to be stripped.
+      (delete 'strip))))
+  (propagated-inputs (list grep guix patchelf))
+  (native-inputs (list autoconf automake pkg-config texinfo))
+  (inputs (list guile-3.0-latest))
+  (synopsis "A tool to use patchelf with GNU/Guix")
+  (description
+   (string-append
+    "A script and library based around the idea of making it easier to patch "
+    "precompiled binaries to work with GNU/Guix."))
+  (home-page
+   "https://github.com/yewscion/patchelf-wrapper")
+  (license license:agpl3+))))
