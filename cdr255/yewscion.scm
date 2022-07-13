@@ -311,7 +311,7 @@
      (license license:agpl3+))))
 (define-public patchelf-wrapper
   (let* ((tag "0.0.1")
-         (revision "1")
+         (revision "2")
          (commit "db5457d2b044739d4d18c9727c74e655a06370f8")
          (hash "168xnxmvmfsbl34kw0rc1pci2mihq11cypp8k8281p0arch2jxwc")
          (version (git-version tag revision commit)))
@@ -346,7 +346,7 @@
            (string-append "\"" (search-input-file inputs "/bin/java"))))))
       ;; Java and Guile programs don't need to be stripped.
       (delete 'strip))))
-  (propagated-inputs (list grep guix patchelf))
+  (propagated-inputs (list grep patchelf))
   (native-inputs (list autoconf automake pkg-config texinfo))
   (inputs (list guile-3.0-latest))
   (synopsis "A tool to use patchelf with GNU/Guix")
