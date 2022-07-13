@@ -312,8 +312,8 @@
 (define-public patchelf-wrapper
   (let* ((tag "0.0.1")
          (revision "1")
-         (commit "94ae82378b337f1a87c51db81c239e069e2dc283")
-         (hash "0p1nn338pjgbfyrrgwx78n553547y8p9nyhzxacwddcyy6603nkx")
+         (commit "db5457d2b044739d4d18c9727c74e655a06370f8")
+         (hash "168xnxmvmfsbl34kw0rc1pci2mihq11cypp8k8281p0arch2jxwc")
          (version (git-version tag revision commit)))
   (package
   (name "patchelf-wrapper")
