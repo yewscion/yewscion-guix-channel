@@ -17,6 +17,7 @@
   #:use-module (gnu packages xml)
   #:use-module (gnu packages tls)
   #:use-module (gnu packages curl)
+  #:use-module (gnu packages autotools)
   #:use-module (guix build-system asdf)
   #:use-module (guix build-system gnu)
   #:use-module (guix build-system copy)
@@ -532,5 +533,45 @@ It supports:
       (description "Convert ACSM files to PDF/EPUBs with one command on Linux.")
       (home-page "https://github.com/BentonEdmondson/knock/")
       (license license:gpl3))))
+(define-public mikmod
+  (let* ((tag "3.3.11.1-git")
+         (revision "1")
+         (commit "187e55986a5888a8ead767a38fc29a8fc0ec5bbe")
+         (version (git-version tag revision commit)))
+    (package
+      (name "mikmod")
+      (version version)
+      (source (origin
+                (method git-fetch)
+                (uri (git-reference
+                      (url "https://git.code.sf.net/p/mikmod/mikmod")
+                      (commit commit)))
+                (sha256
+                 (base32
+                  "1im3k2185ddgw7sxwxbklak6navh0m016v61cphms2v1h4j9ddrz"))))
+      (outputs '("out"))
+      (build-system gnu-build-system)
+      (arguments
+       (list
+        #:tests? #t
+        #:phases #~(modify-phases
+                     %standard-phases
+                     (add-before 'configure 'chdir
+                                 (lambda _
+                                   (chdir "mikmod")
+                                   (invoke "autoreconf" "-fiv"))))
+        ))
+       (native-inputs (list libmikmod
+                            autoconf
+                            automake
+                            ncurses
+                            pulseaudio))
+      ;; (inputs (list ))
+      ;; (propagated-inputs (list ))
+      (synopsis "Mikmod Sound System Player")
+      (description "Mikmod is a module player and library supporting many formats, including mod, s3m, it, and xm. Originally a player for MS-DOS, MikMod has been ported to other platforms, such as Unix, Macintosh, BeOS, and Java.")
+      (home-page "http://mikmod.sourceforge.net/")
+      (license license:gpl2))))
+
 
 
