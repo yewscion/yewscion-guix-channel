@@ -21,6 +21,7 @@
   #:use-module (guix build-system asdf)
   #:use-module (guix build-system gnu)
   #:use-module (guix build-system copy)
+  #:use-module (guix build-system cmake)
   #:use-module (guix download)
   #:use-module (guix gexp)
   #:use-module (guix git-download)
@@ -550,28 +551,60 @@ It supports:
                  (base32
                   "1im3k2185ddgw7sxwxbklak6navh0m016v61cphms2v1h4j9ddrz"))))
       (outputs '("out"))
-      (build-system gnu-build-system)
+      (build-system cmake-build-system)
       (arguments
        (list
-        #:tests? #t
+        #:tests? #f
         #:phases #~(modify-phases
                      %standard-phases
                      (add-before 'configure 'chdir
                                  (lambda _
-                                   (chdir "mikmod")
-                                   (invoke "autoreconf" "-fiv"))))
+                                   (chdir "mikmod"))))
         ))
-       (native-inputs (list libmikmod
+       (native-inputs (list libmikmod-with-drivers
                             autoconf
                             automake
-                            ncurses
-                            pulseaudio))
+                            ncurses))
       ;; (inputs (list ))
       ;; (propagated-inputs (list ))
       (synopsis "Mikmod Sound System Player")
       (description "Mikmod is a module player and library supporting many formats, including mod, s3m, it, and xm. Originally a player for MS-DOS, MikMod has been ported to other platforms, such as Unix, Macintosh, BeOS, and Java.")
       (home-page "http://mikmod.sourceforge.net/")
       (license license:gpl2))))
-
-
-
+(define-public libmikmod-with-drivers
+  (package
+    (name "libmikmod-with-drivers")
+    (version "3.3.11.1")
+    (source (origin
+             (method url-fetch)
+             (uri (list
+                   (string-append "mirror://sourceforge/mikmod/libmikmod/"
+                                  version "/libmikmod-" version ".tar.gz")
+                   ;; Older versions are sometimes moved to:
+                   (string-append "mirror://sourceforge/mikmod/"
+                                  "outdated_versions/libmikmod/"
+                                  version "/libmikmod-" version ".tar.gz")))
+             (sha256
+              (base32
+               "06bdnhb0l81srdzg6gn2v2ydhhaazza7rshrcj3q8dpqr3gn97dd"))))
+    (build-system gnu-build-system)
+    (arguments
+     ;; By default, libmikmod tries to dlopen libasound etc., which won't work
+     ;; unless the right libalsa happens to be in $LD_LIBRARY_PATH.  Pass
+     ;; '--disable-dl' to avoid that.
+     '(#:configure-flags '("--disable-dl"
+                           "--enable-pulseaudio"
+                           "--enable-openal"
+                           "--enable-alsa")))
+    (native-inputs (list pulseaudio
+                         sdl2
+                         openal
+                         alsa-lib
+                         perl))
+    (synopsis "Library for module sound formats")
+    (description
+     "MikMod is able to play a wide range of module formats, as well as
+digital sound files.  It can take advantage of particular features of your
+system, such as sound redirection over the network.")
+    (license license:lgpl2.1)
+    (home-page "http://mikmod.sourceforge.net/")))
