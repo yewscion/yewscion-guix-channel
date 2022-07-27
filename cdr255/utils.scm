@@ -18,6 +18,7 @@
   #:use-module (gnu packages tls)
   #:use-module (gnu packages curl)
   #:use-module (gnu packages autotools)
+  #:use-module (gnu packages lisp)
   #:use-module (guix build-system asdf)
   #:use-module (guix build-system gnu)
   #:use-module (guix build-system copy)
@@ -118,6 +119,71 @@ soundfonts.")
     (synopsis "Battery Indicator for StumpWM")
     (description
      "This StumpWM Module provides modeline support for a battery indicator.")
+    (license license:gpl3+)))
+(define-public sbcl-xml-emitter
+  (let* ((tag "1.1.0")
+         (revision "1")
+         (commit "1a93a5ab084a10f3b527db3043bd0ba5868404bf")
+         (version (git-version tag revision commit)))
+    (package
+      (name "sbcl-xml-emitter")
+      (version version)
+      (source (origin
+                (method git-fetch)
+                (uri (git-reference
+                      (url "https://github.com/VitoVan/xml-emitter.git")
+                      (commit commit)))
+                (sha256
+                 (base32
+                  "1w9yx8gc4imimvjqkhq8yzpg3kjrp2y37rjix5c1lnz4s7bxvhk9"))))
+      (outputs '("out"))
+      (build-system asdf-build-system/sbcl)
+      ;; (arguments
+      ;;  (list
+      ;;   #:phases #~(modify-phases
+      ;;                  %standard-phases ; No Configure
+      ;;               )
+      ;;   ))
+      (native-inputs (list sbcl
+                           cl-1am))
+      ;; (inputs (list ))
+      (propagated-inputs (list 
+                          cl-utilities
+                          sbcl-dbus))
+      (synopsis "")
+      (description ".")
+      (home-page "")
+      (license license:gpl3))))
+(define-public cl-xml-emitter
+  (sbcl-package->cl-source-package sbcl-xml-emitter))
+(define-public ecl-xml-emitter
+  (sbcl-package->ecl-package sbcl-xml-emitter))
+(define-public sbcl-stumpwm-notify
+  (package
+    (inherit stumpwm-contrib)
+    (name "sbcl-stumpwm-notify")
+    (native-inputs
+     `(("sbcl-xml-emitter" ,sbcl-xml-emitter)
+       ("sbcl-cl-utilities" ,sbcl-cl-utilities)
+       ("sbcl-bordeaux-threads" ,sbcl-bordeaux-threads)
+       ("sbcl-dbus" ,sbcl-dbus)
+       ("stumpwm" ,stumpwm "lib")))
+    (arguments
+     '(#:asd-systems '("notify")
+       #:asd-files '("notify.asd")
+       #:tests? #f
+       #:phases
+       (modify-phases %standard-phases
+         (add-after 'unpack 'chdir
+           (lambda _
+             (chdir "util/notify"))))))
+    (home-page
+     (string-append
+      "https://github.com/stumpwm/stumpwm-contrib/"
+      "tree/master/modeline/battery-portable"))
+    (synopsis "Notifications for StumpWM")
+    (description
+     "This StumpWM Module provides a notifications server for StumpWM.")
     (license license:gpl3+)))
 (define-public uxn
   (let ((commit "f87c15c8b5274546a2198c35f5a6e30094f8f004")
