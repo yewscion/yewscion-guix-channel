@@ -261,8 +261,8 @@
     (home-page "https://git.sr.ht/~yewscion/yewscion-scripts")
     (license license:agpl3))))
 (define-public python-pygments-lexer-pseudocode-std
-  (let ((commit "e23433b538ae7c54f3c04f226ffcb61c4c8aeba2")
-        (revision "1"))
+  (let ((commit "6a8e20e81e3ba4d7904934b5f937567b11eb6cb5")
+        (revision "2"))
     (package
      (name "python-pygments-lexer-pseudocode-std")
      (version (git-version "1.1.0" revision commit))
