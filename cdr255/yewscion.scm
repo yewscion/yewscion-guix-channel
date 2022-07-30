@@ -274,7 +274,7 @@
              (commit commit)))
        (sha256
         (base32
-         "1il3cyw5cyy88slangk8k7jvfs62p16n82013f3nhh8ag4d6b2wg"))))
+         "1mv99bppgv44vx0xjqwkpm5iilmm9y544mpnzihsf7x4aqh0gykk"))))
   (build-system python-build-system)
   (propagated-inputs (list python-pygments))
   (home-page "https://git.sr.ht/~yewscion/pygments-lexer-pseudocode-std")
