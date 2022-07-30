@@ -261,7 +261,7 @@
     (home-page "https://git.sr.ht/~yewscion/yewscion-scripts")
     (license license:agpl3))))
 (define-public python-pygments-lexer-pseudocode-std
-  (let ((commit "79262e25bc9daee4ce9b30e22c627d66eca61d86")
+  (let ((commit "de620aab76f812e75b58d1bd8b621902205d40e7")
         (revision "1"))
     (package
      (name "python-pygments-lexer-pseudocode-std")
@@ -272,9 +272,10 @@
        (uri (git-reference
              (url "https://git.sr.ht/~yewscion/pygments-lexer-pseudocode-std")
              (commit commit)))
+       (file-name (git-file-name name version))
        (sha256
         (base32
-         "0nv3xhj3r534mgfgwr4fpbkkhlfmnwbd0x1g26wz6gwd86x2nss1"))))
+         "123k2y2wns3gv0phba1k6qgwgl81b2px370ap0z6ji12gp0wad8m"))))
   (build-system python-build-system)
   (propagated-inputs (list python-pygments))
   (home-page "https://git.sr.ht/~yewscion/pygments-lexer-pseudocode-std")
