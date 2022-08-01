@@ -317,3 +317,67 @@ can be combined together using the @code{rules} component of this database.")
       (description "A 3270 font in a modern format, built using fontforge.")
       (home-page "https://github.com/rbanffy/3270font")
       (license license:bsd-3))))
+(define-public font-open-relay
+  (let* ((tag "0")
+         (revision "1")
+         (commit "38ecb6007388f91f0f41a95aa75c059a2d43ae71")
+         (version (git-version tag revision commit)))
+    (package
+     (name "font-open-relay")
+     (version version)
+     (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/kreativekorp/open-relay.git")
+                    (commit commit)))
+              (file-name (git-file-name name version))
+              (sha256
+               (base32
+                "1rai98rp2b99kzp6r6xm20y0zda1nbs16z6az485clxi8gw32i6p"))))
+     (outputs '("out"))
+     (build-system font-build-system)
+     (arguments
+      (list
+       #:phases #~(modify-phases %standard-phases
+                    (add-before 'install
+                        'rename-licenses
+                      (lambda* _
+                        (map
+                         (lambda (x)
+                           (copy-recursively (string-append
+                                              x
+                                              "/OFL.txt")
+                                             (string-append
+                                              "LICENSE-"
+                                              x
+                                              ".txt")))
+                         (list "AlcoSans"
+                               "Constructium"
+                               "Fairfax"
+                               "FairfaxHD"
+                               "KreativeSquare")))))))
+     (synopsis "Free and open source fonts from Kreative Software")
+     (description "Free and open source fonts from Kreative Software:
+
+        Constructium is a fork of SIL Gentium designed specifically to
+support constructed scripts as encoded in the Under-ConScript Unicode
+Registry. It is ideal for mixed Latin, Greek, Cyrillic, IPA, and conlang text
+in web sites and documents.
+
+        Fairfax is a 6x12 bitmap font for terminals, text editors, IDEs,
+etc. It supports many scripts and a large number of Unicode blocks as well as
+constructed scripts as encoded in the Under-ConScript Unicode Registry,
+pseudographics and semigraphics, and tons of private use characters. It has
+been superceded by Fairfax HD but is still maintained.
+
+        Fairfax HD is a halfwidth scalable monospace font for terminals, text
+editors, IDEs, etc. It supports many scripts and a large number of Unicode
+blocks as well as constructed scripts as encoded in the Under-ConScript
+Unicode Registry, pseudographics and semigraphics, and tons of private use
+characters.
+
+        Kreative Square is a fullwidth scalable monospace font designed
+specifically to support pseudographics, semigraphics, and private use
+characters.")
+     (home-page "http://www.kreativekorp.com/software/fonts/index.shtml")
+     (license license:silofl1.1))))
