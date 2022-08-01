@@ -8,6 +8,7 @@
   #:use-module (guix build-system emacs)
   #:use-module (guix build-system gnu)
   #:use-module (guix build-system meson)
+  #:use-module (guix build-system font)
   #:use-module (guix utils)
   #:use-module (guix deprecation)
   #:use-module (gnu packages)
@@ -228,3 +229,26 @@ There are five components that define a complete keyboard mapping:
 symbols, geometry, keycodes, compat, and types; these five components
 can be combined together using the @code{rules} component of this database.")
     (license license:x11)))
+(define-public font-bqn386
+  (let* ((tag "0")
+         (revision "1")
+         (commit "81e18d1eb8cb6b66df9e311b3b63ec086d910d18")
+         (version (git-version tag revision commit)))
+    (package
+      (name "font-bqn386")
+      (version version)
+      (source (origin
+                (method git-fetch)
+                (uri (git-reference
+                      (url "https://github.com/dzaima/BQN386.git")
+                      (commit commit)))
+                (file-name (git-file-name name version))
+                (sha256
+                 (base32
+                  "0gg06rkcf71jr239pa22n46wbl5xq5756dfyl6m264k42ypinhvz"))))
+      (outputs '("out"))
+      (build-system font-build-system)
+      (synopsis "Official BQN/APL Font")
+      (description "An APL and BQN font extending on APL386 by Adám Brudzewsky, which is based on APL385 by Adrian Smith. This font keeps regular APL characters mostly intact (with an exception being making ○-based charcters larger)")
+      (home-page "https://github.com/dzaima/BQN386")
+      (license license:unlicense))))
