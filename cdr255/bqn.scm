@@ -7,6 +7,7 @@
   #:use-module (guix build-system copy)
   #:use-module (guix build-system emacs)
   #:use-module (guix build-system gnu)
+  #:use-module (guix build-system meson)
   #:use-module (guix utils)
   #:use-module (guix deprecation)
   #:use-module (gnu packages)
@@ -14,6 +15,10 @@
   #:use-module (gnu packages base)
   #:use-module (gnu packages pkg-config)
   #:use-module (gnu packages java)
+  #:use-module (gnu packages xorg)
+  #:use-module (gnu packages gettext)
+  #:use-module (gnu packages perl)
+  #:use-module (gnu packages python)
   #:use-module (ice-9 ftw)
   #:use-module (ice-9 match)
   #:use-module ((srfi srfi-1) #:hide (zip)))
@@ -193,3 +198,33 @@ according to the official documentation of that specification.")
 Derived from gnu-apl-mode.")
       (home-page "https://mlochbaum.github.io/BQN/editors/index.html")
       (license license:gpl3))))
+(define-public xkeyboard-config
+  (package
+    (name "xkeyboard-config")
+    (version "2.36")
+    (source
+      (origin
+        (method url-fetch)
+        (uri (string-append
+              "ftp://ftp.freedesktop.org/pub/xorg/individual/data/xkeyboard-config/xkeyboard-config-"
+              version
+              ".tar.xz"))
+        (sha256
+          (base32
+            "158m7r6ga7w12ry35q6d0z6hilbpj9h7ilw56h55478n58lv26qz"))))
+    (build-system meson-build-system)
+    (inputs
+      (list libx11 xkbcomp-intermediate))
+    (native-inputs
+      `(("gettext" ,gettext-minimal)
+        ("perl" ,perl)
+        ("pkg-config" ,pkg-config)
+        ("python" ,python)))
+    (home-page "https://www.x.org/wiki/")
+    (synopsis "Xorg XKB configuration files")
+    (description
+     "xkeyboard-config provides a database for X Keyboard (XKB) Extension.
+There are five components that define a complete keyboard mapping:
+symbols, geometry, keycodes, compat, and types; these five components
+can be combined together using the @code{rules} component of this database.")
+    (license license:x11)))
