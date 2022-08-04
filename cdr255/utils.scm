@@ -23,6 +23,7 @@
   #:use-module (guix build-system gnu)
   #:use-module (guix build-system copy)
   #:use-module (guix build-system cmake)
+  #:use-module (guix build-system meson)
   #:use-module (guix download)
   #:use-module (guix gexp)
   #:use-module (guix git-download)
@@ -674,3 +675,34 @@ digital sound files.  It can take advantage of particular features of your
 system, such as sound redirection over the network.")
     (license license:lgpl2.1)
     (home-page "http://mikmod.sourceforge.net/")))
+;;; Bumped version from Guix.
+(define-public xkeyboard-config
+  (package
+    (name "xkeyboard-config")
+    (version "2.36")
+    (source
+     (origin
+       (method url-fetch)
+       (uri (string-append
+             "ftp://ftp.freedesktop.org/pub/xorg/individual/data/xkeyboard-config/xkeyboard-config-"
+             version
+             ".tar.xz"))
+       (sha256
+        (base32
+         "158m7r6ga7w12ry35q6d0z6hilbpj9h7ilw56h55478n58lv26qz"))))
+    (build-system meson-build-system)
+    (inputs
+     (list libx11 xkbcomp-intermediate))
+    (native-inputs
+     `(("gettext" ,gettext-minimal)
+       ("perl" ,perl)
+       ("pkg-config" ,pkg-config)
+       ("python" ,python)))
+    (home-page "https://www.x.org/wiki/")
+    (synopsis "Xorg XKB configuration files")
+    (description
+     "xkeyboard-config provides a database for X Keyboard (XKB) Extension.
+There are five components that define a complete keyboard mapping:
+symbols, geometry, keycodes, compat, and types; these five components
+can be combined together using the @code{rules} component of this database.")
+    (license license:x11)))
