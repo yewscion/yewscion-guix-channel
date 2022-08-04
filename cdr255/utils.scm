@@ -19,7 +19,7 @@
   #:use-module (gnu packages curl)
   #:use-module (gnu packages autotools)
   #:use-module (gnu packages lisp)
-  #:use-module (gnu packages x11)
+  #:use-module (gnu packages xorg)
   #:use-module (guix build-system asdf)
   #:use-module (guix build-system gnu)
   #:use-module (guix build-system copy)
