@@ -19,6 +19,8 @@
   #:use-module (gnu packages curl)
   #:use-module (gnu packages autotools)
   #:use-module (gnu packages lisp)
+  #:use-module (gnu packages gettext)
+  #:use-module (gnu packages python)
   #:use-module (gnu packages xorg)
   #:use-module (guix build-system asdf)
   #:use-module (guix build-system gnu)
