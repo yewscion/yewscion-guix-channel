@@ -665,28 +665,30 @@ bundle).
 
 This package replaces datetime.sty which is now obsolete.")
     (license license:lppl1.3)))
-(define-public texlive-tracklang
-  (let ((template (simple-texlive-package
-                   "texlive-tracklang"
-                   (list "/tex/latex/tracklang/"
-                         "/tex/generic/tracklang/"
-                         "/doc/generic/tracklang/")
-                   (base32
-                    "075q6yd7lq2qzaaim2zv9h27lcfmbxkrpilfrnzygfvkbhzqmi0i")
-                   #:trivial? #t)))
-    (package
-      (inherit template)
-      (home-page "https://ctan.org/pkg/tracklang")
-      (synopsis "Language and dialect tracker")
-      (description "The tracklang package is provided for package developers who
-want a simple interface to find out which languages the user has requested
-through packages such as babel or polyglossia.
+;; In Guix Proper now.
+;;
+;; (define-public texlive-tracklang
+;;   (let ((template (simple-texlive-package
+;;                    "texlive-tracklang"
+;;                    (list "/tex/latex/tracklang/"
+;;                          "/tex/generic/tracklang/"
+;;                          "/doc/generic/tracklang/")
+;;                    (base32
+;;                     "075q6yd7lq2qzaaim2zv9h27lcfmbxkrpilfrnzygfvkbhzqmi0i")
+;;                    #:trivial? #t)))
+;;     (package
+;;       (inherit template)
+;;       (home-page "https://ctan.org/pkg/tracklang")
+;;       (synopsis "Language and dialect tracker")
+;;       (description "The tracklang package is provided for package developers who
+;; want a simple interface to find out which languages the user has requested
+;; through packages such as babel or polyglossia.
 
-This package does not provide any translations!  Its purpose is simply to track
-which languages have been requested by the user.
+;; This package does not provide any translations!  Its purpose is simply to track
+;; which languages have been requested by the user.
 
-Generic TeX code is in tracklang.tex for non-LaTeX users.")
-      (license license:lppl1.3))))
+;; Generic TeX code is in tracklang.tex for non-LaTeX users.")
+;;       (license license:lppl1.3))))
 (define-public texlive-latex-datetime2-english
   (package
     (name "texlive-latex-datetime2-english")
