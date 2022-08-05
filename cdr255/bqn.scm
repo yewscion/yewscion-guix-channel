@@ -15,6 +15,20 @@
   #:use-module (gnu packages llvm)
   #:use-module (gnu packages java))
 
+;; Currently this package is non-deterministic due to random generation in
+;; some of the primitives. This is marked as a TODO in the source code, but
+;; per the maintainer this package almost solely exists for the purpose of
+;; building CBQN at this point, and therefore is not a high priority. Git
+;; reports this here:
+;;
+;; src/BQN/types/callable/builtins/fns/EpsBuiltin.java:45:71:
+;; …<snip> // TODO these (and in ⊐) shouldn't be random numbers
+;;
+;; Reported Upstream Here: https://github.com/dzaima/BQN/issues/14
+;;
+;; This issue therefore means that none of the packages for bqn can be checked
+;; for non-determinism at this time, as dbqn is a prerequisite for all of
+;; them.
 (define-public dbqn
   (let* ((tag "0.2.1")
          (revision "1")
@@ -27,70 +41,53 @@
       (source (origin
                 (method git-fetch)
                 (uri (git-reference
-                      (url "https://github.com/dzaima/BQN.git")
+                      (url "https://github.com/dzaima/BQN")
                       (commit commit)))
                 (file-name (git-file-name name version))
-                (sha256 (base32 hash))))
+                (sha256
+                 (base32
+                  hash))))
       (outputs '("out"))
       (build-system gnu-build-system)
       (arguments
-       (list
-        #:tests? #f ;; While there is a "test" directory, there is no
-        ;; mechanism to run the tests other than to feed the files into the
-        ;; binary and check for an error. This is outside the scope of a
-        ;; packaging workflow, and would need to be fixed upstream
-        ;; instead. Issue Reported: https://github.com/dzaima/BQN/issues/12
-        ;; Maintainer says many of the tests fail, and so they will remain off
-        ;; until this is sorted out.
-        #:phases
-        #~(modify-phases
-              %standard-phases
-            (delete 'configure) ;; No Autoconf Used in Project
-            (replace 'build
-              (lambda* _
-                (invoke "./build"))) ;; Custom Build Script used to create
-            ;; jarfile.
-            (replace 'install ;; No "install" target, expects manual install.
-              (lambda* (#:key outputs #:allow-other-keys)
-                (let* ((out (assoc-ref outputs "out"))
-                       (dest-bin (string-append out "/bin"))
-                       (dest-jar (string-append out "/share/java")))
-                  (mkdir-p dest-bin)
-                  (mkdir-p dest-jar)
-                  ;; The below is recommended in the readme.md file as a way
-                  ;; to make hashbangs work with this jarfile. Ideally, this
-                  ;; would be included as a file in the repository and copied
-                  ;; in there, but it is not. Issue Reported:
-                  ;; https://github.com/dzaima/BQN/issues/13
-                  (copy-recursively #$(plain-file "dbqn"
-                                                  "#!/bin/bash
-                                 
-                                 java -jar /usr/share/java/BQN.jar -f \"$@\"")
-                                    (string-append dest-bin
-                                                   "/dbqn"))
-                  (chmod (string-append dest-bin "/dbqn") #o755)
-                  (install-file "BQN.jar"
-                                dest-jar))))
-            (add-after 'install 'subjars ; In order for the dbqn script
-                                        ; mentioned above to work in GNU
-                                        ; Guix, it needs the absolute path of
-                                        ; this jarfile in place of the
-                                        ; throwaway /usr/share/java path
-                                        ; entered above.
-              (lambda* (#:key outputs #:allow-other-keys)
-                (let* ((out (assoc-ref outputs "out"))
-                       (dest-bin (string-append out "/bin"))
-                       (dest-jar (string-append out "/share/java")))
-                  (substitute*
-                      (string-append dest-bin
-                                     "/dbqn")
-                    (("/usr/share/java/BQN.jar")
-                     (string-append dest-jar
-                                    "/BQN.jar")))))))))
-      (native-inputs `(("openjdk17" ,openjdk17 "jdk")
-                       ("coreutils" ,coreutils) ))
-      (synopsis "A BQN implementation based on dzaima/APL")
-      (description "A BQN implementation based on dzaima/APL.")
+       (list #:tests? #f ;While there is a "test" directory, there is no
+             ;; mechanism to run the tests other than to feed the files into the
+             ;; binary and check for an error. This is outside the scope of a
+             ;; packaging workflow, and would need to be fixed upstream
+             ;; instead. Issue Reported: https://github.com/dzaima/BQN/issues/12
+             ;; Maintainer says many of the tests fail, and so they will remain off
+             ;; until this is sorted out.
+             #:phases #~(modify-phases %standard-phases
+                          (delete 'configure)
+                          (replace 'build
+                            (lambda* _
+                              (invoke "./build")))
+                          (replace 'install
+                            (lambda* (#:key outputs #:allow-other-keys)
+                              (let* ((out (assoc-ref outputs "out"))
+                                     (dest-bin (string-append out "/bin"))
+                                     (dest-jar (string-append out
+                                                              "/share/java")))
+                                (mkdir-p dest-bin)
+                                (mkdir-p dest-jar)
+                                (copy-recursively "BQN"
+                                                  (string-append dest-bin
+                                                                 "/dbqn"))
+                                (chmod (string-append dest-bin "/dbqn") 493)
+                                (install-file "BQN.jar" dest-jar))))
+                          (add-after 'install 'subjars
+                            (lambda* (#:key outputs #:allow-other-keys)
+                              (let* ((out (assoc-ref outputs "out"))
+                                     (dest-bin (string-append out "/bin"))
+                                     (dest-jar (string-append out
+                                                              "/share/java")))
+                                (substitute* (string-append dest-bin "/dbqn")
+                                  (("BQN.jar")
+                                   (string-append dest-jar "/BQN.jar")))))))))
+      (native-inputs (list `(,openjdk17 "jdk")
+                           coreutils))
+      (synopsis "BQN implementation based on dzaima/APL")
+      (description "BQN implementation based on dzaima/APL.")
       (home-page "https://github.com/dzaima/BQN")
       (license license:expat))))
 (define bqn-bytecode-sources
@@ -105,29 +102,30 @@
       (source (origin
                 (method git-fetch)
                 (uri (git-reference
-                      (url "https://github.com/mlochbaum/BQN.git")
+                      (url "https://github.com/mlochbaum/BQN")
                       (commit commit)))
                 (file-name (git-file-name name version))
-                (sha256 (base32 hash))))
+                (sha256
+                 (base32
+                  hash))))
       (outputs '("out"))
-      (build-system copy-build-system) ; This package pulls down needed source
-                                        ; files for CBQN's build process. They
-                                        ; will be compiled during that build;
-                                        ; none of them are prebuilt binaries.
+      (build-system copy-build-system) ;This package pulls down needed source
+      ;; files for CBQN's build process. They
+      ;; will be compiled during that build;
+      ;; none of them are prebuilt binaries.
       (arguments
-       (list
-        #:install-plan (quote (list (list "src/" "share/src" #:exclude
-                                          '("README.txt"
-                                            "doc/"))
-                                    (list "test/" "share/test" #:exclude
-                                          '("README.txt"))))))
+       (list #:install-plan '(list (list "src/" "share/src"
+                                         #:exclude '("README.txt" "doc/"))
+                                   (list "test/" "share/test"
+                                         #:exclude '("README.txt")))))
       (synopsis "Official BQN sources in BQN")
-      (description "The collection of sources needed for building a
-BQN-based BQN implementation. These are included here for bootstrapping
+      (description
+       "The collection of sources needed for building a
+BQN-based BQN implementation.  These are included here for bootstrapping
 purposes.")
       (home-page "https://github.com/mlochbaum/BQN.git")
       (license license:gpl3))))
-(define-public cbqn-bootstrap
+(define cbqn-bootstrap
   (let* ((tag "0")
          (revision "1")
          (commit "88f65850fa6ac28bc50886c5942652f21d5be924")
@@ -139,51 +137,41 @@ purposes.")
       (source (origin
                 (method git-fetch)
                 (uri (git-reference
-                      (url "https://github.com/dzaima/CBQN.git")
+                      (url "https://github.com/dzaima/CBQN")
                       (commit commit)))
                 (file-name (git-file-name name version))
-                (sha256 (base32 hash))))
+                (sha256
+                 (base32
+                  hash))))
       (build-system gnu-build-system)
       (outputs '("out"))
       (arguments
-       (list
-        #:tests? #f ;; Skipping Tests for Bootstrap.
-        #:phases #~(modify-phases %standard-phases
-                     ;; No Autotools
-                     (delete 'configure) 
-                     ;; The build process requires some bytecode generation
-                     ;; from sources inside of the main BQN repository before
-                     ;; build can begin. This is done here.
-                     (add-before 'build 'generate-bytecode
-                       (lambda* (#:key inputs #:allow-other-keys)
-                         (system (string-append
-                                  #$(this-package-native-input "dbqn")
-                                  "/bin/dbqn ./genRuntime "
-                                  #$(this-package-input
-                                     "bqn-bytecode-sources")
-                                  "/share/"))))
-                     ;; make install is just copying a single file (and uses
-                     ;; a hardcoded directory) so we'll copy it here instead.
-                     (replace 'install
-                       (lambda* (#:key outputs #:allow-other-keys)
-                         (mkdir-p
-                          (string-append #$output "/bin"))
-                         (chmod "BQN" #o755)
-                         (copy-recursively "BQN"
-                                           (string-append
-                                            #$output
-                                            "/bin/bqn")))))))
-      (native-inputs (list dbqn
-                           openjdk17
-                           clang-toolchain))
-      (inputs (list bqn-bytecode-sources
-                    libffi))
-      (synopsis "A BQN implementation in C")
-      (description "The expected implementation for the BQN language,
+       (list #:tests? #f ;Skipping Tests for Bootstrap.
+             #:phases #~(modify-phases %standard-phases
+                          (delete 'configure)
+                          (add-before 'build 'generate-bytecode
+                            (lambda* (#:key inputs #:allow-other-keys)
+                              (system (string-append #$(this-package-native-input
+                                                        "dbqn")
+                                       "/bin/dbqn ./genRuntime "
+                                       #$(this-package-input
+                                          "bqn-bytecode-sources") "/share/"))))
+                          (replace 'install
+                            (lambda* (#:key outputs #:allow-other-keys)
+                              (mkdir-p (string-append #$output "/bin"))
+                              (chmod "BQN" 493)
+                              (copy-recursively "BQN"
+                                                (string-append #$output
+                                                               "/bin/bqn")))))))
+      (native-inputs (list dbqn openjdk17 clang-toolchain))
+      (inputs (list bqn-bytecode-sources libffi))
+      (synopsis "BQN implementation in C")
+      (description
+       "The expected implementation for the BQN language,
 according to the official documentation of that specification.")
       (home-page "https://mlochbaum.github.io/BQN/")
       (license license:gpl3))))
-(define-public singeli-bootstrap
+(define singeli-bootstrap
   (let* ((tag "0")
          (revision "1")
          (commit "fd17b144483549dbd2bcf23e3a37a09219171a99")
@@ -195,19 +183,22 @@ according to the official documentation of that specification.")
       (source (origin
                 (method git-fetch)
                 (uri (git-reference
-                      (url "https://github.com/mlochbaum/Singeli.git")
+                      (url "https://github.com/mlochbaum/Singeli")
                       (commit commit)))
                 (file-name (git-file-name name version))
-                (sha256 (base32 hash))))
+                (sha256
+                 (base32
+                  hash))))
       (outputs '("out"))
       (build-system copy-build-system)
       (arguments
        (list
-        ;;; cbqn needs the layout of singeli to stay the same for its tests.
-        #:install-plan '(list (list "./" "share/singeli"))))
+             ;; cbqn needs the layout of singeli to stay the same for its tests.
+             #:install-plan '(list (list "./" "share/singeli"))))
       (native-inputs (list cbqn-bootstrap))
       (synopsis "High-level interface for low-level programming")
-      (description "Singeli is a domain-specific language for building SIMD
+      (description
+       "Singeli is a domain-specific language for building SIMD
       algorithms with flexible abstractions and control over every instruction
       emitted. It's implemented in BQN, with a frontend that emits IR and a
       backend that converts it to C. Other backends like LLVM or machine code
@@ -216,76 +207,54 @@ according to the official documentation of that specification.")
       (home-page "https://github.com/mlochbaum/Singeli")
       (license license:isc))))
 (define-public cbqn
-  (package (inherit cbqn-bootstrap)
-           (name "cbqn")
-           (outputs (quote ("out"
-                            "lib")))
-           (arguments
-            (list
-             #:tests? #t
-             #:make-flags (quote (list "shared-o3"
-                                       "o3n-singeli"))
-             #:phases #~(modify-phases
-                            %standard-phases
-                          (delete 'configure)
-                          (add-before 'build 'link-singeli
-                            (lambda* (#:key inputs #:allow-other-keys)
-                              (symlink (string-append #$(this-package-input
-                                                         "singeli-bootstrap")
-                                                      "/share/singeli")
-                                       "Singeli")))
-                          (add-before 'build 'generate-bytecode
-                            (lambda* (#:key inputs #:allow-other-keys)
-                              (system (string-append
-                                       #$(this-package-native-input "dbqn")
-                                       "/bin/dbqn ./genRuntime "
-                                       #$(this-package-input
-                                          "bqn-bytecode-sources")
-                                       "/share/"))))
-                          (replace 'check
-                            (lambda* (#:key inputs tests?
-                                      #:allow-other-keys)
-                              (when tests?
-                                ;; Created using test/README.md. Skipping
-                                ;; squeeze* checks, as they require a special
-                                ;; version of CBQN to be built.
-                                (map (lambda (x)
-                                       (system (string-append
-                                                "./test/"
-                                                x
-                                                ".sh "
-                                                #$(this-package-input
-                                                   "bqn-bytecode-sources")
-                                                "/share/")))
-                                     '("mainCfgs"
-                                       "x86Cfgs"
-                                       "moreCfgs"))
-                                (map (lambda (x)
-                                       (system (string-append
-                                                "./BQN ./test/"
-                                                x
-                                                ".bqn")))
-                                     '("cmp"
-                                       "equal"
-                                       "copy"
-                                       "bitcpy"
-                                       "random"))
-                                (system "make -C test/ffi"))))
-                            (replace 'install
-                              (lambda* (#:key outputs #:allow-other-keys)
-                                (let* ((bin (string-append
-                                             (assoc-ref outputs "out")
-                                                           "/bin"))
-                                       (lib (string-append
-                                             (assoc-ref outputs "lib")
-                                             "/lib")))
-                                  (mkdir-p bin)
-                                  (mkdir-p lib)
-                                  (chmod "BQN" #o755)
-                                  (copy-recursively "BQN"
-                                                    (string-append bin
-                                                                   "/bqn"))
-                                  (install-file "libcbqn.so" lib)))))))
-            (inputs (list bqn-bytecode-sources
-                          libffi
-                          singeli-bootstrap))))
+  (package
+    (inherit cbqn-bootstrap)
+    (name "cbqn")
+    (outputs '("out" "lib"))
+    (arguments
+     (list #:make-flags '(list "shared-o3" "o3n-singeli")
+           #:phases #~(modify-phases %standard-phases
+                        (delete 'configure)
+                        (add-before 'build 'link-singeli
+                          (lambda* (#:key inputs #:allow-other-keys)
+                            (symlink (string-append #$(this-package-input
+                                                       "singeli-bootstrap")
+                                                    "/share/singeli")
+                                     "Singeli")))
+                        (add-before 'build 'generate-bytecode
+                          (lambda* (#:key inputs #:allow-other-keys)
+                            (system (string-append #$(this-package-native-input
+                                                      "dbqn")
+                                                   "/bin/dbqn ./genRuntime "
+                                                   #$(this-package-input
+                                                      "bqn-bytecode-sources")
+                                                   "/share/"))))
+                        (replace 'check
+                          (lambda* (#:key inputs tests? #:allow-other-keys)
+                            (when tests?
+                              (map (lambda (x)
+                                     (system (string-append "./test/" x ".sh "
+                                                            #$(this-package-input
+                                                               "bqn-bytecode-sources")
+                                                            "/share/")))
+                                   '("mainCfgs" "x86Cfgs" "moreCfgs"))
+                              (map (lambda (x)
+                                     (system (string-append "./BQN ./test/" x
+                                                            ".bqn")))
+                                   '("cmp" "equal" "copy" "bitcpy" "random"))
+                              (system "make -C test/ffi"))))
+                        (replace 'install
+                          (lambda* (#:key outputs #:allow-other-keys)
+                            (let* ((bin (string-append (assoc-ref outputs
+                                                                  "out")
+                                                       "/bin"))
+                                   (lib (string-append (assoc-ref outputs
+                                                                  "lib")
+                                                       "/lib")))
+                              (mkdir-p bin)
+                              (mkdir-p lib)
+                              (chmod "BQN" 493)
+                              (copy-recursively "BQN"
+                                                (string-append bin "/bqn"))
+                              (install-file "libcbqn.so" lib)))))))
+    (inputs (list bqn-bytecode-sources libffi singeli-bootstrap))))
