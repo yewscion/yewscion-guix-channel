@@ -13,83 +13,81 @@
   #:use-module (gnu packages base)
   #:use-module (gnu packages pkg-config)
   #:use-module (gnu packages llvm)
-  #:use-module (gnu packages java))
-
-;; Currently this package is non-deterministic due to random generation in
-;; some of the primitives. This is marked as a TODO in the source code, but
-;; per the maintainer this package almost solely exists for the purpose of
-;; building CBQN at this point, and therefore is not a high priority. Git
-;; reports this here:
-;;
-;; src/BQN/types/callable/builtins/fns/EpsBuiltin.java:45:71:
-;; …<snip> // TODO these (and in ⊐) shouldn't be random numbers
-;;
-;; Reported Upstream Here: https://github.com/dzaima/BQN/issues/14
-;;
-;; This issue therefore means that none of the packages for bqn can be checked
-;; for non-determinism at this time, as dbqn is a prerequisite for all of
-;; them.
+  #:use-module (gnu packages java)
+  #:use-module (gnu packages compression))
 (define-public dbqn
-  (let* ((tag "0.2.1")
-         (revision "1")
-         (commit "0bbe096fc07d278b679a8479318f1722d096a03e")
-         (hash "1kxzxz2hrd1871281s4rsi569qk314aqfmng9pkqn8gv9nqhmph0")
-         (version (git-version tag revision commit)))
-    (package
-      (name "dbqn")
-      (version version)
-      (source (origin
-                (method git-fetch)
-                (uri (git-reference
-                      (url "https://github.com/dzaima/BQN")
-                      (commit commit)))
-                (file-name (git-file-name name version))
-                (sha256
-                 (base32
-                  hash))))
-      (outputs '("out"))
-      (build-system gnu-build-system)
-      (arguments
-       (list #:tests? #f ;While there is a "test" directory, there is no
-             ;; mechanism to run the tests other than to feed the files into the
-             ;; binary and check for an error. This is outside the scope of a
-             ;; packaging workflow, and would need to be fixed upstream
-             ;; instead. Issue Reported: https://github.com/dzaima/BQN/issues/12
-             ;; Maintainer says many of the tests fail, and so they will remain off
-             ;; until this is sorted out.
-             #:phases #~(modify-phases %standard-phases
-                          (delete 'configure)
-                          (replace 'build
-                            (lambda* _
-                              (invoke "./build")))
-                          (replace 'install
-                            (lambda* (#:key outputs #:allow-other-keys)
-                              (let* ((out (assoc-ref outputs "out"))
-                                     (dest-bin (string-append out "/bin"))
-                                     (dest-jar (string-append out
-                                                              "/share/java")))
-                                (mkdir-p dest-bin)
-                                (mkdir-p dest-jar)
-                                (copy-recursively "BQN"
-                                                  (string-append dest-bin
-                                                                 "/dbqn"))
-                                (chmod (string-append dest-bin "/dbqn") 493)
-                                (install-file "BQN.jar" dest-jar))))
-                          (add-after 'install 'subjars
-                            (lambda* (#:key outputs #:allow-other-keys)
-                              (let* ((out (assoc-ref outputs "out"))
-                                     (dest-bin (string-append out "/bin"))
-                                     (dest-jar (string-append out
-                                                              "/share/java")))
-                                (substitute* (string-append dest-bin "/dbqn")
-                                  (("BQN.jar")
-                                   (string-append dest-jar "/BQN.jar")))))))))
-      (native-inputs (list `(,openjdk17 "jdk")
-                           coreutils))
-      (synopsis "BQN implementation based on dzaima/APL")
-      (description "BQN implementation based on dzaima/APL.")
-      (home-page "https://github.com/dzaima/BQN")
-      (license license:expat))))
+  (package
+    (name "dbqn")
+    (version "0.2.1-1")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/dzaima/BQN")
+                    (commit "0bbe096fc07d278b679a8479318f1722d096a03e")))
+              (file-name (git-file-name name version))
+              (sha256
+               (base32
+                "1kxzxz2hrd1871281s4rsi569qk314aqfmng9pkqn8gv9nqhmph0"))))
+    (outputs '("out"))
+    (build-system gnu-build-system)
+    (arguments
+     ;; While there is a "test" directory, there is no
+     ;; mechanism to run the tests other than to feed the files into the
+     ;; binary and check for an error. This is outside the scope of a
+     ;; packaging workflow, and would need to be fixed upstream
+     ;; instead. Issue Reported: https://github.com/dzaima/BQN/issues/12
+     ;; Maintainer says many of the tests fail, and so they will remain off
+     ;; until this is sorted out.
+     (list #:tests? #f 
+           #:imported-modules `(,@%gnu-build-system-modules
+                                (guix build syscalls)
+                                (guix build ant-build-system))
+           #:modules `((guix build gnu-build-system)
+                       ((guix build ant-build-system) #:prefix ant:)
+                       (guix build utils))
+           #:phases #~(modify-phases %standard-phases
+                        (delete 'configure)
+                        (replace 'build
+                          (lambda* _
+                            (invoke "./build")))
+                        (add-after 'install 'reorder-jar-content
+                          (lambda* (#:key outputs #:allow-other-keys)
+                            (apply (assoc-ref ant:%standard-phases
+                                              'reorder-jar-content)
+                                   #:outputs (list outputs))))
+                        (add-after 'reorder-jar-content 'jar-indices
+                          (lambda* (#:key outputs #:allow-other-keys)
+                            (apply (assoc-ref ant:%standard-phases
+                                              'generate-jar-indices)
+                                   #:outputs (list outputs))))
+                        (add-after 'jar-indices 'fix-jar-timestamps
+                          (lambda* (#:key outputs #:allow-other-keys)
+                            (apply (assoc-ref ant:%standard-phases
+                                              'reorder-jar-content)
+                                   #:outputs (list outputs))))
+                        (replace 'install
+                          (lambda* (#:key outputs #:allow-other-keys)
+                            (let* ((out (assoc-ref outputs "out"))
+                                   (dest-bin (string-append out "/bin"))
+                                   (dest-jar (string-append out
+                                                            "/share/java")))
+                              (mkdir-p dest-bin)
+                              (mkdir-p dest-jar)
+                              (copy-recursively "BQN"
+                                                (string-append dest-bin
+                                                               "/dbqn"))
+                              (chmod (string-append dest-bin "/dbqn") 493)
+                              (install-file "BQN.jar" dest-jar)
+                              (substitute* (string-append dest-bin "/dbqn")
+                                (("BQN.jar")
+                                 (string-append dest-jar "/BQN.jar")))))))))
+    (native-inputs (list `(,openjdk17 "jdk")
+                         coreutils
+                         zip))
+    (synopsis "BQN implementation based on dzaima/APL")
+    (description "BQN implementation based on dzaima/APL.")
+    (home-page "https://github.com/dzaima/BQN")
+    (license license:expat)))
 (define bqn-bytecode-sources
   (let* ((tag "0")
          (revision "1")
