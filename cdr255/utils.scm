@@ -174,7 +174,6 @@ soundfonts.")
        ("stumpwm" ,stumpwm "lib")))
     (arguments
      '(#:asd-systems '("notify")
-       #:asd-files '("notify.asd")
        #:tests? #f
        #:phases
        (modify-phases %standard-phases
