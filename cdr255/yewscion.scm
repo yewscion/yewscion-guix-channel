@@ -261,7 +261,7 @@
     (home-page "https://git.sr.ht/~yewscion/yewscion-scripts")
     (license license:agpl3))))
 (define-public python-pygments-pseudotaxus
-  (let ((commit "aeceb2892009cf4ff091912da697030e2f456d54")
+  (let ((commit "be47d51866d5be49edbed919004e878a1aa3f056")
         (revision "1"))
     (package
      (name "python-pygments-pseudotaxus")
@@ -275,7 +275,7 @@
        (file-name (git-file-name name version))
        (sha256
         (base32
-         "1rd5bb9bfl471b24wdmcfg28j97qqyd3ck19nb61l6s8vav9fm08"))))
+         "0m195qb1waqf8v5kc6zcwsv2xjxxsrz5basvvch8h9v3idvs2l7z"))))
   (build-system python-build-system)
   (propagated-inputs (list python-pygments))
   (home-page "https://git.sr.ht/~yewscion/pygments-lexer-pseudocode-std")
