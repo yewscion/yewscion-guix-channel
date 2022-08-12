@@ -260,11 +260,11 @@
       "administration tasks."))
     (home-page "https://git.sr.ht/~yewscion/yewscion-scripts")
     (license license:agpl3))))
-(define-public python-pygments-lexer-pseudocode-std
-  (let ((commit "f37c5b6595cc43cf3caa953cc5b88ac47e49bfbb")
+(define-public python-pygments-pseudotaxus
+  (let ((commit "aeceb2892009cf4ff091912da697030e2f456d54")
         (revision "1"))
     (package
-     (name "python-pygments-lexer-pseudocode-std")
+     (name "python-pygments-pseudotaxus")
      (version (git-version "1.1.0" revision commit))
      (source
       (origin
@@ -275,12 +275,12 @@
        (file-name (git-file-name name version))
        (sha256
         (base32
-         "03fcy62gzd275indcjajx4xzhisr7nw60nzr1vg24dmxgmfphi2f"))))
+         "1rd5bb9bfl471b24wdmcfg28j97qqyd3ck19nb61l6s8vav9fm08"))))
   (build-system python-build-system)
   (propagated-inputs (list python-pygments))
   (home-page "https://git.sr.ht/~yewscion/pygments-lexer-pseudocode-std")
-  (synopsis "Pygments Lexer for a standard pseudocode")
-  (description "A Lexer for Pygments, following what could be considered a standard pseudocode.")
+  (synopsis "Pygments Lexer for Pseudotaxus Pseudocode")
+  (description "A Lexer for Pygments, following what could be a standardized pseudocode.")
   (license license:agpl3))))
 (define-public codechallenge-solutions
   (let ((commit "5b0f6af9240d93006e12660c45c95e0d310a6c2f")
