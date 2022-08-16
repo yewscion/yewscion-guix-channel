@@ -38,19 +38,17 @@ allowing users to log in and solve problems of their choice using Emacs.")
 (define-public emacs-bqn-mode
   (let* ((tag "0")
          (revision "1")
-         (commit "86ef8b4d32d272b2765cd4a6e6e0b70a4f3e99a2")
-         (hash "1m54pa9b8kp3qr9lysfznv3d830w4zxqg0qgxxxrdkkk4gz1aa7b")
-         (version (git-version tag revision commit)))
+         (commit "035f7731e0ca6c11bc3e7552809424e9773368ef"))
     (package
       (name "emacs-bqn-mode")
-      (version version)
+      (version (git-version tag revision commit))
       (source (origin
                 (method git-fetch)
                 (uri (git-reference
-                      (url "https://github.com/museoa/bqn-mode.git")
+                      (url "https://github.com/yewscion/bqn-mode.git")
                       (commit commit)))
                 (file-name (git-file-name name version))
-                (sha256 (base32 hash))))
+                (sha256 (base32 "1lzizakf6rami85lvxkk3csl1qawv9g4lvmq1dd540nrppj72i2l"))))
       (outputs '("out"))
       (build-system emacs-build-system)
       (synopsis "Major Mode for BQN")
