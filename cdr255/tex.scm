@@ -1173,4 +1173,3 @@ automatically if it detects that it is running under memoir. ")
 in @code{babel}.  It provides all the necessary macros, definitions and
 settings to typeset Russian documents.")
       (license license:lppl1.3c+))))
-texlive-babel-russian

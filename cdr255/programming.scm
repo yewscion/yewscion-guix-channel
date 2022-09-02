@@ -121,11 +121,10 @@ an implementation of the ISO standard 13751.")
     (license license:gpl3+)))
 (define-public carp
   (let ((commit "e32ec43a26c51ebd136776566909f19476df6ed9")
-        (revision "1")
-        (version "10.7.5"))
+        (revision "2"))
     (package
      (name "carp")
-     (version version)
+     (version (git-version "0.5.5" revision commit))
      (source
       (origin
        (method git-fetch)
@@ -136,6 +135,20 @@ an implementation of the ISO standard 13751.")
        (sha256
         (base32 "14jdnv0ljqvpr9ych1plfw7hp5q57a8j1bv8h3v345x06z783d07"))))
      (build-system haskell-build-system)
+     (arguments
+       `(#:phases
+       (modify-phases
+        %standard-phases
+        (add-after 'install 'install-core
+                   (lambda _
+                     (let* ((share-dir (string-append %output
+                                                      "/share/"
+                                                      ,name
+                                                      "-"
+                                                      ,version)))
+                       (copy-recursively "core" share-dir)
+                       (copy-recursively "bench" share-dir)
+                       (copy-recursively "examples" share-dir)))))))
      (inputs (list
               ghc-hunit
               ghc-ansi-terminal
