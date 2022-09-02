@@ -121,7 +121,7 @@ an implementation of the ISO standard 13751.")
     (license license:gpl3+)))
 (define-public carp
   (let ((commit "e32ec43a26c51ebd136776566909f19476df6ed9")
-        (revision "2"))
+        (revision "3"))
     (package
      (name "carp")
      (version (git-version "0.5.5" revision commit))
@@ -146,9 +146,15 @@ an implementation of the ISO standard 13751.")
                                                       ,name
                                                       "-"
                                                       ,version)))
-                       (copy-recursively "core" share-dir)
-                       (copy-recursively "bench" share-dir)
-                       (copy-recursively "examples" share-dir)))))))
+                       (copy-recursively "core" (string-append
+                                                 share-dir
+                                                 "/core"))
+                       (copy-recursively "bench" (string-append
+                                                  share-dir
+                                                  "/bench"))
+                       (copy-recursively "examples" (string-append
+                                                     share-dir
+                                                     "/examples"))))))))
      (inputs (list
               ghc-hunit
               ghc-ansi-terminal
