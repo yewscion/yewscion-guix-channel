@@ -143,9 +143,7 @@ an implementation of the ISO standard 13751.")
                    (lambda _
                      (let* ((share-dir (string-append %output
                                                       "/share/"
-                                                      ,name
-                                                      "-"
-                                                      ,version)))
+                                                      ,name)))
                        (copy-recursively "core" (string-append
                                                  share-dir
                                                  "/core"))
