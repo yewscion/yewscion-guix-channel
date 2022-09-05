@@ -108,7 +108,7 @@
      (license license:bsd-3))))
 ; Modified version of GNU Guix "apl" package for quick fixes when needed.
 (define-public gnu-apl
-  (let ((revision 1550))
+  (let ((revision 1587))
     (package
       (name "gnu-apl")
       (version (string-append "1.8-r" (number->string revision)))
@@ -120,7 +120,7 @@
                (revision revision)))
          (file-name (git-file-name name version))
          (sha256
-          (base32 "1bgc3a09f35zrqq2irhm1hspppnxjqas0fmcw14hkc7910br9ip3"))))
+          (base32 "07kksrkjn5scfzq7nfqzzbkgvay1ijirybmaybzrsrrfb0ydz1i4"))))
       (build-system gnu-build-system)
       (home-page "https://www.gnu.org/software/apl/")
       (inputs
