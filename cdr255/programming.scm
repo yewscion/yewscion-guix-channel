@@ -149,7 +149,8 @@
                                         #$(this-package-input "sqlite"))
                                        (string-append
                                         "--with-postgresql="
-                                        #$(this-package-input "postgresql"))
+                                        #$(this-package-input "postgresql")
+                                        "/bin/pg_config")
                                        "CORE_COUNT_WANTED=syl"
                                        "RATIONAL_NUMBERS_WANTED=yes")
              #:phases
@@ -164,12 +165,7 @@
                        (("^SVNINFO=.*")
                         (string-append "SVNINFO=" #$(number->string revision) "\n"))
                        ;; Requires running ‘svn info’ on a versioned directory.
-                       (("\\\\\"\\$ARCHIVE_SVNINFO\\\\\"") "\\\"\\\""))
-                     (substitute* "configure"
-                                  (("if test -x /usr/bin/pkg-config")
-                                   (string-append "if test -x "
-                                                  #$(this-package-input "pkg-config")
-                                                  "/bin/pkg-config"))))))))
+                       (("\\\\\"\\$ARCHIVE_SVNINFO\\\\\"") "\\\"\\\"")))))))
       (synopsis "APL interpreter")
       (description
        "GNU APL is a free interpreter for the programming language APL.  It is
