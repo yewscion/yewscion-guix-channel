@@ -1,9 +1,16 @@
 (define-module (cdr255 programming)
   #:use-module ((guix licenses) #:prefix license:)
   #:use-module (gnu packages admin)
+  #:use-module (gnu packages algebra)
   #:use-module (gnu packages base)
+  #:use-module (gnu packages bdw-gc)
   #:use-module (gnu packages clojure)
+  #:use-module (gnu packages databases)
+  #:use-module (gnu packages debug)
+  #:use-module (gnu packages file)
   #:use-module (gnu packages gettext)
+  #:use-module (gnu packages glib)
+  #:use-module (gnu packages gtk)
   #:use-module (gnu packages haskell)
   #:use-module (gnu packages haskell-check)
   #:use-module (gnu packages haskell-web)
@@ -11,16 +18,21 @@
   #:use-module (gnu packages java)
   #:use-module (gnu packages libffi)
   #:use-module (gnu packages maths)
+  #:use-module (gnu packages ncurses)
+  #:use-module (gnu packages onc-rpc)
+  #:use-module (gnu packages pkg-config)
   #:use-module (gnu packages pcre)
   #:use-module (gnu packages perl)
   #:use-module (gnu packages python)
   #:use-module (gnu packages readline)
   #:use-module (gnu packages sqlite)
+  #:use-module (gnu packages xorg)
   #:use-module (guix build-system clojure)
   #:use-module (guix build-system gnu)
   #:use-module (guix build-system haskell)
   #:use-module (guix build-system trivial)
   #:use-module (guix download)
+  #:use-module (guix svn-download)
   #:use-module (guix gexp)
   #:use-module (guix git-download)
   #:use-module (guix packages)
@@ -96,29 +108,73 @@
      (license license:bsd-3))))
 ; Modified version of GNU Guix "apl" package for quick fixes when needed.
 (define-public gnu-apl
-  (package
-    (name "gnu-apl")
-    (version "1.8")
-    (source
-     (origin
-      (method url-fetch)
-      (uri (string-append "mirror://gnu/apl/apl-" version ".tar.gz"))
-      (sha256
-       (base32
-        "1jxvv2h3y1am1fw6r5sn3say1n0dj8shmscbybl0qhqdia2lqkql"))))
-    (build-system gnu-build-system)
-    (home-page "https://www.gnu.org/software/apl/")
-    (inputs (list gettext-minimal lapack pcre2 sqlite readline))
-    (arguments
-     `(#:configure-flags (list "CXX_WERROR=no"
-                               (string-append                                
-                                "--with-sqlite3="
-                                (assoc-ref %build-inputs "sqlite")))))
-    (synopsis "APL interpreter")
-    (description
-     "GNU APL is a free interpreter for the programming language APL.  It is
+  (let ((revision 1550))
+    (package
+      (name "gnu-apl")
+      (version (string-append "1.8-r" (number->string revision)))
+      (source
+       (origin
+         (method svn-fetch)
+         (uri (svn-reference
+               (url "svn://svn.savannah.gnu.org/apl/trunk")
+               (revision revision)))
+         (file-name (git-file-name name version))
+         (sha256
+          (base32 "1bgc3a09f35zrqq2irhm1hspppnxjqas0fmcw14hkc7910br9ip3"))))
+      (build-system gnu-build-system)
+      (home-page "https://www.gnu.org/software/apl/")
+      (inputs
+       (list gettext-minimal
+             lapack
+             pcre2
+             readline
+             sqlite
+             ncurses/tinfo
+             fftw
+             libxcb
+             libx11
+             glibc
+             glibmm
+             libnsl
+             gtk+
+             gdk-pixbuf
+             cairo
+             postgresql
+             pkg-config
+             which
+             file))
+      (arguments
+       (list #:configure-flags #~(list (string-append
+                                        "--with-sqlite3="
+                                        #$(this-package-input "sqlite"))
+                                       (string-append
+                                        "--with-postgresql="
+                                        #$(this-package-input "postgresql"))
+                                       "CORE_COUNT_WANTED=syl"
+                                       "RATIONAL_NUMBERS_WANTED=yes")
+             #:phases
+             #~(modify-phases %standard-phases
+                 (add-before 'configure 'fix-configure
+                   (lambda _
+                     (substitute* "buildtag.sh"
+                       ;; Don't exit on failed SVN-related calls.
+                       (("^ +return 0\n") "")
+                       ;; Manually set the SVN revision, since the directory is
+                       ;; unversioned and we know it anyway.
+                       (("^SVNINFO=.*")
+                        (string-append "SVNINFO=" #$(number->string revision) "\n"))
+                       ;; Requires running ‘svn info’ on a versioned directory.
+                       (("\\\\\"\\$ARCHIVE_SVNINFO\\\\\"") "\\\"\\\""))
+                     (substitute* "configure"
+                                  (("if test -x /usr/bin/pkg-config")
+                                   (string-append "if test -x "
+                                                  #$(this-package-input "pkg-config")
+                                                  "/bin/pkg-config"))))))))
+      (synopsis "APL interpreter")
+      (description
+       "GNU APL is a free interpreter for the programming language APL.  It is
 an implementation of the ISO standard 13751.")
-    (license license:gpl3+)))
+      (license license:gpl3+))))
 (define-public carp
   (let ((commit "e32ec43a26c51ebd136776566909f19476df6ed9")
         (revision "3"))
