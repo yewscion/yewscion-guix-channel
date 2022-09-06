@@ -368,28 +368,28 @@ recurrences of, a substring.
 The package works equally in Plain TeX and LaTeX (though e-TeX is always
 required).  The strings to be processed may contain (expandable) macros.")
       (license license:lppl1.3c))))
-(define-public texlive-biblatex-apa
-  (let ((template (simple-texlive-package
-                   "texlive-biblatex-apa"
-                   (list "/tex/latex/biblatex-apa/"
-                         "/doc/latex/biblatex-apa/")
-                   (base32
-                    "0ivf7xbzj4xd57sqfbi87hbr73rraqifkzvx06yxgq0gmzz0x6wl")
-                   #:trivial? #t)))
-    (package
-      (inherit template)
-      (home-page "https://ctan.org/pkg/biblatex-apa")
-      (synopsis "BibLaTeX citation and reference style for APA")
-      (description "This is a fairly complete BibLaTeX style (citations and
-references) for APA (American Psychological Association) publications.  It
-implements and automates most of the guidelines in the APA 7th edition style
-guide for citations and references.  An example document is also given which
-typesets every citation and reference example in the APA 7th edition style
-guide.
+;; (define-public texlive-biblatex-apa
+;;   (let ((template (simple-texlive-package
+;;                    "texlive-biblatex-apa"
+;;                    (list "/tex/latex/biblatex-apa/"
+;;                          "/doc/latex/biblatex-apa/")
+;;                    (base32
+;;                     "0ivf7xbzj4xd57sqfbi87hbr73rraqifkzvx06yxgq0gmzz0x6wl")
+;;                    #:trivial? #t)))
+;;     (package
+;;       (inherit template)
+;;       (home-page "https://ctan.org/pkg/biblatex-apa")
+;;       (synopsis "BibLaTeX citation and reference style for APA")
+;;       (description "This is a fairly complete BibLaTeX style (citations and
+;; references) for APA (American Psychological Association) publications.  It
+;; implements and automates most of the guidelines in the APA 7th edition style
+;; guide for citations and references.  An example document is also given which
+;; typesets every citation and reference example in the APA 7th edition style
+;; guide.
 
-This version of the package requires use of csquotes ≥4.3, BibLaTeX ≥3.4, and
-the biber backend for BibLaTeX ≥2.5.")
-      (license license:lppl1.3c))))
+;; This version of the package requires use of csquotes ≥4.3, BibLaTeX ≥3.4, and
+;; the biber backend for BibLaTeX ≥2.5.")
+;;       (license license:lppl1.3c))))
 (define-public texlive-latex-setspace
   (let ((template (simple-texlive-package
                    "texlive-latex-setspace"
@@ -835,62 +835,62 @@ date is extracted from Subversion Id keywords.  The file name may also be given
 explicitly as an optional argument.")
      (synopsis "Subversion variants of \\Provides… macros")
      (license license:lppl))))
-(define-public texlive-latex-newfloat
-  (package
-    (name "texlive-latex-newfloat")
-    (version (string-append
-              (number->string %texlive-revision)
-             "-1"))
-    (outputs '("out" "doc"))
-    (source
-     (texlive-origin
-      name
-      (number->string %texlive-revision)
-      (list "doc/latex/newfloat/"
-            "source/latex/newfloat/")
-       (base32 "1j6h4q8lf6ksfdygm6d13j5zkmlq7f9xmly0vhyjmd3bsfqmidmi")))
-    (build-system texlive-build-system)
-    (arguments
-     `(#:tex-directory "latex/newfloat"
-       #:build-targets '("newfloat.ins")
-       #:phases (modify-phases
-                 %standard-phases
-                 (add-after 'unpack
-                            'set-TEXINPUTS
-                            (lambda _
-                              (let ((cwd (getcwd)))
-                                (setenv "TEXINPUTS"
-                                        (string-append
-                                         cwd
-                                         "/source/latex/newfloat:")))))
-                 (add-after 'install 'install-more
-                            (lambda* (#:key outputs #:allow-other-keys)
-                              (let* ((dest-doc
-                                      (string-append (assoc-ref outputs "doc")
-                                                     "/share/doc/"
-                                                     ,name "-"
-                                                     ,version))
-                                     (source-doc
-                                      "doc/latex/newfloat/"))
-                                (install-file (string-append source-doc
-                                                             "README")
-                                                             dest-doc)
-                                (install-file (string-append source-doc
-                                                             "CHANGELOG")
-                                                             dest-doc)
-                                (install-file (string-append source-doc
-                                                             "SUMMARY")
-                                                             dest-doc)
-                                (install-file (string-append source-doc
-                                                             "newfloat.pdf")
-                                                             dest-doc)))))))
-    (home-page "https://ctan.org/pkg/newfloat")
-    (synopsis "Define new floating environments")
-    (description
-     "The package offers the command \\DeclareFloatingEnvironment, which the
-user may use to define new floating environments which behave like the LaTeX
-standard foating environments figure and table.")
-    (license license:lppl1.3)))
+;; (define-public texlive-latex-newfloat
+;;   (package
+;;     (name "texlive-latex-newfloat")
+;;     (version (string-append
+;;               (number->string %texlive-revision)
+;;              "-1"))
+;;     (outputs '("out" "doc"))
+;;     (source
+;;      (texlive-origin
+;;       name
+;;       (number->string %texlive-revision)
+;;       (list "doc/latex/newfloat/"
+;;             "source/latex/newfloat/")
+;;        (base32 "1j6h4q8lf6ksfdygm6d13j5zkmlq7f9xmly0vhyjmd3bsfqmidmi")))
+;;     (build-system texlive-build-system)
+;;     (arguments
+;;      `(#:tex-directory "latex/newfloat"
+;;        #:build-targets '("newfloat.ins")
+;;        #:phases (modify-phases
+;;                  %standard-phases
+;;                  (add-after 'unpack
+;;                             'set-TEXINPUTS
+;;                             (lambda _
+;;                               (let ((cwd (getcwd)))
+;;                                 (setenv "TEXINPUTS"
+;;                                         (string-append
+;;                                          cwd
+;;                                          "/source/latex/newfloat:")))))
+;;                  (add-after 'install 'install-more
+;;                             (lambda* (#:key outputs #:allow-other-keys)
+;;                               (let* ((dest-doc
+;;                                       (string-append (assoc-ref outputs "doc")
+;;                                                      "/share/doc/"
+;;                                                      ,name "-"
+;;                                                      ,version))
+;;                                      (source-doc
+;;                                       "doc/latex/newfloat/"))
+;;                                 (install-file (string-append source-doc
+;;                                                              "README")
+;;                                                              dest-doc)
+;;                                 (install-file (string-append source-doc
+;;                                                              "CHANGELOG")
+;;                                                              dest-doc)
+;;                                 (install-file (string-append source-doc
+;;                                                              "SUMMARY")
+;;                                                              dest-doc)
+;;                                 (install-file (string-append source-doc
+;;                                                              "newfloat.pdf")
+;;                                                              dest-doc)))))))
+;;     (home-page "https://ctan.org/pkg/newfloat")
+;;     (synopsis "Define new floating environments")
+;;     (description
+;;      "The package offers the command \\DeclareFloatingEnvironment, which the
+;; user may use to define new floating environments which behave like the LaTeX
+;; standard foating environments figure and table.")
+;;     (license license:lppl1.3)))
 (define-public texlive-latex-printlen
   (let ((template (simple-texlive-package
                    "texlive-latex-printlen"
