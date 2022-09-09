@@ -1173,3 +1173,101 @@ automatically if it detects that it is running under memoir. ")
 in @code{babel}.  It provides all the necessary macros, definitions and
 settings to typeset Russian documents.")
       (license license:lppl1.3c+))))
+(define-public texlive-luatex-luamplib
+  (package
+    (name "texlive-luatex-luamplib")
+    (version (string-append
+              (number->string %texlive-revision)
+             "-1"))
+    (outputs '("out" "doc"))
+    (source
+     (texlive-origin
+      name
+      (number->string %texlive-revision)
+      (list "source/luatex/luamplib/")
+       (base32 "1j9in4gvhr15xq00vplzv8if1fsipyijb0lpdss6vv5jkg45ps38")))
+    (build-system texlive-build-system)
+    (arguments
+     `(#:tex-directory "luatex/luamplib"
+       #:build-targets '("luamplib.dtx")
+       #:phases (modify-phases
+                 %standard-phases
+                 (add-after 'unpack
+                            'set-TEXINPUTS
+                            (lambda _
+                              (let ((cwd (getcwd)))
+                                (setenv "TEXINPUTS"
+                                        (string-append
+                                         cwd
+                                         "/source/luatex/luamplib:")))))
+                 (add-after 'build 'build-docs
+                            (lambda _
+                              ;; From Makefile
+                              (system "cd source/luatex/luamplib/ && latexmk -lualatex -recorder- luamplib.dtx")))
+                 (add-after 'install 'install-docs
+                            (lambda* (#:key outputs #:allow-other-keys)
+                              (let* ((dest-doc
+                                      (string-append (assoc-ref outputs "doc")
+                                                     "/share/doc/"
+                                                     ,name "-"
+                                                     ,version))
+                                     (source-doc
+                                      "source/luatex/luamplib/"))
+                                (install-file (string-append source-doc
+                                                             "luamplib.pdf")
+                                              dest-doc)))))))
+
+    (inputs (list texlive-libertine
+                  texlive-metalogo
+                  texlive-latex-mdwtools
+                  texlive-inconsolata
+                  texlive-fonts-iwona
+                  texlive-grfext
+                  texlive-hologo
+                  texlive-tools
+                  texlive-latex-fancyvrb
+                  texlive-xcolor
+                  texlive-hyperref
+                  texlive-stringenc
+                  texlive-lm
+                  texlive-luaotfload))
+    (home-page "https://ctan.org/pkg/luamplib")
+    (synopsis "Use LuaTeX’s built-in METAPOST interpreter")
+    (description
+     "The package enables the user to specify METAPOST diagrams (which may include colour specifications from the color or xcolor packages) into a document, using LuaTeX’s built-in METAPOST library.
+
+The facility is only available in PDF mode. ")
+    (license license:gpl2)))
+(define-public texlive-hologo
+  (package
+    (name "texlive-hologo")
+    (version (string-append
+              (number->string %texlive-revision)
+             "-1"))
+    (outputs '("out"))
+    (source
+     (texlive-origin
+      name
+      (number->string %texlive-revision)
+      (list "source/latex/hologo/")
+       (base32 "0by96mq2whsflfva842givdb92swmhpfiniysxck17g9dwlq6qmq")))
+    (build-system texlive-build-system)
+    (arguments
+     `(#:tex-directory "latex/hologo"
+       #:build-targets '("hologo.dtx")
+       #:phases (modify-phases
+                 %standard-phases
+                 (add-after 'unpack
+                            'set-TEXINPUTS
+                            (lambda _
+                              (let ((cwd (getcwd)))
+                                (setenv "TEXINPUTS"
+                                        (string-append
+                                         cwd
+                                         "/source/latex/hologo:")))))
+                 )))
+    (home-page "https://ctan.org/pkg/hologo")
+    (synopsis "A collection of logos with bookmark support")
+    (description
+     "The package defines a single command \\hologo, whose argument is the usual case-confused ASCII version of the logo. The command is bookmark-enabled, so that every logo becomes available in bookmarks without further work.")
+    (license license:lppl1.3c)))
