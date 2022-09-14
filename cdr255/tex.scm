@@ -1271,3 +1271,67 @@ The facility is only available in PDF mode. ")
     (description
      "The package defines a single command \\hologo, whose argument is the usual case-confused ASCII version of the logo. The command is bookmark-enabled, so that every logo becomes available in bookmarks without further work.")
     (license license:lppl1.3c)))
+(define-public texlive-fonttable
+  (package
+    (name "texlive-fonttable")
+    (version (string-append
+              (number->string %texlive-revision)
+             "-1"))
+    (outputs '("out" "doc"))
+    (source
+     (texlive-origin
+      name
+      (number->string %texlive-revision)
+      (list "source/latex/fonttable/")
+       (base32 "1qjilvy77072jpbdc4p4qfy5d4n2ww2wcm5drwvai6p2aclqf29x")))
+    (build-system texlive-build-system)
+    (arguments
+     `(#:tex-directory "latex/fonttable"
+       #:build-targets '("fonttable.ins")
+       #:phases (modify-phases
+                 %standard-phases
+                 (add-after 'unpack
+                            'set-TEXINPUTS
+                            (lambda _
+                              (let ((cwd (getcwd)))
+                                (setenv "TEXINPUTS"
+                                        (string-append
+                                         cwd
+                                         "/source/latex/fonttable:")))))
+                 (add-after 'build 'build-docs
+                            (lambda _
+                              ;; From Makefile
+                              (system "cd source/latex/fonttable/ && latexmk -lualatex -recorder- fonttable.dtx")))
+                 (add-after 'install 'install-docs
+                            (lambda* (#:key outputs #:allow-other-keys)
+                              (let* ((dest-doc
+                                      (string-append (assoc-ref outputs "doc")
+                                                     "/share/doc/"
+                                                     ,name "-"
+                                                     ,version))
+                                     (source-doc
+                                      "source/latex/fonttable/"))
+                                (install-file (string-append source-doc
+                                                             "fonttable.pdf")
+                                              dest-doc)))))))
+    (inputs (list texlive-libertine
+                  texlive-metalogo
+                  texlive-latex-mdwtools
+                  texlive-inconsolata
+                  texlive-fonts-iwona
+                  texlive-grfext
+                  texlive-hologo
+                  texlive-tools
+                  texlive-latex-fancyvrb
+                  texlive-xcolor
+                  texlive-hyperref
+                  texlive-stringenc
+                  texlive-lm
+                  texlive-luaotfload))
+    (home-page "https://ctan.org/pkg/fonttable")
+    (synopsis "Print font tables from a LaTeX document")
+    (description
+     " This is a package version of nfssfont.tex (part of the LaTeX distribution); it enables you to print a table of the characters of a font and/or some text (for demonstration or testing purposes), from within a document. (Packages such as testfont and nfssfont.tex provide these facilities, but they run as interactive programs: the user is expected to type details of what is needed.)
+
+Note that the package mftinc also has a \\fonttable function; the documentation explains how avoid a clash with that package.")
+    (license license:lppl1.3c)))
