@@ -23,11 +23,11 @@
   #:use-module (guix utils)
   #:use-module (gnu packages java))
 (define-public genpro
-  (let ((commit "028ff27687f2a51c6bf9e6c5f08b84304b144611")
+  (let ((commit "d226f19453cc7b51a9bc108e438cc83dcc7d84a2")
         (revision "1"))
     (package
      (name "genpro")
-     (version (git-version "0.1.0" revision commit))
+     (version (git-version "0.5.0" revision commit))
      (source
       (origin
        (method git-fetch)
@@ -37,7 +37,7 @@
        (file-name (git-file-name name version))
        (sha256
         (base32
-         "0nlnaf9ij7385j6ni87qi0vr93crx8hbpl8zim0nalwxy9z3jifg"))))
+         "1yr0jcazn0rl7i7pihmjnv3b9rv9ccsgjpaijvka2crsicwyf1rx"))))
      (build-system gnu-build-system)
      (arguments
       `(#:tests? #f))
@@ -55,7 +55,9 @@
                      texlive-biblatex
                      texlive-biblatex-apa
                      texlive-bin
+                     texlive-booktabs
                      texlive-capt-of
+                     texlive-context
                      texlive-csquotes
                      texlive-dvips
                      texlive-etoolbox
@@ -65,6 +67,7 @@
                      texlive-generic-ifptex
                      texlive-generic-iftex
                      texlive-generic-xstring
+                     texlive-hyperref
                      texlive-ifmtarg
                      texlive-kpathsea
                      texlive-latex-catchfile
@@ -102,17 +105,21 @@
                      texlive-listings
                      texlive-lm
                      texlive-luaotfload
+                     texlive-metapost
+                     texlive-pgf
                      texlive-svn-prov
                      texlive-tex-gyre
                      texlive-tracklang
                      texlive-varwidth
                      texlive-xcolor
                      texlive-xifthen))
-     (synopsis "Generate and Publish LaTeX files.")
+     (synopsis "Generate and Publish Academic Projects")
      (description
       (string-append
-       "Tool to consistently create and work with LaTeX projects."))
-     (home-page "https://git.sr.ht/~yewscion/genpro")
+       "Genpro is a tool written in Guile Scheme to easily and consistently create and iterate on papers in an academic setting.
+
+It's meant to provide me with an easy way to set up and compile LaTeX projects in the formats my professors want them in, as well as allow them to be hosted online after completion."))
+     (home-page "https://cdr255.com/projects/genpro/")
      (license license:agpl3))))
 (define-public pagr
   (let ((commit "920945e18202937af0e265c43c1b28cc6b3a75c0")
