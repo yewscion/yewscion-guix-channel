@@ -12,6 +12,7 @@
   #:use-module (gnu packages base)
   #:use-module (gnu packages package-management)
   #:use-module (gnu packages elf)
+  #:use-module (gnu packages compression)
   #:use-module (gnu packages)
   #:use-module (guix build-system gnu)
   #:use-module (guix build-system python)
@@ -23,7 +24,7 @@
   #:use-module (guix utils)
   #:use-module (gnu packages java))
 (define-public genpro
-  (let ((commit "ebd8fe176281280618df27768ff8d1ca52fb9c30")
+  (let ((commit "2828188f6a5b292f695e2c55852cab68f6bfc590")
         (revision "1"))
     (package
      (name "genpro")
@@ -37,24 +38,27 @@
        (file-name (git-file-name name version))
        (sha256
         (base32
-         "01zay4m6284aw9xbq0d98ac2yzk690czbcgx06k6bj8b0cnn8s9w"))))
+         "13hm4cpkqcgaj83a19vl956zwz8hv7bqkdqkrn625iq4wqb8j43j"))))
      (build-system gnu-build-system)
      (arguments
       `(#:tests? #f))
      (propagated-inputs (list
-                         biber))
+                         biber
+                         zip
+                         unzip
+                         texlive-bin
+                         ))
      (native-inputs (list
+                     guile-cdr255
                      pkg-config
                      guile-3.0
                      autoconf
                      automake
-                     biber
                      python-pygments
                      texinfo
                      texlive-base
                      texlive-biblatex
                      texlive-biblatex-apa
-                     texlive-bin
                      texlive-booktabs
                      texlive-capt-of
                      texlive-context
@@ -161,11 +165,11 @@ It's meant to provide me with an easy way to set up and compile LaTeX projects i
             (method git-fetch)
             (uri (git-reference
                   (url "https://git.sr.ht/~yewscion/guile-cdr255")
-                  (commit "c5bc0c4bce8c874bff609309dc4e722a90e7deec")))
+                  (commit "66ba67a5fbdc198224ec775e1e60725956f2b91b")))
             (file-name (git-file-name name version))
             (sha256
              (base32
-              "16fh15aj66zqx5sqx08c3b037539mmhzks84qbn1560hb6srw9bj"))))
+              "0dj0pg3n3ggx2xml04y2f7ampr7zqcr67r26vji41nacrryd0grg"))))
    (build-system gnu-build-system)
    (arguments
     `(#:modules
