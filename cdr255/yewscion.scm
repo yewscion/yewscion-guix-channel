@@ -324,8 +324,8 @@ It's meant to provide me with an easy way to set up and compile LaTeX projects i
 (define-public patchelf-wrapper
   (let* ((tag "0.0.1")
          (revision "2")
-         (commit "db5457d2b044739d4d18c9727c74e655a06370f8")
-         (hash "168xnxmvmfsbl34kw0rc1pci2mihq11cypp8k8281p0arch2jxwc")
+         (commit "d25559c5078123e020411c75f636aefcde481149")
+         (hash "19vxyar9n2y3d2pp7y2cmq1f01qbsxqkf94bv006idkwjyrjcw5g")
          (version (git-version tag revision commit)))
   (package
   (name "patchelf-wrapper")
