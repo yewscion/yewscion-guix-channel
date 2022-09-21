@@ -12,6 +12,7 @@
   #:use-module (gnu packages glib)
   #:use-module (gnu packages gtk)
   #:use-module (gnu packages haskell)
+  #:use-module (gnu packages haskell-apps)
   #:use-module (gnu packages haskell-check)
   #:use-module (gnu packages haskell-web)
   #:use-module (gnu packages haskell-xyz)
@@ -42,71 +43,71 @@
   (let ((source-version "10.7.5")
         (revision "1"))
     (package
-     (name "newlisp")
-     (version (string-append source-version "-" revision))
-     (source
-      (origin
-       (method url-fetch)
-       (uri (string-append
-             "https://sourceforge.net/projects/newlisp/files/newlisp-"
-             source-version
-             ".tgz/download"))
-       (file-name (string-append
-                   "newlisp-"
-                   source-version
-                   ".tgz"))
-       (sha256
-        (base32 "1v1607lv2q7vfnp21p5d3rpgp9jik2jqpbzk9ay7bcn2a7v0ybfw"))))
-     (build-system gnu-build-system)
-     (arguments
-      `(#:make-flags
-        (list (string-append "prefix=" (assoc-ref %outputs "out"))
-              "CC=gcc")))
-     (inputs (list libffi which readline))
-     (home-page "http://www.newlisp.org/")
-     (synopsis
-      "A LISP like, general purpose scripting language")
-     (description
-      (string-append
-       "newLISP is a scripting language for developing web applications "
-       "and programs in general and in the domains of artificial "
-       "intelligence (AI) and statistics."))
-     (license license:gpl3))))
+      (name "newlisp")
+      (version (string-append source-version "-" revision))
+      (source
+       (origin
+         (method url-fetch)
+         (uri (string-append
+               "https://sourceforge.net/projects/newlisp/files/newlisp-"
+               source-version
+               ".tgz/download"))
+         (file-name (string-append
+                     "newlisp-"
+                     source-version
+                     ".tgz"))
+         (sha256
+          (base32 "1v1607lv2q7vfnp21p5d3rpgp9jik2jqpbzk9ay7bcn2a7v0ybfw"))))
+      (build-system gnu-build-system)
+      (arguments
+       `(#:make-flags
+         (list (string-append "prefix=" (assoc-ref %outputs "out"))
+               "CC=gcc")))
+      (inputs (list libffi which readline))
+      (home-page "http://www.newlisp.org/")
+      (synopsis
+       "A LISP like, general purpose scripting language")
+      (description
+       (string-append
+        "newLISP is a scripting language for developing web applications "
+        "and programs in general and in the domains of artificial "
+        "intelligence (AI) and statistics."))
+      (license license:gpl3))))
 (define-public owl-lisp
   (let ((commit "a5dbf6c1b19c163d2f137abb9172ea2d0250abef")
         (revision "1"))
     (package
-     (name "owl-lisp")
-     (version (git-version "0.2" revision commit))
-     (source (origin
-              (method git-fetch)
-              (uri (git-reference
-                    (url "https://gitlab.com/owl-lisp/owl.git")
-                    (commit commit)))
-              (file-name (git-file-name name version))
-              (sha256
-               (base32
-                "0zs9hj0rhpa0ary6cbqyq9f1dx3hc6npl4iywqn7ps3a35kv4p8v"))))
-     (build-system gnu-build-system)
-     (arguments
-      `(#:tests? #f
-        #:make-flags
-        (let ((out (assoc-ref %outputs "out")))
-          (list (string-append "PREFIX=" out)))
-        #:phases (modify-phases %standard-phases
-                                (delete 'configure)
-                                (delete 'check)
-                                (delete 'delete-info-dir-file)
-                                (delete 'patch-dot-desktop-files))))
-     (inputs (list which))
-     (synopsis "A functional Scheme for world domination")
-     (description
-      (string-append
-       "Owl Lisp is a functional dialect of the Scheme programming language. It"
-       "is mainly based on the applicative subset of the R7RS standard."))
-     (home-page "https://gitlab.com/owl-lisp/owl")
-     (license license:bsd-3))))
-; Modified version of GNU Guix "apl" package for quick fixes when needed.
+      (name "owl-lisp")
+      (version (git-version "0.2" revision commit))
+      (source (origin
+                (method git-fetch)
+                (uri (git-reference
+                      (url "https://gitlab.com/owl-lisp/owl.git")
+                      (commit commit)))
+                (file-name (git-file-name name version))
+                (sha256
+                 (base32
+                  "0zs9hj0rhpa0ary6cbqyq9f1dx3hc6npl4iywqn7ps3a35kv4p8v"))))
+      (build-system gnu-build-system)
+      (arguments
+       `(#:tests? #f
+         #:make-flags
+         (let ((out (assoc-ref %outputs "out")))
+           (list (string-append "PREFIX=" out)))
+         #:phases (modify-phases %standard-phases
+                    (delete 'configure)
+                    (delete 'check)
+                    (delete 'delete-info-dir-file)
+                    (delete 'patch-dot-desktop-files))))
+      (inputs (list which))
+      (synopsis "A functional Scheme for world domination")
+      (description
+       (string-append
+        "Owl Lisp is a functional dialect of the Scheme programming language. It"
+        "is mainly based on the applicative subset of the R7RS standard."))
+      (home-page "https://gitlab.com/owl-lisp/owl")
+      (license license:bsd-3))))
+                                        ; Modified version of GNU Guix "apl" package for quick fixes when needed.
 (define-public gnu-apl
   (let ((revision 1587))
     (package
@@ -175,53 +176,53 @@ an implementation of the ISO standard 13751.")
   (let ((commit "e32ec43a26c51ebd136776566909f19476df6ed9")
         (revision "3"))
     (package
-     (name "carp")
-     (version (git-version "0.5.5" revision commit))
-     (source
-      (origin
-       (method git-fetch)
-       (uri (git-reference
-             (url "https://github.com/carp-lang/Carp.git")
-             (commit commit)))
-       (file-name (git-file-name name version))
-       (sha256
-        (base32 "14jdnv0ljqvpr9ych1plfw7hp5q57a8j1bv8h3v345x06z783d07"))))
-     (build-system haskell-build-system)
-     (arguments
+      (name "carp")
+      (version (git-version "0.5.5" revision commit))
+      (source
+       (origin
+         (method git-fetch)
+         (uri (git-reference
+               (url "https://github.com/carp-lang/Carp.git")
+               (commit commit)))
+         (file-name (git-file-name name version))
+         (sha256
+          (base32 "14jdnv0ljqvpr9ych1plfw7hp5q57a8j1bv8h3v345x06z783d07"))))
+      (build-system haskell-build-system)
+      (arguments
        `(#:phases
-       (modify-phases
-        %standard-phases
-        (add-after 'install 'install-core
-                   (lambda _
-                     (let* ((share-dir (string-append %output
-                                                      "/share/"
-                                                      ,name)))
-                       (copy-recursively "core" (string-append
-                                                 share-dir
-                                                 "/core"))
-                       (copy-recursively "bench" (string-append
-                                                  share-dir
-                                                  "/bench"))
-                       (copy-recursively "examples" (string-append
-                                                     share-dir
-                                                     "/examples"))))))))
-     (inputs (list
-              ghc-hunit
-              ghc-ansi-terminal
-              ghc-blaze-markup
-              ghc-blaze-html
-              ghc-cmark
-              ghc-edit-distance
-              ghc-hashable
-              ghc-optparse-applicative
-              ghc-split
-              ghc-open-browser
-              python))
-     (home-page "https://github.com/carp-lang/Carp")
-     (synopsis
-      "A statically typed lisp, without a GC, for real-time applications")
-     (description
-      "Carp is a programming language designed to work well for interactive and
+         (modify-phases
+             %standard-phases
+           (add-after 'install 'install-core
+             (lambda _
+               (let* ((share-dir (string-append %output
+                                                "/share/"
+                                                ,name)))
+                 (copy-recursively "core" (string-append
+                                           share-dir
+                                           "/core"))
+                 (copy-recursively "bench" (string-append
+                                            share-dir
+                                            "/bench"))
+                 (copy-recursively "examples" (string-append
+                                               share-dir
+                                               "/examples"))))))))
+      (inputs (list
+               ghc-hunit
+               ghc-ansi-terminal
+               ghc-blaze-markup
+               ghc-blaze-html
+               ghc-cmark
+               ghc-edit-distance
+               ghc-hashable
+               ghc-optparse-applicative
+               ghc-split
+               ghc-open-browser
+               python))
+      (home-page "https://github.com/carp-lang/Carp")
+      (synopsis
+       "A statically typed lisp, without a GC, for real-time applications")
+      (description
+       "Carp is a programming language designed to work well for interactive and
 performance sensitive use cases like games, sound synthesis and visualizations.
 
 The key features of Carp are the following:
@@ -235,64 +236,64 @@ The key features of Carp are the following:
 @item Straightforward integration with existing C code
 @item Lisp macros, compile time scripting and a helpful REPL
 @end itemize")
-     (license license:asl2.0))))
+      (license license:asl2.0))))
 (define-public ghc-open-browser
   (package
-   (name "ghc-open-browser")
-   (version "0.2.1.0")
-   (source (origin
-            (method url-fetch)
-            (uri (hackage-uri "open-browser" version))
-            (sha256
-             (base32
-              "0rna8ir2cfp8gk0rd2q60an51jxc08lx4gl0liw8wwqgh1ijxv8b"))))
-  (build-system haskell-build-system)
-  (home-page "https://github.com/rightfold/open-browser")
-  (synopsis "Open a web browser from Haskell.")
-  (description
-   "Open a web browser from Haskell.  Currently BSD, Linux, OS X and Windows are
+    (name "ghc-open-browser")
+    (version "0.2.1.0")
+    (source (origin
+              (method url-fetch)
+              (uri (hackage-uri "open-browser" version))
+              (sha256
+               (base32
+                "0rna8ir2cfp8gk0rd2q60an51jxc08lx4gl0liw8wwqgh1ijxv8b"))))
+    (build-system haskell-build-system)
+    (home-page "https://github.com/rightfold/open-browser")
+    (synopsis "Open a web browser from Haskell.")
+    (description
+     "Open a web browser from Haskell.  Currently BSD, Linux, OS X and Windows are
 supported.")
-  (license license:bsd-3)))
+    (license license:bsd-3)))
 (define leiningen
   (let ((commit "ef5ab97f058e8cb01e9c6a5a1cb6aa45c3b01d27")
         (revision "1"))
     (package
-     (name "leiningen")
-     (version (git-version "2.9.8" revision commit))
-     (source
-      (origin
-       (method git-fetch)
-       (uri (git-reference
-             (url "https://github.com/technomancy/leiningen.git")
-             (commit commit)))
-       (file-name (git-file-name name version))
-       (sha256
-        (base32
-         "1i6pn8vzzhgnm9hmlb92z65l79nxcxa5zdsrgg5svq7vmbixgnhl"))))
-     (build-system clojure-build-system)
-     (arguments
-      `(#:tests? #f))
-        ;; #:phases (modify-phases ))
-        ;;           %standard-phases ))
-        ;;           (delete 'configure) ))
-        ;;           (replace ))
-        ;;            'build ))
-        ;;            (lambda* (#:key inputs outputs #:allow-other-keys) ))
-        ;;              (setenv "CLASSPATH" ))
-        ;;                      (string-append ))
-        ;;                       (search-input-directory inputs "share/java")))))
-        ;;              (system "echo $CLASSPATH") ))
-        ;;              (chmod "./bin/lein-pkg" 777) ))
-        ;;              (system "sh ./bin/lein-pkg"))))))))) ))
-     (inputs (list `(,icedtea "jdk")
-                   clojure
-                   perl-digest-sha))
-     (synopsis "Generate and Publish LaTeX files.")
-     (description
-      (string-append
-       "Tool to consistently create and work with LaTeX projects."))
-     (home-page "https://git.sr.ht/~yewscion/genpro")
-     (license license:epl1.0))))
+      (name "leiningen")
+      (version (git-version "2.9.8" revision commit))
+      (source
+       (origin
+         (method git-fetch)
+         (uri (git-reference
+               (url "https://github.com/technomancy/leiningen.git")
+               (commit commit)))
+         (file-name (git-file-name name version))
+         (sha256
+          (base32
+           "1i6pn8vzzhgnm9hmlb92z65l79nxcxa5zdsrgg5svq7vmbixgnhl"))))
+      (build-system clojure-build-system)
+      (arguments
+       `(#:tests? #f))
+      ;; #:phases (modify-phases ))
+      ;;           %standard-phases ))
+      ;;           (delete 'configure) ))
+      ;;           (replace ))
+      ;;            'build ))
+      ;;            (lambda* (#:key inputs outputs #:allow-other-keys) ))
+      ;;              (setenv "CLASSPATH" ))
+      ;;                      (string-append ))
+      ;;                       (search-input-directory inputs "share/java")))))
+      ;;              (system "echo $CLASSPATH") ))
+      ;;              (chmod "./bin/lein-pkg" 777) ))
+      ;;              (system "sh ./bin/lein-pkg"))))))))) ))
+      (inputs (list `(,icedtea "jdk")
+                    clojure
+                    perl-digest-sha))
+      (synopsis "Generate and Publish LaTeX files.")
+      (description
+       (string-append
+        "Tool to consistently create and work with LaTeX projects."))
+      (home-page "https://git.sr.ht/~yewscion/genpro")
+      (license license:epl1.0))))
 ;;; Left the above at 'Error: unable to find or locate main class clojure.main'
 
 ;;; Pulled the below from nonguix, as I decided I don't know the tool well
@@ -327,40 +328,74 @@ supported.")
 automation and declarative configuration.  It gets out of your way and
 lets you focus on your code.")
     (license license:epl1.0)))
-(define-public leiningen-ng
+(define-public ghc-bnfc
   (package
-    (inherit leiningen-jar)
-    (name "leiningen-ng")
-    (version "2.9.8")
+    (name "ghc-bnfc")
+    (version "2.9.4")
     (source (origin
-              (method git-fetch)
-              (uri (git-reference
-                    (url "https://github.com/technomancy/leiningen.git")
-                    (commit version)))
-              (file-name (git-file-name name version))
+              (method url-fetch)
+              (uri (hackage-uri "BNFC" version))
               (sha256
                (base32
-                "1i6pn8vzzhgnm9hmlb92z65l79nxcxa5zdsrgg5svq7vmbixgnhl"))))
-    (build-system gnu-build-system)
-    (arguments
-     `(#:tests? #f
-       #:phases (modify-phases %standard-phases
-                  (delete 'configure)
-                  (delete 'build)
-                  (replace 'install
-                    (lambda _
-                      (let* ((lein-pkg (string-append (assoc-ref %build-inputs "source") "/bin/lein-pkg"))
-                             (lein-jar (string-append (assoc-ref  %build-inputs "leiningen-jar")
-                                                      "/share/leiningen-standalone.jar"))
-                             (bin-dir (string-append %output "/bin"))
-                             (lein (string-append bin-dir "/lein")))
-                        (mkdir-p bin-dir)
-                        (copy-file lein-pkg lein)
-                        (patch-shebang lein)
-                        (chmod lein #o555)
-                        (substitute* lein
-                          (("LEIN_JAR=.*") (string-append "LEIN_JAR=" lein-jar)))
-                        #t))))))
-    (inputs
-     `(("leiningen-jar" ,leiningen-jar)))))
+                "1gy7ggrf2zikyfi8anlj2zavs5b99z7rzs1lmyflrjd82a31bmzp"))))
+    (build-system haskell-build-system)
+    (inputs (list ghc-string-qq))
+    (native-inputs (list ghc-hspec
+                         ghc-quickcheck
+                         ghc-hunit
+                         ghc-temporary
+                         ghc-doctest
+                         ghc-cabal-doctest
+                         ghc-alex
+                         ghc-happy
+                         hspec-discover))
+    (home-page "http://bnfc.digitalgrammars.com/")
+    (synopsis "A compiler front-end generator.")
+    (license license:bsd-3)
+    (description
+     "The BNF Converter is a compiler construction tool generating a compiler
+front-end from a Labelled BNF grammar.  It was originally written to generate
+Haskell code, but can also be used for generating Agda, C, C++, Java, Ocaml and
+XML code. .  Given a Labelled BNF grammar the tool produces: an abstract syntax
+as a Haskell, Agda, C, C++, Ocaml module or Java directory, a case skeleton for
+the abstract syntax in the same language, an Alex, JLex, or Flex lexer generator
+file, a Happy, CUP, Bison, or Antlr parser generator file, a pretty-printer as a
+Haskell, Agda, C, C++, Java, or Ocaml module, an XML representation, a LaTeX
+file containing a readable specification of the language.")))
+  (define-public leiningen-ng
+    (package
+      (inherit leiningen-jar)
+      (name "leiningen-ng")
+      (version "2.9.8")
+      (source (origin
+                (method git-fetch)
+                (uri (git-reference
+                      (url "https://github.com/technomancy/leiningen.git")
+                      (commit version)))
+                (file-name (git-file-name name version))
+                (sha256
+                 (base32
+                  "1i6pn8vzzhgnm9hmlb92z65l79nxcxa5zdsrgg5svq7vmbixgnhl"))))
+      (build-system gnu-build-system)
+      (arguments
+       `(#:tests? #f
+         #:phases (modify-phases %standard-phases
+                    (delete 'configure)
+                    (delete 'build)
+                    (replace 'install
+                      (lambda _
+                        (let* ((lein-pkg (string-append (assoc-ref %build-inputs "source") "/bin/lein-pkg"))
+                               (lein-jar (string-append (assoc-ref  %build-inputs "leiningen-jar")
+                                                        "/share/leiningen-standalone.jar"))
+                               (bin-dir (string-append %output "/bin"))
+                               (lein (string-append bin-dir "/lein")))
+                          (mkdir-p bin-dir)
+                          (copy-file lein-pkg lein)
+                          (patch-shebang lein)
+                          (chmod lein #o555)
+                          (substitute* lein
+                            (("LEIN_JAR=.*") (string-append "LEIN_JAR=" lein-jar)))
+                          #t))))))
+      (inputs
+       `(("leiningen-jar" ,leiningen-jar)))))
 ;;; End part pulled from nonguix.
