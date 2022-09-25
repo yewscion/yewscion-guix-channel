@@ -88,7 +88,7 @@ guaranteed to work everywhere.  Simply enable the input mode using C-\\
 (period) followed by a letter to generate the corresponding symbol.")
     (license license:gpl3)))
 (define-public emacs-ogham-input
-  (let ((commit "ca7c88df6ca14fc62dd9bb58b9c5d086e62faa5d")
+  (let ((commit "d57671872a2c221723c7f9346d809976ff914351")
         (revision "1"))
     (package
      (name "emacs-ogham-input")
@@ -101,7 +101,7 @@ guaranteed to work everywhere.  Simply enable the input mode using C-\\
               (file-name (git-file-name name version))
               (sha256
                (base32
-                "0yy4g0wk6mv98hpm8qxaczdaf6cnbjsh35s3rpmsnrnq8wca4if7"))))
+                "0krj9fncvisa8ywxsc5mr707ac24lx55g33jybpj71dp7q9c8acm"))))
      (build-system emacs-build-system)
      (synopsis "Emacs input method for Ogham")
      (description
