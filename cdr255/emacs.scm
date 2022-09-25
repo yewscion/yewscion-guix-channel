@@ -87,3 +87,26 @@ guaranteed to work everywhere.  Simply enable the input mode using C-\\
 (‘toggle-input-method’) and choose APL-Z.  Once this mode is enabled, press \".\"
 (period) followed by a letter to generate the corresponding symbol.")
     (license license:gpl3)))
+(define-public emacs-ogham-input
+  (let ((commit "ca7c88df6ca14fc62dd9bb58b9c5d086e62faa5d")
+        (revision "1"))
+    (package
+     (name "emacs-ogham-input")
+     (version (git-version "0.0.1" revision commit))
+     (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://git.sr.ht/~yewscion/emacs-ogham-input")
+                    (commit commit)))
+              (file-name (git-file-name name version))
+              (sha256
+               (base32
+                "0yy4g0wk6mv98hpm8qxaczdaf6cnbjsh35s3rpmsnrnq8wca4if7"))))
+     (build-system emacs-build-system)
+     (synopsis "Emacs input method for Ogham")
+     (description
+      (string-append
+       "A quail-based input method for the Ogham script (beith-luis-nion)."))
+     (home-page
+      "https://git.sr.ht/~yewscion/emacs-ogham-input")
+     (license license:agpl3+))))
