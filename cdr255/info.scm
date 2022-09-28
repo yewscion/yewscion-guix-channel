@@ -1,12 +1,15 @@
 (define-module (cdr255 info)
   #:use-module ((guix licenses) #:prefix license:)
+  #:use-module (gnu packages autotools)
   #:use-module (gnu packages linux)
   #:use-module (gnu packages pkg-config)
   #:use-module (gnu packages base)
   #:use-module (gnu packages texinfo)
+  #:use-module (gnu packages tex)
   #:use-module (gnu packages emacs)
   #:use-module (gnu packages emacs-xyz)
   #:use-module (guix build-system copy)
+  #:use-module (guix build-system gnu)
   #:use-module (guix download)
   #:use-module (guix gexp)
   #:use-module (guix git-download)
@@ -60,7 +63,38 @@
      (description
       "An Info Manual of the Primer for Scheme by the Spritely Institute.")
      (license license:asl2.0))))
-scheme-primer
-
-
-
+(define-public apl-primer
+  (let* ((commit "7a947a30021eee7a66e241f0d70937ba8ab6c95a")
+         (revision "1"))
+    (package
+      (name "apl-primer")
+      (version (git-version "0" revision commit))
+      (source (origin
+                (method git-fetch)
+                (uri (git-reference
+                      (url "https://git.sr.ht/~yewscion/apl-primer")
+                      (commit commit)))
+                (file-name (git-file-name name version))
+                (sha256
+                 (base32
+                  "0fljvn7l0z7wp4n4l46frcav4haqljq5njlrsqqn51bd69zdvbpw"))))
+      (outputs '("out"))
+      (build-system gnu-build-system)
+      (arguments
+       (list
+        #:tests? #f))
+      (inputs (list texinfo
+                    autoconf
+                    automake
+                    pkg-config
+                    texlive-base
+                    texlive-bin
+                    texlive-tex-texinfo))
+      (synopsis "A TeXinfo primer on GNU APL")
+      (description
+       (string-append
+        "A guidebook to those interested in learning to use GNU APL as "
+        "a programming language."))
+      (home-page
+       "https://git.sr.ht/~yewscion/apl-primer/")
+      (license license:fdl1.3+))))
