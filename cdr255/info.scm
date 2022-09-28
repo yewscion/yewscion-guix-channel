@@ -64,7 +64,7 @@
       "An Info Manual of the Primer for Scheme by the Spritely Institute.")
      (license license:asl2.0))))
 (define-public apl-primer
-  (let* ((commit "7a947a30021eee7a66e241f0d70937ba8ab6c95a")
+  (let* ((commit "3aeb32c750bc6b7ad3b770e2d099ae38dba96e40")
          (revision "1"))
     (package
       (name "apl-primer")
@@ -77,7 +77,7 @@
                 (file-name (git-file-name name version))
                 (sha256
                  (base32
-                  "0fljvn7l0z7wp4n4l46frcav4haqljq5njlrsqqn51bd69zdvbpw"))))
+                  "0bws2c9n0qp5m679gf4x7zlhy1zcxx3g8yydlclhqx178n91ig8v"))))
       (outputs '("out"))
       (build-system gnu-build-system)
       (arguments
