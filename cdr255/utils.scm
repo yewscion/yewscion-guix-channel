@@ -377,9 +377,9 @@ ncurses for text display.")
       (home-page "https://gist.github.com/tomykaira/f0fd86b6c73063283afe550bc5d77594")
       (license license:expat))))
 (define-public libgourou
-  (let* ((tag "0.7.2")
+  (let* ((tag "0.8.0")
          (revision "1")
-         (commit "5e018ddbd8c7841254755cb87d986ecfa359932f")
+         (commit "6e3958f09e6eee9128c60e54ab81f2e834cd6ff8")
          (version (git-version tag revision commit)))
     (package
       (name "libgourou")
@@ -391,7 +391,7 @@ ncurses for text display.")
                       (commit commit)))
                 (sha256
                  (base32
-                  "1msa1d76h851sh0karpfha87n5993b8mlzxsjf7h90li5fndzywf"))))
+                  "1bdscfvzn9paw6qv684jg7ka0v2grnmlps41afb8k5003fafxvwy"))))
       (outputs '("out" "bin"))
       (build-system gnu-build-system)
       (arguments
@@ -470,9 +470,9 @@ ncurses for text display.")
                                "/include -I"
                                libzip
                                "/include"))
-                             (("LDFLAGS=")
+                             (("LDFLAGS \\+= -L\\$\\(ROOT\\) -lcrypto -lzip -lz -lcurl")
                               (string-append
-                               "LDFLAGS=-Wl,-rpath="
+                               "LDFLAGS += -Wl,-rpath="
                                (assoc-ref outputs "out")
                                "/lib -L"
                                updfparser
@@ -480,11 +480,12 @@ ncurses for text display.")
                                libzip
                                "/lib -L"
                                pugixml
-                               "/lib -L.. -lpugixml -lupdfparser -lzip"))
-                             (("TARGETS=acsmdownloader adept_activate adept_remove adept_loan_mgt")
+                               "/lib -L.. -lpugixml -lupdfparser -lzip -lz "
+                               "-lcrypto -lcurl"))
+                             (("TARGETS=acsmdownloader adept_activate adept_remove adept_loan_mgt launcher")
                               (string-append
                                "TARGETS=acsmdownloader adept_activate "
-                               "adept_remove adept_loan_mgt "
+                               "adept_remove adept_loan_mgt launcher "
                                "drmprocessorclientimpl.so "
                                "utils_common.so"))
                              (("^clean:")
@@ -528,7 +529,7 @@ ncurses for text display.")
                            macaron-base64
                            libzip
                            pugixml
-                           openssl
+                           openssl-3.0
                            curl
                            zlib))
       (synopsis "a Free ADEPT protocol implementation")
@@ -541,9 +542,9 @@ It supports:
       (home-page "http://blog.soutade.fr/post/2021/07/libgourou-a-free-adept-protocol-implementation.html")
       (license license:lgpl3))))
 (define-public knock
-  (let* ((tag "1.3")
+  (let* ((tag "1.3.1")
          (revision "1")
-         (commit "26fe53dfd8e20fbf6147996b763b76dac3ad8a93")
+         (commit "488fcabd69ca6f9e306a3ca30ccef600209115b1")
          (version (git-version tag revision commit)))
     (package
       (name "knock")
@@ -555,8 +556,7 @@ It supports:
                       (commit commit)))
                 (sha256
                  (base32
-                  "0vqvpw8kqnv3nxg80ja54d1f8bl3fgazhxdssnxw5x68x77kvvd3"))))
-      
+                  "1fp33wdx0rijv0v06ggc0d9yb4k5lhc4f48543pbaf2fql5npj4c"))))
       (outputs '("out"))
       (build-system gnu-build-system)
       (arguments
@@ -596,7 +596,7 @@ It supports:
                            macaron-base64
                            libzip
                            pugixml
-                           openssl
+                           openssl-3.0
                            curl
                            zlib))
       (synopsis "Convert ACSM files to PDFs/EPUBs with one command on Linux")
