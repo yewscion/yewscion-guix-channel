@@ -27,7 +27,7 @@
   #:use-module (guix utils)
   #:use-module (gnu packages java))
 (define-public genpro
-  (let ((commit "16c9baaeb61d33739f01b7ccf757a3f6270b7306")
+  (let ((commit "445c025c915a90bd35d0c649d2b8dd448d4bbaa0")
         (revision "1"))
     (package
       (name "genpro")
@@ -41,7 +41,7 @@
          (file-name (git-file-name name version))
          (sha256
           (base32
-           "08al885gh9kdy1w73z1r0rriflpcazk9w2ndlb2jyf685zpfq7lf"))))
+           "0z9kpp8magqphggqnlw8751d382zhr840bpnn4vwgrwf9wvqiizy"))))
       (build-system gnu-build-system)
       (arguments
        `(#:tests? #f))
@@ -49,8 +49,7 @@
                           biber
                           zip
                           unzip
-                          texlive-bin
-                          ))
+                          texlive-bin))
       (native-inputs (list
                       guile-cdr255
                       pkg-config
