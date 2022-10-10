@@ -167,11 +167,11 @@ It's meant to provide me with an easy way to set up and compile LaTeX projects i
               (method git-fetch)
               (uri (git-reference
                     (url "https://git.sr.ht/~yewscion/guile-cdr255")
-                    (commit "641b3e7047409afe8929508de39b552d68ddda0b")))
+                    (commit "8271404a84f20e7f358b71db2146372c61db3599")))
               (file-name (git-file-name name version))
               (sha256
                (base32
-                "1kf31a5xrj0ls2w9113f3j0n3zmzrf5x3xlw08wfmkdp6y45df3y"))))
+                "1nqs03y30mp5z4ybya83s5ybpb3mz2qp6fiabgs6xq74hby35zzh"))))
     (build-system gnu-build-system)
     (arguments
      `(#:modules
