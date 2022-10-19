@@ -7,6 +7,7 @@
   #:use-module (gnu packages guile-xyz)
   #:use-module (gnu packages haskell)
   #:use-module (gnu packages haskell-xyz)
+  #:use-module (gnu packages agda)
   #:use-module (gnu packages pkg-config)
   #:use-module (gnu packages python)
   #:use-module (gnu packages python-xyz)
@@ -372,7 +373,7 @@ It's meant to provide me with an easy way to set up and compile LaTeX projects i
        "https://github.com/yewscion/patchelf-wrapper")
       (license license:agpl3+))))
 (define-public pseudotaxus
-  (let ((commit "5a03e3183f921b6328e2b6bc58fb7e1c7628f617")
+  (let ((commit "b4633f766110e35193bdbb89df905994a1a31ff7")
         (revision "1"))
     (package
       (name "pseudotaxus")
@@ -385,12 +386,12 @@ It's meant to provide me with an easy way to set up and compile LaTeX projects i
                 (file-name (git-file-name name version))
                 (sha256
                  (base32
-                  "0k0vp34nx13d16i17fvvy8cjgdbibf0p6sq47jf88mwvxmh2bhlh"))))
+                  "1dlc4hs8c13h42341xjirhd3dj968w7nbbivark8d9z6mmgf96yx"))))
       (build-system gnu-build-system)
       (arguments
        `(#:tests? #f))
       (native-inputs (list autoconf automake pkg-config texinfo))
-      (inputs (list ghc ghc-bnfc ghc-alex ghc-happy))
+      (inputs (list ghc ghc-bnfc ghc-alex ghc-happy agda texlive-bin))
       (synopsis "Somewhat-standardized pseudocode syntax")
       (description
        "Pseudotaxus is a collection of standard symbols (words and punctuation) that
