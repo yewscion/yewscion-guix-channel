@@ -373,7 +373,7 @@ It's meant to provide me with an easy way to set up and compile LaTeX projects i
        "https://github.com/yewscion/patchelf-wrapper")
       (license license:agpl3+))))
 (define-public pseudotaxus
-  (let ((commit "b501a91a4a52aa6fcb75a0bfa4b903d187a9fa46")
+  (let ((commit "66510236fc3442ca4df600c1563c9406a8400f1b")
         (revision "1"))
     (package
       (name "pseudotaxus")
@@ -386,7 +386,7 @@ It's meant to provide me with an easy way to set up and compile LaTeX projects i
                 (file-name (git-file-name name version))
                 (sha256
                  (base32
-                  "1pv5b1mmg3s5vyh0qvjc47kxrqb9xzyvwji9k4nqi50q2nhr1v0h"))))
+                  "0s9bz6hszhzqg5chafa9si5g5bw0j5ycg2f43adqsmzp00pc0n9s"))))
       (build-system gnu-build-system)
       (arguments
        `(#:tests? #f))
