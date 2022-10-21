@@ -244,7 +244,7 @@ It's meant to provide me with an easy way to set up and compile LaTeX projects i
      "https://sr.ht/~yewscion/guile-cdr255")
     (license license:agpl3+)))
 (define-public yewscion-scripts
-  (let ((commit "c4a460538571fb1a8c49d94496a09a648af0c844")
+  (let ((commit "53b200a9e02b939850bff64dd9de405fa138c0c1")
         (revision "1"))
     (package
       (name "yewscion-scripts")
@@ -258,7 +258,7 @@ It's meant to provide me with an easy way to set up and compile LaTeX projects i
          (file-name (git-file-name name version))
          (sha256
           (base32
-           "0pibcwkxr23jlba1h5k8lq7lsr1a4bzxchxwi7asn82v58f3fr3z"))))
+           "0nr5dhsgpwkachbnazz3isjdwkw4qy8v2w8jcrc215hsyjk88ihx"))))
       (build-system gnu-build-system)
       (arguments
        `(#:tests? #f))
@@ -373,7 +373,7 @@ It's meant to provide me with an easy way to set up and compile LaTeX projects i
        "https://github.com/yewscion/patchelf-wrapper")
       (license license:agpl3+))))
 (define-public pseudotaxus
-  (let ((commit "b4633f766110e35193bdbb89df905994a1a31ff7")
+  (let ((commit "b501a91a4a52aa6fcb75a0bfa4b903d187a9fa46")
         (revision "1"))
     (package
       (name "pseudotaxus")
@@ -386,7 +386,7 @@ It's meant to provide me with an easy way to set up and compile LaTeX projects i
                 (file-name (git-file-name name version))
                 (sha256
                  (base32
-                  "1dlc4hs8c13h42341xjirhd3dj968w7nbbivark8d9z6mmgf96yx"))))
+                  "1pv5b1mmg3s5vyh0qvjc47kxrqb9xzyvwji9k4nqi50q2nhr1v0h"))))
       (build-system gnu-build-system)
       (arguments
        `(#:tests? #f))
