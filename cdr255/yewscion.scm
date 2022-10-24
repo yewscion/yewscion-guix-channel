@@ -244,7 +244,7 @@ It's meant to provide me with an easy way to set up and compile LaTeX projects i
      "https://sr.ht/~yewscion/guile-cdr255")
     (license license:agpl3+)))
 (define-public yewscion-scripts
-  (let ((commit "53b200a9e02b939850bff64dd9de405fa138c0c1")
+  (let ((commit "5e45d38f72053605a55cf1aaa18221e38d4db26d")
         (revision "1"))
     (package
       (name "yewscion-scripts")
@@ -258,7 +258,7 @@ It's meant to provide me with an easy way to set up and compile LaTeX projects i
          (file-name (git-file-name name version))
          (sha256
           (base32
-           "0nr5dhsgpwkachbnazz3isjdwkw4qy8v2w8jcrc215hsyjk88ihx"))))
+           "06qqmxq53pws27prd83vqz5lbz3afb9vgd6z2zyznvhpwxk267w6"))))
       (build-system gnu-build-system)
       (arguments
        `(#:tests? #f))
@@ -277,7 +277,7 @@ It's meant to provide me with an easy way to set up and compile LaTeX projects i
 (define-public python-pygments-pseudotaxus
   (let ((commit "fde115d019a7c3644f98275e7c2f3523629088b8")
         (revision "1"))
-    (package
+    (packageb
       (name "python-pygments-pseudotaxus")
       (version (git-version "1.1.0" revision commit))
       (source
