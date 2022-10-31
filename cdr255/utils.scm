@@ -83,10 +83,10 @@ soundfonts.")
       (license license:gpl3))))
 (define-public libadlmidi
   (let* ((revision "1")
-         (commit "5c83bcad53c1ab55715371884f05eb139459cbb7"))
+         (commit "84d27bc2bdbd6dd249537a7f7d2450cbd402482e"))
     (package
       (name "libadlmidi")
-      (version (git-version "1.5.0.1" revision commit))
+      (version (git-version "1.5.1" revision commit))
       (source (origin
                 (method git-fetch)
                 (uri (git-reference
@@ -95,7 +95,7 @@ soundfonts.")
                 (file-name (git-file-name name version))
                 (sha256
                  (base32
-                  "1vb87s6cps7dj8n3d13gqa8p8k1jxxzj1jgxp7q1kcsg3gnbag3z"))))
+                  "0lk61j72c1qwpq0a68vkpw7qiyv2byv7852iz4mvcivsi9gmlr6l"))))
       (outputs '("out"))
       (build-system cmake-build-system)
       (arguments
