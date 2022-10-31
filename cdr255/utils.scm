@@ -22,6 +22,7 @@
   #:use-module (gnu packages gettext)
   #:use-module (gnu packages python)
   #:use-module (gnu packages xorg)
+  #:use-module (gnu packages video)
   #:use-module (guix build-system asdf)
   #:use-module (guix build-system gnu)
   #:use-module (guix build-system copy)
@@ -80,6 +81,66 @@
 soundfonts.")
       (home-page "https://github.com/bisqwit/adlmidi")
       (license license:gpl3))))
+(define-public libadlmidi
+  (let* ((revision "1")
+         (commit "5c83bcad53c1ab55715371884f05eb139459cbb7"))
+    (package
+      (name "libadlmidi")
+      (version (git-version "1.5.0.1" revision commit))
+      (source (origin
+                (method git-fetch)
+                (uri (git-reference
+                      (url "https://github.com/Wohlstand/libADLMIDI.git")
+                      (commit commit)))
+                (file-name (git-file-name name version))
+                (sha256
+                 (base32
+                  "1vb87s6cps7dj8n3d13gqa8p8k1jxxzj1jgxp7q1kcsg3gnbag3z"))))
+      (outputs '("out"))
+      (build-system cmake-build-system)
+      (arguments
+       (list
+        #:configure-flags '(list "-DlibADLMIDI_STATIC=OFF"
+                                 "-DlibADLMIDI_SHARED=ON"
+                                 "-DWITH_UNIT_TESTS=ON"
+                                 "-DWITH_MIDI_SEQUENCER=ON"
+                                 "-DWITH_EMBEDDED_BANKS=ON"
+                                 "-DWITH_HQ_RESAMPLER=ON"
+                                 "-DWITH_MUS_SUPPORT=ON"
+                                 "-DWITH_XMI_SUPPORT=ON"
+                                 "-DUSE_DOSBOX_EMULATOR=ON"
+                                 "-DUSE_NUKED_EMULATOR=ON"
+                                 "-DUSE_OPAL_EMULATOR=ON"
+                                 "-DUSE_JAVA_EMULATOR=ON"
+                                 "-DWITH_GENADLDATA=ON"
+                                 "-DWITH_GENADLDATA_COMMENTS=ON"
+                                 "-DWITH_MIDIPLAY=ON"
+                                 "-DWITH_ADLMIDI2=ON"
+                                 "-DWITH_VLC_PLUGIN=OFF")
+        #:tests? #t
+        ;; #:phases #~(modify-phases
+        ;;             %standard-phases
+        ;;             )
+        ))
+      (native-inputs (list zita-resampler sdl2 pkg-config))
+      ;; (inputs (list ))
+      ;; (propagated-inputs (list ))
+      (synopsis "A Software MIDI Synthesizer library with OPL3 (YMF262) emulator")
+      (description "libADLMIDI is a free Software MIDI synthesizer library with OPL3 emulation
+
+Original ADLMIDI code: Copyright (c) 2010-2014 Joel Yliluoma bisqwit@iki.fi
+
+ADLMIDI Library API: Copyright (c) 2015-2022 Vitaly Novichkov admin@wohlnet.ru
+
+Library is based on the ADLMIDI, a MIDI player for Linux and Windows with OPL3 emulation:
+
+https://bisqwit.iki.fi/source/adlmidi.html.")
+      (home-page "https://github.com/Wohlstand/libADLMIDI")
+      (license (list license:gpl3+
+                     license:expat
+                     license:lgpl2.1+
+                     license:gpl2+)))))
+
 (define stumpwm-contrib
   (let ((commit "a7dc1c663d04e6c73a4772c8a6ad56a34381096a")
         (revision "1"))
