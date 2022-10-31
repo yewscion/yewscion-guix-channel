@@ -277,7 +277,7 @@ It's meant to provide me with an easy way to set up and compile LaTeX projects i
 (define-public python-pygments-pseudotaxus
   (let ((commit "fde115d019a7c3644f98275e7c2f3523629088b8")
         (revision "1"))
-    (packageb
+    (package
       (name "python-pygments-pseudotaxus")
       (version (git-version "1.1.0" revision commit))
       (source
