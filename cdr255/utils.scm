@@ -23,11 +23,17 @@
   #:use-module (gnu packages python)
   #:use-module (gnu packages xorg)
   #:use-module (gnu packages video)
+  #:use-module (gnu packages python-xyz)
+  #:use-module (gnu packages glib)
+  #:use-module (gnu packages)
+  #:use-module (gnu packages python-web)
   #:use-module (guix build-system asdf)
   #:use-module (guix build-system gnu)
   #:use-module (guix build-system copy)
   #:use-module (guix build-system cmake)
   #:use-module (guix build-system meson)
+  #:use-module (guix build-system python)
+  #:use-module (guix build-system pyproject)
   #:use-module (guix download)
   #:use-module (guix gexp)
   #:use-module (guix git-download)
@@ -769,3 +775,71 @@ There are five components that define a complete keyboard mapping:
 symbols, geometry, keycodes, compat, and types; these five components
 can be combined together using the @code{rules} component of this database.")
     (license license:x11)))
+(define-public python-ssdpy
+  (package
+    (name "python-ssdpy")
+    (version "0.4.1")
+    (source (origin
+              (method url-fetch)
+              (uri (pypi-uri "ssdpy" version))
+              (sha256
+               (base32
+                "09bl73i7nk4gq1g0z2v5cgxw71wi5lzmkjdyrmz18zzp22hccwa9"))))
+    (build-system python-build-system)
+    (home-page "https://github.com/MoshiBin/ssdpy")
+    (synopsis "Python SSDP library")
+    (description "Python SSDP library")
+    (license license:expat)))
+;; Not working as of 2022-11-01; python-3.10 difficult to build.
+;; 
+;; (define-public python-3.10
+;;   (package/inherit python
+;;     (name "python-3.10")
+;;     (version "3.10.0")
+;;     (source (origin
+;;               (method url-fetch)
+;;               (uri (string-append "https://www.python.org/ftp/python/"
+;;                                   version "/Python-" version ".tar.xz"))
+;;               (patches (search-patches
+;;                         "python-3-arm-alignment.patch"
+;;                         "python-3-deterministic-build-info.patch"
+;; ;                        "python-3-fix-tests.patch"
+;;                         "python-3-hurd-configure.patch"
+;;                         "python-3-search-paths.patch"
+;; ;                        "python-3-no-static-lib.patch"
+;;                         ))
+;;               (sha256
+;;                (base32
+;;                 "00mhn6kj4qkvkkv6hh2klnnjr0yk0c9hspp7njc7n6m1lvkzi6as"))
+;;               (modules '((guix build utils)))
+;;               (snippet
+;;                '(begin
+;;                   ;; Delete the bundled copy of libexpat.
+;;                   (delete-file-recursively "Modules/expat")
+;;                   (substitute* "Modules/Setup"
+;;                     ;; Link Expat instead of embedding the bundled one.
+;;                     (("^#pyexpat.*") "pyexpat pyexpat.c -lexpat\n"))
+;;                   ;; Delete windows binaries
+;;                   (for-each delete-file
+;;                             (find-files "Lib/distutils/command" "\\.exe$"))))))))
+
+
+;; (define-public python-controku
+;;   (package
+;;     (name "python-controku")
+;;     (version "1.0.0")
+;;     (source (origin
+;;               (method url-fetch)
+;;               (uri (pypi-uri "controku" version))
+;;               (sha256
+;;                (base32
+;;                 "18ysmjfzd4g1zm6zi8w4p5bkvg4sdwpqhnk95870vdyy9pyns1zb"))))
+;;     (build-system pyproject-build-system)
+;;     (propagated-inputs (list python-appdirs python-pygobject python-requests
+;;                              python-ssdpy))
+;;     (arguments
+;;      `(#:python ,python-3.10))
+;;     (home-page "")
+;;     (synopsis "Control Roku devices from the comfort of your own desktop")
+;;     (description "Control Roku devices from the comfort of your own desktop")
+;;     (license #f)))
