@@ -129,7 +129,7 @@ It's meant to provide me with an easy way to set up and compile LaTeX projects i
       (home-page "https://cdr255.com/projects/genpro/")
       (license license:agpl3))))
 (define-public pagr
-  (let ((commit "db8d028c0cb557416f9adb787baf32d9f3de9773")
+  (let ((commit "8a68e53e5d4fe6d232155583440e8fb968017905")
         (revision "1"))
     (package
       (name "pagr")
@@ -143,7 +143,7 @@ It's meant to provide me with an easy way to set up and compile LaTeX projects i
          (file-name (git-file-name name version))
          (sha256
           (base32
-           "0q0lwfgpb34cxd01i3843ynp28pijd53gvh7v5h4x0nfrilywh08"))))
+           "1dccdnff5skzlm7krgjb42v2avbhw9ja8w68bqf0gdl38lrigiz7"))))
       (build-system gnu-build-system)
 
       (arguments
