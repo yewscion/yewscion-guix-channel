@@ -161,88 +161,36 @@ It's meant to provide me with an easy way to set up and compile LaTeX projects i
       (home-page "https://git.sr.ht/~yewscion/pagr")
       (license license:agpl3))))
 (define-public guile-cdr255
-  (package
-    (name "guile-cdr255")
-    (version "0.1.1")
-    (source (origin
-              (method git-fetch)
-              (uri (git-reference
-                    (url "https://git.sr.ht/~yewscion/guile-cdr255")
-                    (commit "8271404a84f20e7f358b71db2146372c61db3599")))
-              (file-name (git-file-name name version))
-              (sha256
-               (base32
-                "1nqs03y30mp5z4ybya83s5ybpb3mz2qp6fiabgs6xq74hby35zzh"))))
-    (build-system gnu-build-system)
-    (arguments
-     `(#:modules
-       ((ice-9 match)
-        (ice-9 ftw)
-        ,@%gnu-build-system-modules)
-       #:phases
-       (modify-phases
-           %standard-phases
-         (add-after
-             'install
-             'hall-wrap-binaries
-           (lambda* (#:key inputs outputs #:allow-other-keys)
-             (let* ((compiled-dir
-                     (lambda (out version)
-                       (string-append
-                        out
-                        "/lib/guile/"
-                        version
-                        "/site-ccache")))
-                    (uncompiled-dir
-                     (lambda (out version)
-                       (string-append
-                        out
-                        "/share/guile/site"
-                        (if (string-null? version) "" "/")
-                        version)))
-                    (dep-path
-                     (lambda (env modules path)
-                       (list env
-                             ":"
-                             'prefix
-                             (cons modules
-                                   (map (lambda (input)
-                                          (string-append
-                                           (assoc-ref inputs input)
-                                           path))
-                                        ,''())))))
-                    (out (assoc-ref outputs "out"))
-                    (bin (string-append out "/bin/"))
-                    (site (uncompiled-dir out "")))
-               (match (scandir site)
-                 (("." ".." version)
-                  (for-each
-                   (lambda (file)
-                     (wrap-program
-                         (string-append bin file)
-                       (dep-path
-                        "GUILE_LOAD_PATH"
-                        (uncompiled-dir out version)
-                        (uncompiled-dir "" version))
-                       (dep-path
-                        "GUILE_LOAD_COMPILED_PATH"
-                        (compiled-dir out version)
-                        (compiled-dir "" version))))
-                   ,''("set-gitconfig"))
-                  #t))))))))
-    (native-inputs (list autoconf
-                         automake
-                         pkg-config
-                         texinfo))
-    (inputs (list guile-3.0))
-    (synopsis "User library and utility scripts.")
-    (description
-     (string-append
-      "Mostly a guile library, this is a personal project to make maintaining "
-      "multiple systems easier and the creation of new scripts easier."))
-    (home-page
-     "https://sr.ht/~yewscion/guile-cdr255")
-    (license license:agpl3+)))
+  (let ((commit "d191ee6e71534e83907d1c4b868b58038380b85e")
+        (revision "1"))
+    (package
+      (name "guile-cdr255")
+      (version (git-version "0.2.0" revision commit))
+      (source (origin
+                (method git-fetch)
+                (uri (git-reference
+                      (url "https://git.sr.ht/~yewscion/guile-cdr255")
+                      (commit commit)))
+                (file-name (git-file-name name version))
+                (sha256
+                 (base32
+                  "0aap7541dzjva67pfdqvxav49a4b0yc6c8nq9lgyn92lf3ambnyc"))))
+      (build-system gnu-build-system)
+      (arguments
+       `(#:phases
+         (modify-phases
+             %standard-phases
+           ;; Java and Guile programs don't need to be stripped.
+           (delete 'strip))))
+      (native-inputs (list autoconf automake pkg-config texinfo))
+      (inputs (list guile-3.0-latest))
+      (synopsis "Yewscion's Guile Library")
+      (description
+       (string-append
+        "A grab-bag collection of procedures I use in my projects."))
+      (home-page
+       "https://sr.ht/~yewscion/guile-cdr255")
+      (license license:agpl3+))))
 (define-public yewscion-scripts
   (let ((commit "305273e4773c79d1af0cae74d7386bc9dfebb9c8")
         (revision "1"))
