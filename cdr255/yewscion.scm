@@ -192,7 +192,7 @@ It's meant to provide me with an easy way to set up and compile LaTeX projects i
        "https://sr.ht/~yewscion/guile-cdr255")
       (license license:agpl3+))))
 (define-public yewscion-scripts
-  (let ((commit "305273e4773c79d1af0cae74d7386bc9dfebb9c8")
+  (let ((commit "0b466ac2874a8010d541f637ff9b7c9932dc71c2")
         (revision "1"))
     (package
       (name "yewscion-scripts")
@@ -206,14 +206,30 @@ It's meant to provide me with an easy way to set up and compile LaTeX projects i
          (file-name (git-file-name name version))
          (sha256
           (base32
-           "1bz90xc5c0n75vm0vh7f3jv6i3sjdbw36p21yh9dz9i2knn6ibij"))))
+           "00c7fdv7ykiwqiyvx41k0imw66dc0a7rqg4v7alnz0blia8ivrxd"))))
       (build-system gnu-build-system)
       (arguments
-       `(#:tests? #f))
+       `(#:phases
+         (modify-phases
+          %standard-phases
+          ;; This allows the paths for guile and java to be embedded in the scripts
+          ;; in bin/
+          (add-before
+           'patch-usr-bin-file 'remove-script-env-flags
+           (lambda* (#:key inputs #:allow-other-keys)
+             (substitute*
+              (find-files "./bin")
+              (("#!/usr/bin/env -S guile \\\\\\\\")
+               "#!/usr/bin/env guile \\")
+              (("\"java")
+               (string-append "\"" (search-input-file inputs "/bin/java"))))))
+          ;; Java and Guile programs don't need to be stripped.
+          (delete 'strip))))
       (native-inputs (list pkg-config
-                           guile-3.0
+                           guile-3.0-latest
                            autoconf
                            automake
+                           texinfo
                            guile-cdr255))
       (synopsis "Utility Scripts from yewscion")
       (description
