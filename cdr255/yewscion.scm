@@ -365,3 +365,47 @@ syntax-highlighting, and most importantly a limit on which words carry
 predefined meaning in a listing.")
       (home-page "https://cdr255.com/projects/pseudotaxus")
       (license license:agpl3+))))
+(define-public pseudotaxus-grove
+  (let* ((revision "1")
+         (commit "7ae57d0e122a85e245f2d66acec641def7c00992"))
+    (package
+     (name "pseudotaxus-grove")
+     (version (git-version "0.0.1" revision commit))
+     (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://git.sr.ht/~yewscion/pseudotaxus-grove")
+                    (commit commit)))
+              (file-name (git-file-name name version))
+              (sha256
+               (base32
+                "0hlm13haij7n7gh2abx2bw567ajg8nqii4yrsy9dhf8hzcbw7ams"))))
+     (outputs '("out"))
+     (build-system gnu-build-system)
+     (arguments
+      `(#:phases
+        (modify-phases
+         %standard-phases
+         ;; This allows the paths for guile and java to be embedded in the
+         ;; scripts in bin/
+         (add-before
+          'patch-usr-bin-file 'remove-script-env-flags
+          (lambda* (#:key inputs #:allow-other-keys)
+            (substitute*
+             (find-files "./bin")
+             (("#!/usr/bin/env -S guile \\\\\\\\")
+              "#!/usr/bin/env guile \\")
+             (("\"java")
+              (string-append "\"" (search-input-file inputs "/bin/java"))))))
+         ;; Java and Guile programs don't need to be stripped.
+         (delete 'strip))))
+     (native-inputs (list autoconf automake pkg-config texinfo pseudotaxus))
+     (inputs (list guile-3.0-latest))
+     (synopsis "The Pseudotaxus Core Library")
+     (description
+      (string-append
+       "A collection of algorithms implemented within the syntax of the "
+       "Pseudotaxus variant of Pseudocode."))
+     (home-page
+      "https://cdr255.com/projects/pseudotaxus-grove/")
+     (license license:agpl3+))))
