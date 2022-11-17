@@ -17,9 +17,11 @@
   #:use-module (gnu packages package-management)
   #:use-module (gnu packages elf)
   #:use-module (gnu packages compression)
+  #:use-module (gnu packages emacs)
   #:use-module (gnu packages)
   #:use-module (guix build-system gnu)
   #:use-module (guix build-system python)
+  #:use-module (guix build-system emacs)
   #:use-module (guix download)
   #:use-module (guix gexp)
   #:use-module (guix git-download)
@@ -409,3 +411,29 @@ predefined meaning in a listing.")
      (home-page
       "https://cdr255.com/projects/pseudotaxus-grove/")
      (license license:agpl3+))))
+(define-public pseudotaxus-emacs
+  (let* ((revision "1")
+         (commit "d7719da475e00cc45ff181b52fd12e75275a4336"))
+    (package
+      (name "pseudotaxus-emacs")
+      (version (git-version "0.0.1" revision commit))
+      (source (origin
+                (method git-fetch)
+                (uri (git-reference
+                      (url "https://git.sr.ht/~yewscion/pseudotaxus-emacs")
+                      (commit commit)))
+                (file-name (git-file-name name version))
+                (sha256
+                 (base32
+                  "1xjjjjcv25bha61kf3pcl18p7f0x46n2q6m4a2421rsia2avhlgn"))))
+      (build-system gnu-build-system)
+      (native-inputs (list autoconf automake pkg-config texinfo
+                           emacs-minimal guile-3.0-latest))
+      (synopsis "A major mode for editing Pseudotaxus files")
+      (description
+       (string-append
+        "This is a major mode for GNU Emacs, to allow for easy and robust editing of"
+        " Pseudotaxus pseudocode files."))
+      (home-page
+       "https://cdr255.com/projects/pseudotaxus/")
+      (license license:agpl3+))))
