@@ -413,7 +413,7 @@ standardized pseudocode.")
      (license license:agpl3+))))
 (define-public pseudotaxus-emacs
   (let* ((revision "1")
-         (commit "d7719da475e00cc45ff181b52fd12e75275a4336"))
+         (commit "99ad0fe2d8d6dc87f9988cca7160db17e8dd0caa"))
     (package
       (name "pseudotaxus-emacs")
       (version (git-version "0.0.1" revision commit))
@@ -425,15 +425,15 @@ standardized pseudocode.")
                 (file-name (git-file-name name version))
                 (sha256
                  (base32
-                  "1xjjjjcv25bha61kf3pcl18p7f0x46n2q6m4a2421rsia2avhlgn"))))
+                  "0y2jaqw4bcx4iz5q7ka7a7sq53m0a9l71syyf3lm755j9rzl3igv"))))
       (build-system gnu-build-system)
       (native-inputs (list autoconf automake pkg-config texinfo
                            emacs-minimal guile-3.0-latest))
       (synopsis "A major mode for editing Pseudotaxus files")
       (description
        (string-append
-        "This is a major mode for GNU Emacs, to allow for easy and robust editing of"
-        " Pseudotaxus pseudocode files."))
+        "This is a major mode for GNU Emacs, to allow for easy and robust "
+        "editing of Pseudotaxus pseudocode files."))
       (home-page
        "https://cdr255.com/projects/pseudotaxus/")
       (license license:agpl3+))))
