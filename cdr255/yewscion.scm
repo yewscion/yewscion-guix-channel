@@ -381,7 +381,7 @@ standardized pseudocode.")
               (file-name (git-file-name name version))
               (sha256
                (base32
-                "0hlm13haij7n7gh2abx2bw567ajg8nqii4yrsy9dhf8hzcbw7ams"))))
+                "1q0qinpfz30bqiy9ar4s74lz14iax0wy65m9xvpcary4grl3cnbc"))))
      (outputs '("out"))
      (build-system gnu-build-system)
      (arguments
