@@ -340,7 +340,7 @@ standardized pseudocode.")
        "https://github.com/yewscion/patchelf-wrapper")
       (license license:agpl3+))))
 (define-public pseudotaxus
-  (let ((commit "af49522b9218a81d4670e71edbcd1d4e01afe56e")
+  (let ((commit "838d40c6f02b94a965a523006a2dbf99781d10d2")
         (revision "1"))
     (package
       (name "pseudotaxus")
@@ -353,24 +353,23 @@ standardized pseudocode.")
                 (file-name (git-file-name name version))
                 (sha256
                  (base32
-                  "0f45nwi310qvq1zg1sqw8xjyqrz1priy7l7k2m4pp398iv2s8zdx"))))
+                  "1lc9mkp7wq4yjvv472jdmlpmd7jmadbbccfi9q67frx4ar1ywjja"))))
       (build-system gnu-build-system)
       (arguments
        `(#:out-of-source? #t))
       (native-inputs (list autoconf automake pkg-config texinfo))
       (inputs (list ghc ghc-bnfc ghc-alex ghc-happy agda texlive-bin))
       (synopsis "Somewhat-standardized pseudocode syntax")
-      (description
-       "Pseudotaxus is a collection of standard symbols (words and punctuation) that
-lend some consistent form to the definition of an algorithm in pseudocode.
-It's meant to provide pseudocode with an interpretable form,
-syntax-highlighting, and most importantly a limit on which words carry
-predefined meaning in a listing.")
+      (description "Pseudotaxus is a collection of standard symbols (words and
+      punctuation) that lend some consistent form to the definition of an
+      algorithm in pseudocode.  It's meant to provide pseudocode with an
+      interpretable form, syntax-highlighting, and most importantly a limit on
+      which words carry predefined meaning in a listing.")
       (home-page "https://cdr255.com/projects/pseudotaxus")
       (license license:agpl3+))))
 (define-public pseudotaxus-grove
   (let* ((revision "1")
-         (commit "7ae57d0e122a85e245f2d66acec641def7c00992"))
+         (commit "a940d14b1189d27fe50afff19cc947476652a684"))
     (package
      (name "pseudotaxus-grove")
      (version (git-version "0.0.1" revision commit))
