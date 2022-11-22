@@ -18,6 +18,7 @@
   #:use-module (gnu packages elf)
   #:use-module (gnu packages compression)
   #:use-module (gnu packages emacs)
+  #:use-module (gnu packages web-browsers)
   #:use-module (gnu packages)
   #:use-module (guix build-system gnu)
   #:use-module (guix build-system python)
@@ -30,7 +31,7 @@
   #:use-module (guix utils)
   #:use-module (gnu packages java))
 (define-public genpro
-  (let ((commit "b460062c6121d6a0fe524c3e6c19ba3f9ad4c1e3")
+  (let ((commit "154a448f2dbd7fe0c2dee0d783dcedabe7c9b005")
         (revision "1"))
     (package
       (name "genpro")
@@ -44,7 +45,7 @@
          (file-name (git-file-name name version))
          (sha256
           (base32
-           "1wsmlzpfq710nh4b1sbh0izaz4w7zs5vkq9q98jypprb91pzq4rf"))))
+           "14pv9llcs8fa1n7g53p0p5mc4gh73ksxiyxai6vw2ln8wsw6r56y"))))
       (build-system gnu-build-system)
       (arguments
        `(#:tests? #f))
@@ -52,7 +53,8 @@
                           biber
                           zip
                           unzip
-                          texlive-bin))
+                          texlive-bin
+                          lynx))
       (native-inputs (list
                       guile-cdr255
                       pkg-config
