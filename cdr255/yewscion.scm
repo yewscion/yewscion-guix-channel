@@ -243,7 +243,7 @@ It's meant to provide me with an easy way to set up and compile LaTeX projects i
       (home-page "https://git.sr.ht/~yewscion/yewscion-scripts")
       (license license:agpl3))))
 (define-public python-pygments-pseudotaxus
-  (let ((commit "c4ee93a4553a87faff870ec5b1b812037836895d")
+  (let ((commit "ae811209abbf2427d00dca7576ffd1be51226400")
         (revision "1"))
     (package
       (name "python-pygments-pseudotaxus")
@@ -257,7 +257,7 @@ It's meant to provide me with an easy way to set up and compile LaTeX projects i
          (file-name (git-file-name name version))
          (sha256
           (base32
-           "1694ig042a4nby1v84ghdahh1r4xszlqwab86p0lrvfcs4lkr679"))))
+           "0ayjg4skv852nihv57rin407rafglw3s626r79w1hhsvjifkazig"))))
       (build-system python-build-system)
       (propagated-inputs (list python-pygments))
       (home-page "https://git.sr.ht/~yewscion/pygments-lexer-pseudocode-std")
