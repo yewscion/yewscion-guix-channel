@@ -371,7 +371,7 @@ standardized pseudocode.")
       (license license:agpl3+))))
 (define-public pseudotaxus-grove
   (let* ((revision "1")
-         (commit "3f0770d47fbc7256b3cd38e171c89ef4b5bf3065"))
+         (commit "4cc9a64bfa48ad3630965623cb6910a114a52ed2"))
     (package
      (name "pseudotaxus-grove")
      (version (git-version "0.0.1" revision commit))
@@ -383,7 +383,7 @@ standardized pseudocode.")
               (file-name (git-file-name name version))
               (sha256
                (base32
-                "1vsy32bilzxj23f9xk57zi8q82gnbks0qkfyh1g4zhk10gy79j33"))))
+                "0m2a8lc98j9fn6q1jyzbvmsbpd3zgmhiy39cvgxp2vc0i4l08wp1"))))
      (outputs '("out"))
      (build-system gnu-build-system)
      (arguments
