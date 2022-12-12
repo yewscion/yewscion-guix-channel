@@ -342,7 +342,7 @@ standardized pseudocode.")
        "https://github.com/yewscion/patchelf-wrapper")
       (license license:agpl3+))))
 (define-public pseudotaxus
-  (let ((commit "17a49d6449febd8dfbcbb14491f2ac815e82d92d")
+  (let ((commit "cf94750d4dbf1e5bc40161a119cc9d24a7888435")
         (revision "1"))
     (package
       (name "pseudotaxus")
@@ -355,7 +355,7 @@ standardized pseudocode.")
                 (file-name (git-file-name name version))
                 (sha256
                  (base32
-                  "0acvpiwfcpzc8ilwnvsbshqz43yahx5rlpfqd2dh72naryk89qvs"))))
+                  "1m9yrrbkbnjnv5na7ls4n128jgkl0jymywkqpi72zhxdx5kqai9p"))))
       (build-system gnu-build-system)
       (arguments
        `(#:out-of-source? #t))
