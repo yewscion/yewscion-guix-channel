@@ -415,7 +415,7 @@ standardized pseudocode.")
      (license license:agpl3+))))
 (define-public pseudotaxus-emacs
   (let* ((revision "1")
-         (commit "14d0a9bb1e64281ee70e77c91059a370cea009d5"))
+         (commit "fe4d77a2137131d53727582d2f0dd1c0b5b387f9"))
     (package
       (name "pseudotaxus-emacs")
       (version (git-version "0.0.1" revision commit))
@@ -427,7 +427,7 @@ standardized pseudocode.")
                 (file-name (git-file-name name version))
                 (sha256
                  (base32
-                  "1bq79vpcgc5z0s0f53xk63h70m6i99xlgisp09vybnfk0kpi7fqz"))))
+                  "00n8cv02526ajgysrhqxxcvdy79kspdf3dyv3ibzp09fcx5ndxgf"))))
       (build-system gnu-build-system)
       (native-inputs (list autoconf automake pkg-config texinfo
                            emacs-minimal guile-3.0-latest))
