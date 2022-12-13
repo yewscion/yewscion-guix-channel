@@ -27,6 +27,7 @@
   #:use-module (gnu packages glib)
   #:use-module (gnu packages)
   #:use-module (gnu packages python-web)
+  #:use-module (gnu packages guile)
   #:use-module (guix build-system asdf)
   #:use-module (guix build-system gnu)
   #:use-module (guix build-system copy)
