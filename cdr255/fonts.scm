@@ -6,9 +6,17 @@
   #:use-module (guix git-download)
   #:use-module (guix build-system font)
   #:use-module (guix build-system gnu)
+  #:use-module (guix build-system python)
   #:use-module (guix utils)
   #:use-module (guix deprecation)
   #:use-module (gnu packages)
+  #:use-module (gnu packages check)
+  #:use-module (gnu packages graphviz)
+  #:use-module (gnu packages xml)
+  #:use-module (gnu packages python-build)
+  #:use-module (gnu packages python-check)
+  #:use-module (gnu packages python-compression)
+  #:use-module (gnu packages python-xyz)
   #:use-module (gnu packages fontutils))
 
 (define-public font-bqn386
@@ -165,3 +173,19 @@ specifically to support pseudographics, semigraphics, and private use
 characters.")
       (home-page "http://www.kreativekorp.com/software/fonts/index.shtml")
       (license license:silofl1.1))))
+
+(define-public font-fifteen-zeimusu
+  (package
+    (name "font-fifteen-zeimusu")
+    (version "4")
+    (source (origin
+              (method url-fetch)
+              (uri "https://fontlibrary.org/assets/downloads/fifteen/c1556403ec283a1b5a23ad483af659f9/fifteen.zip")
+              (sha256
+               (base32
+                "1rp24nq2q6qg0fbi2kbhi722pv7sgmir6mcmrwmyqcqx43837xi0"))))
+    (build-system font-build-system)
+    (home-page "https://fontlibrary.org/en/font/fifteen")
+    (synopsis "fifteen and quinze fonts by zeimusu")
+    (description "Fifteen and Quinze: Narrow Monospaced fonts Quinze is a narrow monospaced font, for programming and terminal emulators. It is designed to be narrow, and allow 132 columns to be comfortably fitted on a screen The 1, l and I are clearly distinguished, as are O and 0. The ascii circumflex is presented as an arrow, consistent with its use as exponentiation operator. Fifteen is a faux bitmap font. This font is designed to be used as a monotype font for use in a terminal, or at a larger size, to look like an over scaled bitmap. It is designed for 15 pixel use. It is as narrow as I could make it, and works well in a 132 column terminal window. It is, of course, monospaced and has clearly distinct 1I and l, and the zero is slashed. Character set is limited in this first release to ascii + smart quotes.")
+    (license license:silofl1.1)))
