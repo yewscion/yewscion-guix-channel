@@ -73,7 +73,7 @@ This module lays the groundwork for the other two modules.")
 (define-public java-logback-classic-fixed
   (package
     (inherit java-logback-core)
-    (name "java-logback-classic")
+    (name "java-logback-classic-fixed")
     (arguments
      `(#:jar-name "logback-classic.jar"
        #:source-dir "src/main/java"
