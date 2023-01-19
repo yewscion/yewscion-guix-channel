@@ -432,4 +432,25 @@ allrecipes.com")
     "This library implements a Markdown back-end (github flavor) for Org exporter,
 based on the `md back-end.")
    (license #f)))
-
+(define-public emacs-zetteldeft
+  (package
+   (name "emacs-zetteldeft")
+   (version "20221006.9f0927")
+   (source (origin
+            (method git-fetch)
+            (uri (git-reference
+                  (url "https://github.com/EFLS/zetteldeft.git")
+                  (commit "63be6478751376f04d36c6ea52fe65acd69f0927")))
+            (sha256
+             (base32
+              "0sjzszdlw2mplfh0c9qgsc1hi95hwr420vwaz6gh5vbxcmfy4qzm"))))
+   (build-system emacs-build-system)
+   (home-page "https://www.eliasstorms.net/zetteldeft/")
+   (propagated-inputs (list emacs-ace-window
+                            emacs-deft))
+   (synopsis "Zettelkasten for Emacs")
+   (description
+    "Zetteldeft is an extension of the Deft package for Emacs. Building on Deft’s
+search functionality, Zetteldeft provides a way to create and manage links
+between short notes.")
+   (license license:gpl3)))
