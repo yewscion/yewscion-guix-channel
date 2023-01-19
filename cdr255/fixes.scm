@@ -70,7 +70,7 @@ This module lays the groundwork for the other two modules.")
                    license:lgpl2.1))))
 
 
-(define-public java-logback-classic
+(define-public java-logback-classic-fixed
   (package
     (inherit java-logback-core)
     (name "java-logback-classic")
