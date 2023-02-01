@@ -1191,3 +1191,44 @@ the use of idiomatic keybindings for essential editing commands.  It can be
 configured to either disallow the alternative keybindings completely or to warn
 when they are being used.")
     (license license:gpl3)))
+
+(define-public emacs-haskell-mode
+  (package
+    (name "emacs-haskell-mode")
+    (version "20221113.1425")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/haskell/haskell-mode.git")
+                    (commit "a34ccdc54be15043ff0d253c3c20087524255491")))
+              (sha256
+               (base32
+                "1z2jcgdm5bc13zwl4y7fn5rxqqzs3i54qw32wb2hwpa42izwq159"))))
+    (build-system emacs-build-system)
+    (arguments
+     '(#:include '("^[^/]+.el$" "^[^/]+.el.in$"
+                   "^dir$"
+                   "^[^/]+.info$"
+                   "^[^/]+.texi$"
+                   "^[^/]+.texinfo$"
+                   "^doc/dir$"
+                   "^doc/[^/]+.info$"
+                   "^doc/[^/]+.texi$"
+                   "^doc/[^/]+.texinfo$"
+                   "^NEWS$"
+                   "^logo.svg$")
+       #:exclude '("^.dir-locals.el$" "^test.el$" "^tests.el$" "^[^/]+-test.el$"
+                   "^[^/]+-tests.el$")))
+    (home-page "https://github.com/haskell/haskell-mode")
+    (synopsis "A Haskell editing mode")
+    (description
+     "This package provides a major mode for editing Haskell (the functional
+programming language, see URL `http://www.haskell.org') in Emacs.  Some of its
+major features include: - syntax highlighting (font lock), - automatic
+indentation, - on-the-fly documentation, - interaction with inferior GHCi/Hugs
+instance, - scans declarations and places them in a menu.  See URL
+`https://github.com/haskell/haskell-mode and/or Info node
+`(haskell-mode)Introduction for more information.  Use `M-x
+haskell-mode-view-news` (after Haskell Mode is installed) to show information on
+recent changes in Haskell Mode.")
+    (license license:gpl3)))
