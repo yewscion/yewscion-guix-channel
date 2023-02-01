@@ -713,3 +713,34 @@ company-backends company-ledger)))")
    (synopsis "Terminal support for `company-quickhelp'")
    (description "Terminal support for `company-quickhelp'.")
    (license license:gpl3)))
+
+(define-public emacs-company-web
+  (package
+   (name "emacs-company-web")
+   (version "20220115.2146")
+   (source (origin
+            (method git-fetch)
+            (uri (git-reference
+                  (url "https://github.com/osv/company-web.git")
+                  (commit "863fb84b81ed283474e50330cd8d27b1ca0d74f1")))
+            (sha256
+             (base32
+              "0awl7b6p4vrxv0cy5xcxwihqzgk7kk6l7jsivyrj8s0f5jv2q71v"))))
+   (build-system emacs-build-system)
+   (propagated-inputs (list emacs-company emacs-dash emacs-web-completion-data))
+   (home-page "https://github.com/osv/company-web")
+   (synopsis
+    "Company version of ac-html, complete for web,html,emmet,jade,slim modes")
+   (description
+    "Same as ac-html, but for `company completion framework.  Configuration:
+(add-to-list company-backends company-web-html) (add-to-list company-backends
+company-web-jade) (add-to-list company-backends company-web-slim) or, for
+example, setup web-mode-hook: (define-key web-mode-map (kbd \"C-'\")
+company-web-html) (add-hook web-mode-hook (lambda () (set (make-local-variable
+company-backends) (company-web-html company-files)) (company-mode t))) When you
+use `emmet-mode (with `web-mode and `html-mode') you may autocomplete as well as
+regular html complete.  P.S: You may be interested in next packages:
+`ac-html-bootstrap - Twitter:Bootstrap completion data for company-web (and
+ac-html as well) `ac-html-csswatcher - Watch your project CSS/Less files for
+classes and ids `ac-html-angular - Angular 1.5 completion data;")
+   (license license:gpl3)))
