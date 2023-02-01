@@ -1267,3 +1267,23 @@ long poll on the client waiting for the buffer to change -- server push.  The
 response happens in an `after-change-functions hook.  Buffers that do not run
 these hooks will not be displayed live to clients.")
     (license license:public-domain)))
+
+(define-public emacs-inf-elixir
+  (package
+    (name "emacs-inf-elixir")
+    (version "20221120.2028")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/J3RN/inf-elixir.git")
+                    (commit "6fbb0867b586ad1bf8adc09cc55f33dfa72db833")))
+              (sha256
+               (base32
+                "0gwg2hjz0s6gkyifvni3mghrp7174prwrl46sbxx5pi9s435djpm"))))
+    (build-system emacs-build-system)
+    (home-page "https://github.com/J3RN/inf-elixir")
+    (synopsis "Run an interactive Elixir shell")
+    (description
+     "This package provides access to an IEx shell buffer, optionally running a
+specific command (e.g. iex -S mix, iex -S mix phx.server, etc)")
+    (license license:gpl3)))
