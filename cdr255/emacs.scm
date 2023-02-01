@@ -2546,3 +2546,33 @@ writing Shen.  The idea is that an editor that understands the code can be much
 more helpful than one that does not.  To this end the roadmap involves a full
 gamut of source code introspection and debugging tools.")
     (license license:bsd-3)))
+
+(define-public emacs-skeletor
+  (package
+    (name "emacs-skeletor")
+    (version "20210129.239")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/chrisbarrett/skeletor.el.git")
+                    (commit "f6e560a0bfe459e0b8a268047920ce1148f2ebf6")))
+              (sha256
+               (base32
+                "0xal5m59z8whrsr6id52gb6f22jy6dp349xvs6xxjdfamj1083r7"))))
+    (build-system emacs-build-system)
+    (propagated-inputs (list emacs-s emacs-f emacs-dash emacs-let-alist))
+    (arguments
+     '(#:include '("^[^/]+.el$" "^doc/[^/]+.texi$" "^licenses$"
+                   "^project-skeletons$")
+       #:exclude '()))
+    (home-page "unspecified")
+    (synopsis "Provides project skeletons for Emacs")
+    (description
+     "Skeletor provides project templates for Emacs.  It also automates the mundane
+parts of setting up a new project like version control, licenses and tooling.
+Skeletor comes with a number of predefined templates and allows you to easily
+create your own.  To create a new project interactively, run M-x
+skeletor-create-project'.  To define a new project, create a project template
+inside `skeletor-user-directory', then configure the template with the
+`skeletor-define-template macro.  See the info manual for all the details.")
+    (license license:gpl3)))
