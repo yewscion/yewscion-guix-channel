@@ -1369,3 +1369,24 @@ j-mode)))")
     (synopsis "Major mode for editing Julia source code")
     (description "This is the official Emacs mode for editing Julia programs.")
     (license license:expat)))
+
+(define-public emacs-julia-repl
+  (package
+    (name "emacs-julia-repl")
+    (version "20230112.1929")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/tpapp/julia-repl.git")
+                    (commit "57a15dfafed680ad7d81f779d414e8cb6717417c")))
+              (sha256
+               (base32
+                "1bpp7216j1a3agwfsidikf65mmym0xyhq2yn6s9ipsk25n6vac1s"))))
+    (build-system emacs-build-system)
+    (propagated-inputs (list emacs-s))
+    (home-page "https://github.com/tpapp/julia-repl")
+    (synopsis "A minor mode for a Julia REPL")
+    (description
+     "Run a julia REPL inside a terminal in Emacs.  In contrast to ESS, use the Julia
+REPL facilities for interactive features, such readline, help, debugging.")
+    (license license:expat)))
