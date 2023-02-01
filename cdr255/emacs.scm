@@ -498,4 +498,25 @@ config: (require v-mode)")
     "Auto format emacs-lisp code on save. ; Usage (elisp-autofmt-buffer) ;
 Auto-format the current buffer.  You may also use the minor mode
 `elisp-autofmt-mode which enables formatting the buffer on save.")
-   (license #f)))
+   (license license:gpl3)))
+
+(define-public emacs-bnf-mode
+  (package
+   (name "emacs-bnf-mode")
+   (version "20221205.1451")
+   (source (origin
+            (method git-fetch)
+            (uri (git-reference
+                  (url "https://github.com/sergeyklay/bnf-mode.git")
+                  (commit "1a7e177c282b8e07a2c33bd89232464b347dfc17")))
+            (sha256
+             (base32
+              "1r23hrl258v7r0y785p2jrjz0y0bpd4lpl9ji91pqzrm6amvbkn4"))))
+   (build-system emacs-build-system)
+   (home-page "https://github.com/sergeyklay/bnf-mode")
+   (synopsis "Major mode for editing BNF grammars.")
+   (description
+    "BNF Mode is a GNU Emacs major mode for editing BNF grammars.  Presently it
+provides basic syntax and font-locking for BNF files.  BNF notation is supported
+exactly form as it was first announced in the ALGOL 60 report.")
+   (license license:gpl3)))
