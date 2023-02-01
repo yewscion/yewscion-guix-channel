@@ -3025,3 +3025,34 @@ git://github.com/kanru/uuidgen-el.git")
      "Verb is a package that allows you to organize and send HTTP requests from Emacs.
  See the project's README.md file for more details.")
     (license license:gpl3)))
+
+(define-public emacs-versuri
+  (package
+    (name "emacs-versuri")
+    (version "20211104.1301")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/mihaiolteanu/versuri.git")
+                    (commit "c8ea562304194f3379ed8f9c6a785ce8ee72898e")))
+              (sha256
+               (base32
+                "1ak5f6g9sqd2dwplipnacg6kknkpf1j6df5am0hqcmlsk052d12s"))))
+    (build-system emacs-build-system)
+    (propagated-inputs (list emacs-dash
+                             emacs-request
+                             emacs-anaphora
+                             emacs-esxml
+                             emacs-s
+                             emacs-esqlite))
+    (home-page "https://github.com/mihaiolteanu/versuri/")
+    (synopsis "The lyrics package")
+    (description
+     "This package provides a package to fetch lyrics from well-known websites and
+store them in a local sqlite database.  Features: - makeitpersonal, genius,
+songlyrics, metrolyrics, musixmatch and azlyrics are all supported - add new
+websites or modify existing ones with `versuri-add-website - search the database
+with `completing-read and either for all the entries in the database, all the
+entries for a given artist or all the entries where the lyrics field contains a
+given string. - synchronous bulk request for lyrics for a given list of songs.")
+    (license license:gpl3)))
