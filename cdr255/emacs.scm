@@ -1936,3 +1936,22 @@ inserts an org-mode link with a title of a page found by the URL into the
 current buffer This code was a part of my Emacs config almost a year.  I decided
 to publish it as a separate package in case someone needs this feature too.")
     (license license:bsd-3)))
+
+(define-public emacs-org-clock-today
+  (package
+    (name "emacs-org-clock-today")
+    (version "20220918.514")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/mallt/org-clock-today-mode.git")
+                    (commit "b73cca120eb64538ab0666892a8b97b6d65b4d6b")))
+              (sha256
+               (base32
+                "147q7x6q9fi0damvyxlmh6f0asv0gkra9a86138m25133syv3w2g"))))
+    (build-system emacs-build-system)
+    (home-page "https://github.com/mallt/org-clock-today-mode")
+    (synopsis "Show total clocked time of the current day in the mode line")
+    (description
+     "Show the total clocked time of the current day in the mode line")
+    (license license:gpl3+)))
