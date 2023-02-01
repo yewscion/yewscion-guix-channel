@@ -3079,3 +3079,27 @@ The following site had a good idea on how to produce number of chars
 http://xahlee.org/emacs/elisp_count-region.html Inspired by http://750words.com
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;")
     (license license:gpl3+)))
+
+(define-public emacs-wordsmith-mode
+  (package
+    (name "emacs-wordsmith-mode")
+    (version "20210715.1517")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/istib/wordsmith-mode.git")
+                    (commit "5d40ceaa2b8d41ab3634ca377ceb6a74deeb2287")))
+              (sha256
+               (base32
+                "132l0i94nwrm676bpxw0wnr1drqwmapwv92mf4iyb209fr4hc2w2"))))
+    (build-system emacs-build-system)
+    (home-page "unspecified")
+    (synopsis "Syntax analysis and NLP text-processing in Emacs (OSX-only)")
+    (description
+     "Syntax highlighting (nouns, verb, adverbs...) in buffer.  This package wraps
+functionality of MacOSX's natural language processing tools, (see details here:
+https://developer.apple.com/library/mac/documentation/cocoa/reference/NSLinguisticTagger_Class/Reference/Reference.html)
+It tokenizes and highlights English text that matches specified tags.
+Dependencies: - OSX - syn (see instructions at
+https://github.com/stephencelis/syn) - ido-mode")
+    (license license:gpl3)))
