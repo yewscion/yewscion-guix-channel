@@ -2363,3 +2363,24 @@ more details on how this exporter works.")
      "This package provides a major mode for the pikchr (https://pikchr.org/) diagram
 markup language.")
     (license license:gpl3)))
+
+(define-public emacs-podcaster
+  (package
+    (name "emacs-podcaster")
+    (version "20200607.1054")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/lujun9972/podcaster.git")
+                    (commit "7a21173da0c57e6aa41dbdc33383047386b35eb5")))
+              (sha256
+               (base32
+                "1b2bhwipsyyydrqdxjsipzy170xdkfamd4mw5pwzjcgdjqz9wvxa"))))
+    (build-system emacs-build-system)
+    (home-page "https://github.com/lujun9972/podcaster")
+    (synopsis "Podcast client")
+    (description
+     "podcaster.el is an podcast client which is derived from syohex's emacs-rebuildfm
+podcaster.el provides showing podscasts list.  Its actions are - Play podcast
+mp3(requires `avplay or `ffplay or `itunes')")
+    (license license:gpl3+)))
