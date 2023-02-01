@@ -2000,3 +2000,40 @@ footer: ; ; # Local Variables: ; # eval: (org-d20-mode 1) ; # org-d20-party:
 #+BEGIN: kanban #+END:  somewhere and run `C-c C-c on it.  You can use
 `org-kanban/initialize to get this generated.")
     (license license:expat)))
+
+(define-public emacs-org-page
+  (package
+    (name "emacs-org-page")
+    (version "20170807.224")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/emacsorphanage/org-page.git")
+                    (commit "b25c3ef41da233306c157634c1f0b019d8b6adc0")))
+              (sha256
+               (base32
+                "06hh1g3rxadscjjn1ym358m2c8qn3s2x7ik0msadvm1zgx7ng4v5"))))
+    (build-system emacs-build-system)
+    (propagated-inputs (list emacs-ht
+                             emacs-simple-httpd
+                             emacs-mustache
+                             emacs-htmlize
+                             emacs-org
+                             emacs-dash
+                             emacs-git))
+    (arguments
+     '(#:include '("^[^/]+.el$" "^doc$" "^themes$")
+       #:exclude '()))
+    (home-page "https://github.com/kelvinh/org-page")
+    (synopsis "a static site generator based on org mode")
+    (description
+     "See documentation at https://github.com/kelvinh/org-page Org-page is a static
+site generator based on org mode.  Org-page provides following features: 1) org
+sources and html files managed by git 2) incremental publication (according to
+=git diff= command) 3) category support 4) tags support (auto generated) 5) RSS
+support (auto generated) 6) search engine support (auto generated) 7) a
+beautiful theme 8) theme customization support 9) commenting (implemented using
+disqus) 10) site visiting tracking (implemented using google analytics) 11)
+index/about page support (auto generated if no default provided) 12) site
+preview 13) highly customizable")
+    (license license:gpl3)))
