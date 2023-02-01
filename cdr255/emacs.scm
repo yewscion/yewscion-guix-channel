@@ -3182,3 +3182,29 @@ simple to include).  Only the \"63 bonus\" is available (see
 ones.  Changing all this can be done by simply modifying the corresponding
 functions in the definition of `yahtzee-fields-alist'.")
     (license license:gpl3+)))
+
+(define-public emacs-zzz-to-char
+  (package
+    (name "emacs-zzz-to-char")
+    (version "20210321.1707")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/mrkkrp/zzz-to-char.git")
+                    (commit "b7a6e5df26d85ac7f82866b0ecc3c5dc468de050")))
+              (sha256
+               (base32
+                "1y6g72j0yp33rzamqfkqi5qjmhskvm5jyvx7056jzrjb6w8h6anw"))))
+    (build-system emacs-build-system)
+    (propagated-inputs (list emacs-avy))
+    (home-page "https://github.com/mrkkrp/zzz-to-char")
+    (synopsis "Fancy version of `zap-to-char' command")
+    (description
+     "This package provides two new commands: `zzz-to-char and `zzz-up-to-char which
+work like the built-ins `zap-to-char and `zap-up-to-char', but allow the user to
+quickly select the exact character they want to zzz to.  The commands work like
+the built-ins when there is only one occurrence of the target character,
+excepting that they automatically work in the backward direction, too.  One can
+specify how many characters to scan from each side of the point, see
+`zzz-to-char-reach'.")
+    (license license:gpl3)))
