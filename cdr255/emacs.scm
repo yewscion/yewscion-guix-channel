@@ -166,7 +166,7 @@ abc2midi features.  Written for Emacs version 21.  May or may not work with
 previous versions.  See the Common Customizations section below.  Or run
 `abc-customize'.  This package is stored at
 https://github.com/mkjunker/abc-mode.")
-   (license #f)))
+   (license license:gpl3)))
 
 (define-public emacs-i-ching
   (package
@@ -192,7 +192,7 @@ finding patterns in randomness.  The descriptions of hexagrams and their
 classification have been drawn from public domain sources, tradition and
 antiquity.  Further details of usage along with reading & study material can be
 found in the README file.")
-   (license #f)))
+   (license license:gpl3)))
 
 (define-public emacs-ob-browser
   (package
@@ -214,7 +214,7 @@ found in the README file.")
    (home-page "https://github.com/krisajenkins/ob-browser")
    (synopsis "Render HTML in org-mode blocks.")
    (description "Render HTML in org-mode blocks.")
-   (license #f)))
+   (license license:gpl3+)))
 
 (define-public emacs-ob-elixir
   (package
@@ -233,7 +233,7 @@ found in the README file.")
    (home-page "http://github.com/zweifisch/ob-elixir")
    (synopsis "org-babel functions for elixir evaluation")
    (description "org-babel functions for elixir evaluation")
-   (license #f)))
+   (license license:gpl3)))
 
 (define-public emacs-ob-elm
   (package
@@ -254,7 +254,7 @@ found in the README file.")
    (description
     "Org-Babel support for evaluating Elm code ; System Requirements: All you need is
 Elm >= 0.19 installed on your system")
-   (license #f)))
+   (license license:gpl3)))
 
 (define-public emacs-ob-elvish
   (package
@@ -275,7 +275,7 @@ Elm >= 0.19 installed on your system")
     "Execute Elvish code inside org-mode src blocks. ; Requirements: - The Elvish
 shell: https://elvish.io/ - The elvish-mode Emacs major mode:
 https://github.com/ALSchwalm/elvish-mode")
-   (license #f)))
+   (license license:expat)))
 
 (define-public emacs-ob-http
   (package
@@ -294,7 +294,7 @@ https://github.com/ALSchwalm/elvish-mode")
    (home-page "http://github.com/zweifisch/ob-http")
    (synopsis "http request in org-mode babel")
    (description "http request in org-mode babel")
-   (license #f)))
+   (license license:gpl3)))
 
 (define-public emacs-ob-lfe
   (package
@@ -313,7 +313,7 @@ https://github.com/ALSchwalm/elvish-mode")
    (home-page "http://github.com/zweifisch/ob-lfe")
    (synopsis "org-babel functions for lfe evaluation")
    (description "org-babel functions for lfe evaluation")
-   (license #f)))
+   (license license:gpl3)))
 
 (define-public emacs-ob-nim 
   (package
@@ -334,7 +334,7 @@ https://github.com/ALSchwalm/elvish-mode")
     "Org-Babel support for evaluating nim code (based on ob-C).  very limited
 implementation: - currently only support :results output - not much in the way
 of error feedback")
-   (license #f)))
+   (license license:lgpl2.1)))
 
 (define-public emacs-ob-prolog 
   (package
@@ -360,7 +360,7 @@ package manager.  In addition to the normal header arguments ob-prolog also
 supports the :goal argument. :goal is the goal that prolog will run when
 executing the source block.  Prolog needs a goal to know what it is going to
 execute.")
-   (license #f)))
+   (license license:gpl3+)))
 
 (define-public emacs-ob-rust 
   (package
@@ -389,7 +389,7 @@ support :results output. ; Requirements: - You must have rust and cargo
 installed and the rust and cargo should be in your `exec-path rust command. -
 rust-script - `rust-mode is also recommended for syntax highlighting and
 formatting.  Not this particularly needs it, it just assumes you have it.")
-   (license #f)))
+   (license license:gpl3+)))
 
 (define-public emacs-org-chef 
   (package
@@ -411,7 +411,7 @@ formatting.  Not this particularly needs it, it just assumes you have it.")
     "org-chef is a package for managing recipes in org-mode.  One of the main
 features is that it can automatically extract recipes from websites like
 allrecipes.com")
-   (license #f)))
+   (license license:expat)))
 
 (define-public emacs-ox-gfm
   (package
@@ -431,7 +431,8 @@ allrecipes.com")
    (description
     "This library implements a Markdown back-end (github flavor) for Org exporter,
 based on the `md back-end.")
-   (license #f)))
+   (license license:gpl3+)))
+
 (define-public emacs-zetteldeft
   (package
    (name "emacs-zetteldeft")
