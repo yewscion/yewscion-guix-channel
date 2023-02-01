@@ -794,3 +794,36 @@ when the completions are build.  Therefore you are asked if you want to use a
 word list with only the 50k most frequent words.  The file will then be
 downloaded, processed and put in place.")
    (license license:gpl3)))
+
+(define-public emacs-docstr
+  (package
+   (name "emacs-docstr")
+   (version "20221231.1701")
+   (source (origin
+            (method git-fetch)
+            (uri (git-reference
+                  (url "https://github.com/emacs-vs/docstr.git")
+                  (commit "68a72e8a9abac28d8451769cab3846c342f657bc")))
+            (sha256
+             (base32
+              "1rdl0hqif6awkyv6wsmpdk08hx7g851n19rzqchcpksdfq8dk7nr"))))
+   (build-system emacs-build-system)
+   (propagated-inputs (list emacs-s))
+   (arguments
+    '(#:include '("^[^/]+.el$" "^[^/]+.el.in$"
+                  "^dir$"
+                  "^[^/]+.info$"
+                  "^[^/]+.texi$"
+                  "^[^/]+.texinfo$"
+                  "^doc/dir$"
+                  "^doc/[^/]+.info$"
+                  "^doc/[^/]+.texi$"
+                  "^doc/[^/]+.texinfo$"
+                  "^langs/[^/]+.el$")
+      #:exclude '("^.dir-locals.el$" "^test.el$" "^tests.el$" "^[^/]+-test.el$"
+                  "^[^/]+-tests.el$")))
+   (home-page "https://github.com/emacs-vs/docstr")
+   (synopsis "A document string minor mode")
+   (description
+    "This package provides a simple solution to insert document string into the code.")
+   (license license:gpl3)))
