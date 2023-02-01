@@ -3269,3 +3269,30 @@ can be easily ignored.")
 clock list, call `M-x alarm-clock-list-view', then use a key to set a new alarm
 clock, C-k to kill an alarm clock in the current line.")
     (license license:gpl3)))
+
+(define-public emacs-alda-mode
+  (package
+    (name "emacs-alda-mode")
+    (version "20210705.654")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://gitlab.com/jgkamat/alda-mode.git")
+                    (commit "4de011d572e958a377fb16daae05a1b411f0c8ad")))
+              (sha256
+               (base32
+                "1x4apig2hrvvy6pjciklmz5afpq5l4rmfjahc2wvyzs79abh0icx"))))
+    (build-system emacs-build-system)
+    (home-page "http://gitlab.com/jgkamat/alda-mode")
+    (synopsis "An Alda major mode")
+    (description
+     "This package provides syntax highlighting and basic alda integration.  Activate
+font-lock-mode to use the syntax features, and run alda-play-region to play song
+files Variables: alda-binary-location: Set to the location of the binary
+executable.  If nil, alda-mode will search for your binary executable on your
+path If set to a string, alda-mode will use that binary instead of alda on your
+path.  Ex: (setq alda-binary-location \"/usr/local/bin/alda\") Ex: (setq
+alda-binary-location nil) ;; Use default alda location alda-ess-keymap: Whether
+to add the default ess keymap.  If nil, alda-mode will not add the default ess
+keymaps.  Ex: (setq alda-ess-keymap nil) ;; before (require alda)")
+    (license license:gpl3)))
