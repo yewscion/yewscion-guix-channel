@@ -670,3 +670,26 @@ company-backends company-ledger)))")
 `company-org-block-edit-style'.  Completion candidates are drawn from
 `org-babel-load-languages'.")
    (license license:gpl3)))
+
+(define-public emacs-company-plisp
+  (package
+   (name "emacs-company-plisp")
+   (version "20200531.1927")
+   (source (origin
+            (method git-fetch)
+            (uri (git-reference
+                  (url "https://gitlab.com/sasanidas/company-plisp.git")
+                  (commit "fc0b56d2a711340ca3e63119bfe692bb3e8620fb")))
+            (sha256
+             (base32
+              "0xw475spfwq32nn5qz3gk22cggj1f5y245da9030vzi2jfb9vvid"))))
+   (build-system emacs-build-system)
+   (propagated-inputs (list emacs-s emacs-company emacs-dash))
+   (arguments
+    '(#:include '("^company-plisp.el$" "^company-plisp.l$")
+      #:exclude '()))
+   (home-page "https://gitlab.com/sasanidas/company-plisp")
+   (synopsis "Company mode backend for PicoLisp language")
+   (description
+    "Backend for company mode for the PicoLisp programming language")
+   (license license:gpl3)))
