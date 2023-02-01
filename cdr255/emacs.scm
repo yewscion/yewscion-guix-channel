@@ -2483,3 +2483,21 @@ indentation-related functions are similar to those in yaml-mode and python-mode.
 file: (require sass-mode) sass-mode requires haml-mode, which can be found at
 http://github.com/nex3/haml-mode.")
     (license license:expat)))
+
+(define-public emacs-sbt-mode
+  (package
+    (name "emacs-sbt-mode")
+    (version "20211203.1148")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/hvesalai/emacs-sbt-mode.git")
+                    (commit "9fe1e8807c22cc1dc56a6233e000969518907f4d")))
+              (sha256
+               (base32
+                "1mii46nr4ykkwnbpvsdp46j6n7k38h0jbm49vbm0w7n1az09yg1a"))))
+    (build-system emacs-build-system)
+    (home-page "https://github.com/hvesalai/emacs-sbt-mode")
+    (synopsis "Interactive support for sbt projects")
+    (description "")
+    (license license:gpl3)))
