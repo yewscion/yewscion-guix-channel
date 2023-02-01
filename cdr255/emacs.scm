@@ -1287,3 +1287,24 @@ these hooks will not be displayed live to clients.")
      "This package provides access to an IEx shell buffer, optionally running a
 specific command (e.g. iex -S mix, iex -S mix phx.server, etc)")
     (license license:gpl3)))
+
+(define-public emacs-inform7
+  (package
+    (name "emacs-inform7")
+    (version "20200430.1539")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/GuiltyDolphin/inform7-mode.git")
+                    (commit "a409bbc6f04264f7f00616a995fa6ecf59d33d0d")))
+              (sha256
+               (base32
+                "1sai118i5ry58jjc3777kn2ca2nhaxszhl0va6gyy7j2cdpg8gpy"))))
+    (build-system emacs-build-system)
+    (propagated-inputs (list emacs-s))
+    (home-page "https://github.com/GuiltyDolphin/inform7-mode")
+    (synopsis "Major mode for working with Inform 7 files")
+    (description
+     "inform7-mode provides a major mode for interacting with files written in Inform
+7 syntax.  For more information see the README.")
+    (license license:gpl3)))
