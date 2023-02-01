@@ -923,3 +923,51 @@ easy-kill-alist (?T string-up-to-char-backward \"\"))")
      "This package provides font-locking, indentation and navigation support for the
 Elixir programming language.")
     (license license:gpl3)))
+
+(define-public emacs-emojify-logos
+  (package
+    (name "emacs-emojify-logos")
+    (version "20180814.917")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/mxgoldstein/emojify-logos.git")
+                    (commit "a3e78bcbdf863092d4c9b026ac08bf7d1c7c0e8b")))
+              (sha256
+               (base32
+                "1fhxf3nky9wlcn54q60f9254iawcccsrxw370q7cgpsrl1gj3dgp"))))
+    (build-system emacs-build-system)
+    (propagated-inputs (list emacs-emojify))
+    (arguments
+     '(#:include '("^[^/]+.el$" "^[^/]+.el.in$"
+                   "^dir$"
+                   "^[^/]+.info$"
+                   "^[^/]+.texi$"
+                   "^[^/]+.texinfo$"
+                   "^doc/dir$"
+                   "^doc/[^/]+.info$"
+                   "^doc/[^/]+.texi$"
+                   "^doc/[^/]+.texinfo$"
+                   "^logos$")
+       #:exclude '("^.dir-locals.el$" "^test.el$" "^tests.el$" "^[^/]+-test.el$"
+                   "^[^/]+-tests.el$")))
+    (home-page "https://github.com/mxgoldstein/emojify-logos")
+    (synopsis "Add logos to emojify")
+    (description
+     "This package adds logo icons for various programming languages and tools to
+emojify.el All icons are the property of their respective owners and may be
+trademarked and/or restricted in the way they may be used.  See COPYRIGHT.MD for
+more details. ; TODO Add more logos for languages / modes etc.  Replace
+low-quality C icon Find a (somewhat) free icon for java")
+    (license (list license:gpl3
+                   license:expat
+                   license:cc0
+                   license:cc-by3.0
+                   license:gpl3+
+                   license:public-domain
+                   license:gpl2+
+                   license:perl-license
+                   ;; PHP, Python, and C++ all have custom licenses that do
+                   ;; not prohibit use, but may need to be removed for FSDG
+                   ;; purposes.
+                   license:cc-by-sa3.0))))
