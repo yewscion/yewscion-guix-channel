@@ -3103,3 +3103,26 @@ It tokenizes and highlights English text that matches specified tags.
 Dependencies: - OSX - syn (see instructions at
 https://github.com/stephencelis/syn) - ido-mode")
     (license license:gpl3)))
+
+(define-public emacs-writeroom-mode
+  (package
+    (name "emacs-writeroom-mode")
+    (version "20220426.2046")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/joostkremers/writeroom-mode.git")
+                    (commit "1fd52848eb58301c864712fd26c4ec37a938cc19")))
+              (sha256
+               (base32
+                "1y15xkci3fiw7k67vnavjmxchbc9mnmz7qg1pcvxksflxrks6lq2"))))
+    (build-system emacs-build-system)
+    (propagated-inputs (list emacs-visual-fill-column))
+    (home-page "https://github.com/joostkremers/writeroom-mode")
+    (synopsis "Minor mode for distraction-free writing")
+    (description
+     "writeroom-mode is a minor mode for Emacs that implements a distraction-free
+writing mode similar to the famous Writeroom editor for OS X. writeroom-mode is
+meant for GNU Emacs 25 and isn't tested on older versions.  See the README or
+info manual for usage instructions.")
+    (license license:bsd-3)))
