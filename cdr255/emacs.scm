@@ -2230,3 +2230,40 @@ back-end.  It provides two commands for export, depending on the desired output:
 `org-mw-export-as-mediawiki (temporary buffer) and `org-mw-export-to-mediawiki
 (\"mw\" file).")
     (license license:gpl3+)))
+
+(define-public emacs-ox-minutes
+  (package
+    (name "emacs-ox-minutes")
+    (version "20180202.1734")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/kaushalmodi/ox-minutes.git")
+                    (commit "27c29f3fdb9181322ae56f8bace8d95e621230e5")))
+              (sha256
+               (base32
+                "10rw12gmg3d6fvkqijmjnk5bdpigvm8fy34435mwg7raw0gmlq75"))))
+    (build-system emacs-build-system)
+    (home-page "https://github.com/kaushalmodi/ox-minutes")
+    (synopsis "Plain text backend for Org for Meeting Minutes")
+    (description
+     "The aim of this exporter to generate meeting minutes plain text that is
+convenient to send via email. - Unnecessary blank lines are removed from the
+final exported plain text. - Header decoration and section numbers done in the
+default ASCII exports is prevented. - Also TOC and author name are not exported.
+ This is an ox-ascii derived backed for org exports.  This backend effectively
+sets the `org-export-headline-levels to 0 and,
+`org-export-with-section-numbers', `org-export-with-author and
+`org-export-with-toc to nil time being for the exports.  That is equivalent to
+manually putting the below in the org file: #+options: H:0 num:nil author:nil
+toc:nil This package has been tested to work with the latest version of org
+built from the master branch ( http://orgmode.org/cgit.cgi/org-mode.git ) as of
+Aug 10 2016.  EXAMPLE ORG FILE: #+title: My notes * Heading 1 ** Sub heading ***
+More nesting - List item 1 - List item 2 - List item 3 * Heading 2 ** Sub
+heading - List item 1 - List item 2 - List item 3 *** More nesting MINUTES
+EXPORT: __________ MY NOTES __________ * Heading 1 + Sub heading - More nesting
+- List item 1 - List item 2 - List item 3 * Heading 2 + Sub heading - List item
+1 - List item 2 - List item 3 - More nesting REQUIREMENTS: - Emacs 24 is
+required at minimum for lexical binding support. - Emacs 24.4 is required as
+ox-ascii got added to org-mode in that Emacs release.")
+    (license license:gpl3+)))
