@@ -1433,3 +1433,31 @@ REPL facilities for interactive features, such readline, help, debugging.")
     (synopsis "Lisp Flavoured Erlang mode")
     (description "Copied from `lisp-mode and modified for LFE.")
     (license license:asl2.0)))
+
+(define-public emacs-lice
+  (package
+    (name "emacs-lice")
+    (version "20220312.2215")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/buzztaiki/lice-el.git")
+                    (commit "0b69ba54057146f1473e85c0760029e584e3eb13")))
+              (sha256
+               (base32
+                "06plnrxj6kgnl9mjcbc48mgagpa60yyyyribwicmcgg9pgrs0wad"))))
+    (build-system emacs-build-system)
+    (arguments
+     '(#:include '("^[^/]+.el$" "^template$")
+       #:exclude '()))
+    (home-page "https://github.com/buzztaiki/lice-el")
+    (synopsis "License And Header Template")
+    (description
+     "Overview -------- `lice.el` provides following features: - License template
+management. - File header insertion.  Usage ----- Usage is very easy, put
+`lice.el` in your Emacs system, and open a new file, and run: M-x lice Then,
+`lice.el` tell to use which license (default is gpl-3.0).  You can select
+license on minibuffer completion.  When you select license, and enter the `RET`,
+license and copyright is putted into a text.  More Information ----------------
+See the `README.md` file for more information.")
+    (license license:gpl3)))
