@@ -3208,3 +3208,29 @@ excepting that they automatically work in the backward direction, too.  One can
 specify how many characters to scan from each side of the point, see
 `zzz-to-char-reach'.")
     (license license:gpl3)))
+
+(define-public emacs-adoc-mode
+  (package
+    (name "emacs-adoc-mode")
+    (version "20220919.659")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/bbatsov/adoc-mode.git")
+                    (commit "176db8ce532778ccf1846fff31e63dc2e413ae9b")))
+              (sha256
+               (base32
+                "03hh59w3j3cqkv9bwnrk9yxc3j06rsq69clkq1yfhsfz9fgphpbv"))))
+    (build-system emacs-build-system)
+    (propagated-inputs (list emacs-markup-faces))
+    (home-page "https://github.com/bbatsov/adoc-mode")
+    (synopsis "a major-mode for editing AsciiDoc files in Emacs")
+    (description
+     "AsciiDoc is a text document format for writing short documents, articles, books
+and UNIX man pages.  AsciiDoc files can be translated to HTML and DocBook
+markups.  adoc-mode is an Emacs major mode for editing AsciiDoc files.  It
+emphasizes on the idea that the document is highlighted so it pretty much looks
+like the final output.  What must be bold is bold, what must be italic is italic
+etc.  Meta characters are naturally still visible, but in a faint way, so they
+can be easily ignored.")
+    (license license:gpl3)))
