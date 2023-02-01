@@ -1308,3 +1308,21 @@ specific command (e.g. iex -S mix, iex -S mix phx.server, etc)")
      "inform7-mode provides a major mode for interacting with files written in Inform
 7 syntax.  For more information see the README.")
     (license license:gpl3)))
+
+(define-public emacs-ipcalc
+  (package
+    (name "emacs-ipcalc")
+    (version "20210903.958")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/dotemacs/ipcalc.el.git")
+                    (commit "8d5af5b8e075f204c1e265174c96587886831996")))
+              (sha256
+               (base32
+                "0a7rw26ibhmlnf9jjs6kf610k566mqzjvbd9rlmpwpi8awlfflky"))))
+    (build-system emacs-build-system)
+    (home-page "http://github.com/dotemacs/ipcalc.el")
+    (synopsis "IP subnet calculator")
+    (description "Usage: evaluate (ipcalc \"192.168.0.23/21\")")
+    (license license:bsd-2)))
