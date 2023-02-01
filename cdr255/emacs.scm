@@ -1721,3 +1721,22 @@ number/sub) (global-set-key (kbd \"C-c C-*\") number/multiply) (global-set-key
 (kbd \"C-c C-/\") number/divide) (global-set-key (kbd \"C-c C-0\") number/pad)
 (global-set-key (kbd \"C-c C-=\") number/eval)")
     (license license:gpl3)))
+
+(define-public emacs-ob-kotlin
+  (package
+    (name "emacs-ob-kotlin")
+    (version "20180823.1321")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/zweifisch/ob-kotlin.git")
+                    (commit "96e420cbd2e9ea8a77043e5dcaebdfc6da17492a")))
+              (sha256
+               (base32
+                "0ganip7077rsi681kdsrmvpjhinhgsrla34mll0daiqid7flnk4g"))))
+    (build-system emacs-build-system)
+    (propagated-inputs (list emacs-org))
+    (home-page "http://github.com/zweifisch/ob-kotlin")
+    (synopsis "org-babel functions for kotlin evaluation")
+    (description "org-babel functions for kotlin evaluation")
+    (license license:gpl3)))
