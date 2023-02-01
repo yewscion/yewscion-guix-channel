@@ -2416,3 +2416,27 @@ mp3(requires `avplay or `ffplay or `itunes')")
      "GNU Emacs 24 major mode for editing Raku code.  Currently only provides very
 basic syntax highlighting.")
     (license license:gpl3)))
+
+(define-public emacs-rego-mode
+  (package
+    (name "emacs-rego-mode")
+    (version "20201102.1420")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/psibi/rego-mode.git")
+                    (commit "be110e6cef5d34eef0529a8739c68e619cf15310")))
+              (sha256
+               (base32
+                "1lm53zg30n96bq8z5g836dhk0y02njdyp8c6vjgsrcii4ff42jp5"))))
+    (build-system emacs-build-system)
+    (propagated-inputs (list emacs-reformatter))
+    (home-page "https://github.com/psibi/rego-mode")
+    (synopsis "A major mode for rego language")
+    (description
+     "This package provides a major mode for editing Rego file (See
+https://www.openpolicyagent.org/docs/latest/policy-language/ to learn more) in
+Emacs.  Some of its major features include: - syntax highlighting (font lock), -
+Basic indentation, raw and normal string support - Automatic formatting on save
+(configurable) - REPL support")
+    (license license:gpl3)))
