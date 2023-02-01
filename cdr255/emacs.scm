@@ -1760,3 +1760,22 @@ number/sub) (global-set-key (kbd \"C-c C-*\") number/multiply) (global-set-key
      "Org-Babel support for evaluating mermaid diagrams. ; Requirements: mermaid.cli |
 https://github.com/mermaidjs/mermaid.cli")
     (license license:gpl3)))
+
+(define-public emacs-ob-translate
+  (package
+    (name "emacs-ob-translate")
+    (version "20170720.1919")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/krisajenkins/ob-translate.git")
+                    (commit "9d9054a51bafd5a29a8135964069b4fa3a80b169")))
+              (sha256
+               (base32
+                "143dq3wp3h1zzk8ihj8yjw9ydqnf48q7y8yxxa0ly7f2v1li84bc"))))
+    (build-system emacs-build-system)
+    (propagated-inputs (list emacs-google-translate emacs-org))
+    (home-page "https://github.com/krisajenkins/ob-translate")
+    (synopsis "Translation of text blocks in org-mode.")
+    (description "Supports translation of text blocks in org-mode.")
+    (license license:gpl3+)))
