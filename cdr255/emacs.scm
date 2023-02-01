@@ -1411,3 +1411,25 @@ REPL facilities for interactive features, such readline, help, debugging.")
     (synopsis "Helper code for use with the \"ledger\" command-line tool")
     (description "Most of the general ledger-mode code is here.")
     (license license:gpl2)))
+
+(define-public emacs-lfe-mode
+  (package
+    (name "emacs-lfe-mode")
+    (version "20220822.911")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/rvirding/lfe.git")
+                    (commit "9a75089f00f2433fad8e32974a34b50763039c84")))
+              (sha256
+               (base32
+                "111b8spkkalhys55j5a2yz67a1ykb51jdqm1vgij1b52j7qrxssf"))))
+    (build-system emacs-build-system)
+    (arguments
+     '(#:include '("^emacs/inferior-lfe.el$" "^emacs/lfe-mode.el$"
+                   "^emacs/lfe-indent.el$")
+       #:exclude '()))
+    (home-page "unspecified")
+    (synopsis "Lisp Flavoured Erlang mode")
+    (description "Copied from `lisp-mode and modified for LFE.")
+    (license license:asl2.0)))
