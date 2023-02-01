@@ -2597,3 +2597,36 @@ inside `skeletor-user-directory', then configure the template with the
 storm varies in intensity, a gentle breeze blows at times, and snow accumulates
 on the terrain in the scene.")
     (license license:gpl3)))
+
+(define-public emacs-spdx
+  (package
+    (name "emacs-spdx")
+    (version "20230127.116")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/condy0919/spdx.el.git")
+                    (commit "0b4a7d8b761c553c4380e9a881e69276213172fc")))
+              (sha256
+               (base32
+                "0b2q9xkir41aisvaks8xsdzh6g0mkl0ws6qnq4in2v7g1j9yvp4v"))))
+    (build-system emacs-build-system)
+    (home-page "https://github.com/condy0919/spdx.el")
+    (synopsis "Insert SPDX license and copyright headers")
+    (description
+     "# spdx.el `spdx.el` provides SPDX license header and copyright insertion. ##
+Installation Put `spdx.el` in your Emacs system.  Add the following to your
+`.emacs`: ```elisp (require spdx) (define-key prog-mode-map (kbd \"C-c i l\")
+#'spdx-insert-spdx) ``` Or Use
+[use-package](https://github.com/jwiegley/use-package) with
+[straight.el](https://github.com/raxod502/straight.el) ``` emacs-lisp
+(use-package spdx :ensure t :straight (:host github :repo \"condy0919/spdx.el\")
+:bind (:map prog-mode-map (\"C-c i l\" .  spdx-insert-spdx)) :custom
+(spdx-copyright-holder auto) (spdx-project-detection auto)) ``` Then you can
+press `C-c i l` to trigger `spdx-insert-spdx` Or manually run: M-x
+spdx-insert-spdx Then, `spdx.el` will ask you to select a license.  It's done by
+`completing-read'.  After that, the license header will be written.  An example
+follows. `;; SPDX-License-Identifier: AGPL-1.0-only` ## Customization -
+`spdx-copyright-holder - `spdx-copyright-sign - `spdx-project-detection -
+`spdx-ignore-deprecated")
+    (license license:gpl3)))
