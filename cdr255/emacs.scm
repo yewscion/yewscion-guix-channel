@@ -618,3 +618,32 @@ change the prefix, execute: (company-ipa-set-trigger-prefix \"¬\") For best
 performance you should use this with company-flx: (company-flx-mode +1)")
    (license license:gpl3)))
 
+(define-public emacs-company-ledger
+  (package
+   (name "emacs-company-ledger")
+   (version "20210910.250")
+   (source (origin
+            (method git-fetch)
+            (uri (git-reference
+                  (url "https://github.com/debanjum/company-ledger.git")
+                  (commit "c6911b7e39b29c0d5f2541392ff485b0f53fd366")))
+            (sha256
+             (base32
+              "08g4f8w9lhfypy4m3vcfg8d8gqn7w2g8qjksl7bzcnwg2d0yqld8"))))
+   (build-system emacs-build-system)
+   (propagated-inputs (list emacs-company))
+   (home-page "https://github.com/debanjum/company-ledger")
+   (synopsis "Fuzzy auto-completion for Ledger & friends")
+   (description
+    "`company-mode backend for `ledger-mode', `beancount-mode and similar plain-text
+accounting modes.  Provides fuzzy completion for transactions, prices and other
+date prefixed entries.  See Readme for detailed setup and usage description.
+Detailed Description -------------------- - Provides auto-completion based on
+words on current line - The words on the current line can be partial and in any
+order - The candidate entities are reverse sorted by location in file -
+Candidates are paragraphs starting with YYYY[-/]MM[-/]DD Minimal Setup
+------------- (with-eval-after-load company (add-to-list company-backends
+company-ledger)) Use-Package Setup ----------------- (use-package company-ledger
+:ensure company :init (with-eval-after-load company (add-to-list
+company-backends company-ledger)))")
+   (license license:gpl3)))
