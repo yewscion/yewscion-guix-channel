@@ -1169,3 +1169,25 @@ packages; - to look at, compare and remove profile generations; - to look at
 system services and generations (if you use Guix System); - to do many other
 things.  Run \"M-x guix-help\" to look at the summary of available commands.")
     (license license:gpl3)))
+
+(define-public emacs-guru-mode
+  (package
+    (name "emacs-guru-mode")
+    (version "20211025.1157")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/bbatsov/guru-mode.git")
+                    (commit "a3370e547eab260d24774cd50ccbe865373c8631")))
+              (sha256
+               (base32
+                "0h7d41l7rybljpb49hvkh14kc7bnh56rfrqzldpdry1qk3mr9bhj"))))
+    (build-system emacs-build-system)
+    (home-page "https://github.com/bbatsov/guru-mode")
+    (synopsis "Become an Emacs guru")
+    (description
+     "Guru mode teaches you how to use Emacs effectively.  In particular it promotes
+the use of idiomatic keybindings for essential editing commands.  It can be
+configured to either disallow the alternative keybindings completely or to warn
+when they are being used.")
+    (license license:gpl3)))
