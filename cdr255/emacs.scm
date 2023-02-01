@@ -1390,3 +1390,24 @@ j-mode)))")
      "Run a julia REPL inside a terminal in Emacs.  In contrast to ESS, use the Julia
 REPL facilities for interactive features, such readline, help, debugging.")
     (license license:expat)))
+
+(define-public emacs-ledger-mode
+  (package
+    (name "emacs-ledger-mode")
+    (version "20230106.1610")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/ledger/ledger-mode.git")
+                    (commit "4b32f701736b37f99048be79583b0bde7cc14c85")))
+              (sha256
+               (base32
+                "17653pz69nmzg7452zq7pcj31dk86vssj94i9al28lgfv02h07l2"))))
+    (build-system emacs-build-system)
+    (arguments
+     '(#:include '("^ledger[^/]+.el$")
+       #:exclude '()))
+    (home-page "unspecified")
+    (synopsis "Helper code for use with the \"ledger\" command-line tool")
+    (description "Most of the general ledger-mode code is here.")
+    (license license:gpl2)))
