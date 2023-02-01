@@ -2501,3 +2501,21 @@ http://github.com/nex3/haml-mode.")
     (synopsis "Interactive support for sbt projects")
     (description "")
     (license license:gpl3)))
+
+(define-public emacs-scala-mode
+  (package
+    (name "emacs-scala-mode")
+    (version "20221025.1502")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/hvesalai/emacs-scala-mode.git")
+                    (commit "5d7cf21c37e345c49f921fe5111a49fd54efd1e0")))
+              (sha256
+               (base32
+                "1dygncmjizlg33g2yghihmkf5hjwhrd8b63qvl4dndxwbq995n6r"))))
+    (build-system emacs-build-system)
+    (home-page "https://github.com/hvesalai/emacs-scala-mode")
+    (synopsis "Major mode for editing Scala")
+    (description "")
+    (license license:gpl3)))
