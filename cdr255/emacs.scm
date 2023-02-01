@@ -1006,3 +1006,24 @@ low-quality C icon Find a (somewhat) free icon for java")
 ansi-term-color-vector and overriding term-handle-colors-array to handle
 additional escape sequences.")
     (license license:gpl3)))
+
+(define-public emacs-free-keys
+  (package
+    (name "emacs-free-keys")
+    (version "20211116.1501")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/Fuco1/free-keys.git")
+                    (commit "7348ce68192871b8a69b687ec124d9f816d493ca")))
+              (sha256
+               (base32
+                "0f99vykxvvcsdqs03ig5kyd3vdrclk8mcryn7b310ysg840ksrw8"))))
+    (build-system emacs-build-system)
+    (home-page "https://github.com/Fuco1/free-keys")
+    (synopsis "Show free keybindings for modkeys or prefixes")
+    (description
+     "Show free keybindings for modkeys or prefixes.  Based on code located here:
+https://gist.github.com/bjorne/3796607 For complete description see
+https://github.com/Fuco1/free-keys")
+    (license license:gpl3)))
