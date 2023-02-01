@@ -1978,3 +1978,25 @@ your GM notes for a tabletop roleplaying game that uses a ; d20. ; Example file
 footer: ; ; # Local Variables: ; # eval: (org-d20-mode 1) ; # org-d20-party:
 ((\"Zahrat\" .  2) (\"Ennon\" .  4) (\"Artemis\" .  5))")
     (license license:gpl3)))
+
+(define-public emacs-org-kanban
+  (package
+    (name "emacs-org-kanban")
+    (version "20220723.1216")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/gizmomogwai/org-kanban.git")
+                    (commit "e78deb03880ae89d6bceae6563ef1383526233a1")))
+              (sha256
+               (base32
+                "006y8glnd3h5nmcb0fdq650xnknhi5n74v7adk1maf26r8rpc6vy"))))
+    (build-system emacs-build-system)
+    (propagated-inputs (list emacs-s emacs-dash emacs-org))
+    (home-page "http://github.com/gizmomogwai/org-kanban")
+    (synopsis "kanban dynamic block for org-mode.")
+    (description
+     "To create a kanban table for an org file, simply put the dynamic block `
+#+BEGIN: kanban #+END:  somewhere and run `C-c C-c on it.  You can use
+`org-kanban/initialize to get this generated.")
+    (license license:expat)))
