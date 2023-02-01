@@ -1859,3 +1859,28 @@ Emacs package provides a simple way to start the visualizer via
 `org-analyzer-start and feed it the default org files.  See
 https://github.com/rksm/clj-org-analyzer for more information.")
     (license license:gpl3)))
+
+(define-public emacs-org-board
+  (package
+    (name "emacs-org-board")
+    (version "20200619.1016")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/charlesroelli/org-board.git")
+                    (commit "1393bd46d11a81328ed4fb8471831415a3efe224")))
+              (sha256
+               (base32
+                "1kryrg988c3sbxyp1sdgc6xdv2iz6kiflpzn2rw4z3l4grzab53b"))))
+    (build-system emacs-build-system)
+    (home-page "https://github.com/scallywag/org-board")
+    (synopsis "bookmarking and web archival system for Org mode.")
+    (description
+     "org-board uses `org-attach and `wget to provide a bookmarking and web archival
+system directly from an Org file.  Any `wget switch can be used in `org-board',
+and presets (like user agents) can be set for easier control.  Every snapshot is
+logged and saved to an automatically generated folder, and snapshots for the
+same link can be compared using the `ztree package (optional dependency; `ediff
+used if `zdiff is not available).  Arbitrary functions can also be run after an
+archive, allowing for extensive user customization.")
+    (license license:gpl3)))
