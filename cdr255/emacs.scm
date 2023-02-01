@@ -520,3 +520,26 @@ Auto-format the current buffer.  You may also use the minor mode
 provides basic syntax and font-locking for BNF files.  BNF notation is supported
 exactly form as it was first announced in the ALGOL 60 report.")
    (license license:gpl3)))
+
+(define-public emacs-bnfc
+  (package
+   (name "emacs-bnfc")
+   (version "20160605.1927")
+   (source (origin
+            (method git-fetch)
+            (uri (git-reference
+                  (url "https://github.com/jmitchell/bnfc-mode.git")
+                  (commit "1b58df1dd0cb9b81900632fb2843a03b94f56fdb")))
+            (sha256
+             (base32
+              "0lmqrcy80nw6vmf81kh6q39x8pwhzrj6lbk31xpl8mvwnpqaykmn"))))
+   (build-system emacs-build-system)
+   (home-page "https://github.com/jmitchell/bnfc-mode")
+   (synopsis "Define context-free grammars for the BNFC tool")
+   (description
+    "bnfc-mode simplifies editing BNFC input files in Emacs.  BNFC is a handy tool
+for converting context-free grammars into parsers, syntax highlighters, and
+documentation.")
+   (license license:gpl2+)))
+
+
