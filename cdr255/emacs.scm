@@ -647,3 +647,26 @@ company-ledger)) Use-Package Setup ----------------- (use-package company-ledger
 :ensure company :init (with-eval-after-load company (add-to-list
 company-backends company-ledger)))")
    (license license:gpl3)))
+
+(define-public emacs-company-org-block
+  (package
+   (name "emacs-company-org-block")
+   (version "20230115.1202")
+   (source (origin
+            (method git-fetch)
+            (uri (git-reference
+                  (url "https://github.com/xenodium/company-org-block.git")
+                  (commit "aee601a2bfcc86d26e762eeb84e5e42573f8c5ca")))
+            (sha256
+             (base32
+              "0zghjkny222wxkyr48njpwjkwk7gfrjm6n70drkwmjhhh88646fv"))))
+   (build-system emacs-build-system)
+   (propagated-inputs (list emacs-company emacs-org))
+   (home-page "https://github.com/xenodium/company-org-block")
+   (synopsis "Org blocks company backend")
+   (description
+    "`company-complete org blocks using \"<\" as a trigger.  To enable, add
+`company-org-block to `company-backends'.  Configure edit style via
+`company-org-block-edit-style'.  Completion candidates are drawn from
+`org-babel-load-languages'.")
+   (license license:gpl3)))
