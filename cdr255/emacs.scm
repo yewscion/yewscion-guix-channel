@@ -2682,3 +2682,24 @@ your own title-casing code, or a third party, you can customize
 titlecase.pl, written John Gruber and Aristotle Pagaltzis:
 https://github.com/ap/titlecase.")
     (license license:gpl3)))
+
+(define-public emacs-tldr
+  (package
+    (name "emacs-tldr")
+    (version "20221109.1501")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/kuanyui/tldr.el.git")
+                    (commit "2b5d53571bd30b75d4f5a642aa129055803a6bfb")))
+              (sha256
+               (base32
+                "0i58abjzxi6qkfclwhphp7ljdc4sx80cj7izcq76glkpkif6sysn"))))
+    (build-system emacs-build-system)
+    (home-page "https://github.com/kuanyui/tldr.el")
+    (synopsis "tldr client for Emacs")
+    (description
+     "This is a tldr client for Emacs.  https://github.com/tldr-pages/tldr Just M-x
+tldr Notice that the first time using it will automatically download the latest
+tldr docs.  You can use =M-x tldr-update-docs= to update docs.")
+    (license license:wtfpl2)))
