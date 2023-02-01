@@ -2576,3 +2576,24 @@ skeletor-create-project'.  To define a new project, create a project template
 inside `skeletor-user-directory', then configure the template with the
 `skeletor-define-template macro.  See the info manual for all the details.")
     (license license:gpl3)))
+
+(define-public emacs-snow
+  (package
+    (name "emacs-snow")
+    (version "20221226.2238")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/alphapapa/snow.el.git")
+                    (commit "be17977677fa29709a726715a1a1cba1bd299f68")))
+              (sha256
+               (base32
+                "0fh1hmwpszm9frvnqr2b8rlfx33dy9jm5r82hldgxdbhlv8dq4d0"))))
+    (build-system emacs-build-system)
+    (home-page "https://github.com/alphapapa/snow.el")
+    (synopsis "Let it snow in Emacs!")
+    (description
+     "Let it snow in Emacs! Command `snow displays a buffer in which it snows.  The
+storm varies in intensity, a gentle breeze blows at times, and snow accumulates
+on the terrain in the scene.")
+    (license license:gpl3)))
