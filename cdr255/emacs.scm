@@ -971,3 +971,38 @@ low-quality C icon Find a (somewhat) free icon for java")
                    ;; not prohibit use, but may need to be removed for FSDG
                    ;; purposes.
                    license:cc-by-sa3.0))))
+
+(define-public emacs-eterm-256color
+  (package
+    (name "emacs-eterm-256color")
+    (version "20210224.2241")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/dieggsy/eterm-256color.git")
+                    (commit "c9cfccef03e730f7ab2b407aada3df15ace1fe32")))
+              (sha256
+               (base32
+                "1ip1mcry2mryr3gzina16c7m2pw71klx1ldbfv8w7rv8fsx2dsma"))))
+    (build-system emacs-build-system)
+    (propagated-inputs (list emacs-xterm-color emacs-f))
+    (arguments
+     '(#:include '("^[^/]+.el$" "^[^/]+.el.in$"
+                   "^dir$"
+                   "^[^/]+.info$"
+                   "^[^/]+.texi$"
+                   "^[^/]+.texinfo$"
+                   "^doc/dir$"
+                   "^doc/[^/]+.info$"
+                   "^doc/[^/]+.texi$"
+                   "^doc/[^/]+.texinfo$"
+                   "^eterm-256color.ti$")
+       #:exclude '("^.dir-locals.el$" "^test.el$" "^tests.el$" "^[^/]+-test.el$"
+                   "^[^/]+-tests.el$")))
+    (home-page "http://github.com/dieggsy/eterm-256color")
+    (synopsis "Customizable 256 colors for term.")
+    (description
+     "Adds 256 color handling to term/ansi-term by adding 247 customizable faces to
+ansi-term-color-vector and overriding term-handle-colors-array to handle
+additional escape sequences.")
+    (license license:gpl3)))
