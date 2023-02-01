@@ -2207,3 +2207,26 @@ exported as an object containing an error message.  Defaults to nil.
 listed in the :json-property-types option.  If true these properties will be
 exported using `ox-json-encode-auto'.")
     (license license:expat)))
+
+(define-public emacs-ox-mediawiki
+  (package
+    (name "emacs-ox-mediawiki")
+    (version "20180105.2154")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/tomalexander/orgmode-mediawiki.git")
+                    (commit "a9327150293e370e500ba55bddfe5fc435c6bf9b")))
+              (sha256
+               (base32
+                "0dsq86hli24imdkgsf45asx23kriw9di3d0cf5z8axfpkcbkn770"))))
+    (build-system emacs-build-system)
+    (propagated-inputs (list emacs-s))
+    (home-page "https://github.com/tomalexander/orgmode-mediawiki")
+    (synopsis "Mediawiki Back-End for Org Export Engine")
+    (description
+     "This library implements a Mediawiki back-end for Org exporter, based on `html
+back-end.  It provides two commands for export, depending on the desired output:
+`org-mw-export-as-mediawiki (temporary buffer) and `org-mw-export-to-mediawiki
+(\"mw\" file).")
+    (license license:gpl3+)))
