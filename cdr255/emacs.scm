@@ -2630,3 +2630,22 @@ follows. `;; SPDX-License-Identifier: AGPL-1.0-only` ## Customization -
 `spdx-copyright-holder - `spdx-copyright-sign - `spdx-project-detection -
 `spdx-ignore-deprecated")
     (license license:gpl3)))
+
+(define-public emacs-threes
+  (package
+    (name "emacs-threes")
+    (version "20160820.1242")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/xuchunyang/threes.el.git")
+                    (commit "6981acb30b856c77cba6aba63fefbf102cbdfbb2")))
+              (sha256
+               (base32
+                "1a7zqq6kmqxgzbsg8yczlvipzv65n10c8j26mc507p4m47nlikgv"))))
+    (build-system emacs-build-system)
+    (propagated-inputs (list emacs-seq))
+    (home-page "https://github.com/xuchunyang/threes.el")
+    (synopsis "A clone of Threes (a tiny puzzle game)")
+    (description "To play, type M-x threes, then use the arrow keys to move.")
+    (license license:gpl3+)))
