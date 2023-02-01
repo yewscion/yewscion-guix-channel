@@ -693,3 +693,23 @@ company-backends company-ledger)))")
    (description
     "Backend for company mode for the PicoLisp programming language")
    (license license:gpl3)))
+
+(define-public emacs-company-quickhelp-terminal
+  (package
+   (name "emacs-company-quickhelp-terminal")
+   (version "20220704.647")
+   (source (origin
+            (method git-fetch)
+            (uri (git-reference
+                  (url
+                   "https://github.com/jcs-legacy/company-quickhelp-terminal.git")
+                  (commit "5c0d59d965056f3a32ee571057aeecd00678ef48")))
+            (sha256
+             (base32
+              "1vdk55pkvmib8wr3iamrx3n7zrhmcia9hc35k25ccmbaqw2n6av1"))))
+   (build-system emacs-build-system)
+   (propagated-inputs (list emacs-company-quickhelp emacs-popup))
+   (home-page "https://github.com/jcs-elpa/company-quickhelp-terminal")
+   (synopsis "Terminal support for `company-quickhelp'")
+   (description "Terminal support for `company-quickhelp'.")
+   (license license:gpl3)))
