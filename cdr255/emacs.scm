@@ -1812,3 +1812,21 @@ this file anywhere in your `load-path'.  Be default octo-mode associates itself
 with the *.8o file ending.  You can enable the mode manually by M-x octo-mode
 RET.")
     (license license:expat)))
+
+(define-public emacs-offlineimap
+  (package
+    (name "emacs-offlineimap")
+    (version "20150916.1158")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/jd/offlineimap.el.git")
+                    (commit "cc3e067e6237a1eb7b21c575a41683b1febb47f1")))
+              (sha256
+               (base32
+                "1bjrgj8klg7ly63vx90jpaih9virn02bhqi16p6z0mw36q1q7ysq"))))
+    (build-system emacs-build-system)
+    (home-page "http://julien.danjou.info/offlineimap-el.html")
+    (synopsis "Run OfflineIMAP from Emacs")
+    (description "M-x offlineimap We need comint for `comint-truncate-buffer")
+    (license license:gpl3)))
