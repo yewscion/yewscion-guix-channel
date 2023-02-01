@@ -1351,3 +1351,21 @@ load-path \"/path/to/j-mode/\") (load \"j-mode\") Add for detection of j source
 files if the auto-load fails (add-to-list auto-mode-alist (\"\\\\.ij[rstp]$\" .
 j-mode)))")
     (license license:gpl3)))
+
+(define-public emacs-julia-mode
+  (package
+    (name "emacs-julia-mode")
+    (version "20230119.1840")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/JuliaEditorSupport/julia-emacs.git")
+                    (commit "7aafa8e77df64a47fa4729a0c1ea572b5bc8e30e")))
+              (sha256
+               (base32
+                "1agk2jf76ardqxm28nw341jb92sl6ylkr8yfibsp5vaid9dlq6bp"))))
+    (build-system emacs-build-system)
+    (home-page "https://github.com/JuliaEditorSupport/julia-emacs")
+    (synopsis "Major mode for editing Julia source code")
+    (description "This is the official Emacs mode for editing Julia programs.")
+    (license license:expat)))
