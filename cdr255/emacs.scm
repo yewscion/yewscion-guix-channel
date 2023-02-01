@@ -1633,3 +1633,37 @@ play/pause, and C-u M-x metronome to set a new tempo. (require metronome)
      "This let's you locally override functions, in the manner of `flet', but with
 access to the original function through the symbol: `this-fn'.")
     (license license:gpl3)))
+
+(define-public emacs-esxml
+  (package
+    (name "emacs-esxml")
+    (version "20220506.759")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/tali713/esxml.git")
+                    (commit "7ac1fec0e45f12836b301fd9b8e7297434db2f70")))
+              (sha256
+               (base32
+                "040a9i202pxjxj34c6f49fj6rg70xha2ns6047vj3gcsa72ylm4n"))))
+    (build-system emacs-build-system)
+    (propagated-inputs (list emacs-kv))
+    (arguments
+     '(#:include '("^esxml.el$" "^esxml-query.el$")
+       #:exclude '()))
+    (home-page "https://github.com/tali713/esxml")
+    (synopsis "Library for working with xml via esxml and sxml")
+    (description
+     "This is XML/XHTML done with S-Expressions in EmacsLisp.  Simply, this is the
+easiest way to write HTML or XML in Lisp.  This library uses the native form of
+XML representation as used by many libraries already included within emacs.
+This representation will be referred to as \"esxml\" throughout this library.  See
+`esxml-to-xml for a concise description of the format.  This library is not
+intended to be used directly by a user, though it certainly could be.  It could
+be used to generate static html, or use a library like `elnode to serve dynamic
+pages.  Or even to extract a form from a site to produce an API. TODO: Better
+documentation, more convenience.  NOTICE: Code base will be transitioning to
+using pcase instead of destructuring bind wherever possible.  If this leads to
+hard to debug code, please let me know, and I will do whatever I can to resolve
+these issues.")
+    (license license:gpl3)))
