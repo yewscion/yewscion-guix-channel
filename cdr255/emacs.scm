@@ -3583,3 +3583,25 @@ for equality using `eql Optionally, cache entries can expire: (let ((repo
 (pcache-repository \"plop\"))) (pcache-put repo foo 42 1) ; store value 42 with
 key foo for 1 second (sleep-for 1) (pcache-get repo foo) ; => nil )")
     (license license:gpl2+)))
+
+(define-public emacs-haml-mode
+  (package
+    (name "emacs-haml-mode")
+    (version "20190219.2102")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/nex3/haml-mode.git")
+                    (commit "bf5b6c11b1206759d2b28af48765e04882dd1fc4")))
+              (sha256
+               (base32
+                "1zh19b9az4ql87vjmjm0j7y6c4ir6w3rh0n4sxzqqpnv8xpd4b44"))))
+    (build-system emacs-build-system)
+    (home-page "https://github.com/nex3/haml-mode")
+    (synopsis "Major mode for editing Haml files")
+    (description
+     "Because Haml's indentation schema is similar to that of YAML and Python, many
+indentation-related functions are similar to those in yaml-mode and python-mode.
+ To install, save this on your load path and add the following to your .emacs
+file: (require haml-mode)")
+    (license license:expat)))
