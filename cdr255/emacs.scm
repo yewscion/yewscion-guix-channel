@@ -1578,3 +1578,38 @@ org-trello](#load-org-trello) - [Alternative](#alternative) - [Git](#git) -
 [heading](#heading) <!-- markdown-toc end --> Install - M-x package-install RET
 markdown-toc RET")
     (license license:gpl3)))
+
+(define-public emacs-metronome
+  (package
+    (name "emacs-metronome")
+    (version "20220210.147")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://gitlab.com/jagrg/metronome.git")
+                    (commit "1e1bd5234f3ecfb608041d423be7412c461ad3c2")))
+              (sha256
+               (base32
+                "1igx3ajzgrrhc1bxzj24bf1r9ipm3pd4haq82wqdqskf60gidkac"))))
+    (build-system emacs-build-system)
+    (arguments
+     '(#:include '("^[^/]+.el$" "^[^/]+.el.in$"
+                   "^dir$"
+                   "^[^/]+.info$"
+                   "^[^/]+.texi$"
+                   "^[^/]+.texinfo$"
+                   "^doc/dir$"
+                   "^doc/[^/]+.info$"
+                   "^doc/[^/]+.texi$"
+                   "^doc/[^/]+.texinfo$"
+                   "^sounds$")
+       #:exclude '("^.dir-locals.el$" "^test.el$" "^tests.el$" "^[^/]+-test.el$"
+                   "^[^/]+-tests.el$")))
+    (home-page "https://gitlab.com/jagrg/metronome")
+    (synopsis "A simple metronome")
+    (description
+     "This is a very simple metronome for GNU Emacs.  To install it from source, add
+metronome.el to your load path and require it.  Then M-x metronome to
+play/pause, and C-u M-x metronome to set a new tempo. (require metronome)
+(global-set-key (kbd \"C-c C-m\") metronome)")
+    (license license:gpl3)))
