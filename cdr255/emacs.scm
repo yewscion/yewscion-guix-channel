@@ -1667,3 +1667,28 @@ using pcase instead of destructuring bind wherever possible.  If this leads to
 hard to debug code, please let me know, and I will do whatever I can to resolve
 these issues.")
     (license license:gpl3)))
+
+(define-public emacs-nov
+  (package
+    (name "emacs-nov")
+    (version "20170901.1312")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://depp.brause.cc/nov.el.git")
+                    (commit "cb5f45cbcfbcf263cdeb2d263eb15edefc8b07cb")))
+              (sha256
+               (base32
+                "1fm65d39505kcgqaxnr5nkdilan45gpb1148m15d7gc5806n0sdz"))))
+    (build-system emacs-build-system)
+    (home-page "https://depp.brause.cc/nov.el/")
+    (synopsis "Major mode for reading EPUBs in Emacs")
+    (description
+     "nov.el provides a major mode for reading EPUB documents. Features: Basic
+navigation (jump to TOC, previous/next chapter); Remembering and restoring
+the last read position; Jump to next chapter when scrolling beyond end;
+Storing and following Org links to EPUB files; Renders EPUB2 (.ncx) and
+EPUB3 (<nav>) TOCs; Hyperlinks to internal and external targets; Supports
+textual and image documents; Info-style history navigation; View source of
+document files; Metadata display; Image rescaling.")
+    (license license:gpl3)))
