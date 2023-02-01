@@ -1740,3 +1740,23 @@ number/sub) (global-set-key (kbd \"C-c C-*\") number/multiply) (global-set-key
     (synopsis "org-babel functions for kotlin evaluation")
     (description "org-babel functions for kotlin evaluation")
     (license license:gpl3)))
+
+(define-public emacs-ob-mermaid
+  (package
+    (name "emacs-ob-mermaid")
+    (version "20200320.1504")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/arnm/ob-mermaid.git")
+                    (commit "b4ce25699e3ebff054f523375d1cf5a17bd0dbaf")))
+              (sha256
+               (base32
+                "0fhj3241gpj6qj2sawr8pgyn5b7320vjfb7idsy23kh4jvmj2wb8"))))
+    (build-system emacs-build-system)
+    (home-page "https://github.com/arnm/ob-mermaid")
+    (synopsis "org-babel support for mermaid evaluation")
+    (description
+     "Org-Babel support for evaluating mermaid diagrams. ; Requirements: mermaid.cli |
+https://github.com/mermaidjs/mermaid.cli")
+    (license license:gpl3)))
