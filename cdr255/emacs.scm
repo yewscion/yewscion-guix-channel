@@ -3234,3 +3234,38 @@ like the final output.  What must be bold is bold, what must be italic is italic
 etc.  Meta characters are naturally still visible, but in a faint way, so they
 can be easily ignored.")
     (license license:gpl3)))
+
+(define-public emacs-alarm-clock
+  (package
+    (name "emacs-alarm-clock")
+    (version "20221106.1409")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/wlemuel/alarm-clock.git")
+                    (commit "01f43a74591c4b0de34804e126b671990c7360b4")))
+              (sha256
+               (base32
+                "167q6s32d78b6xywycfahpilpgp64bhcc6ydrjb07fbrbfjk96m7"))))
+    (build-system emacs-build-system)
+    (arguments
+     '(#:include '("^[^/]+.el$" "^[^/]+.el.in$"
+                   "^dir$"
+                   "^[^/]+.info$"
+                   "^[^/]+.texi$"
+                   "^[^/]+.texinfo$"
+                   "^doc/dir$"
+                   "^doc/[^/]+.info$"
+                   "^doc/[^/]+.texi$"
+                   "^doc/[^/]+.texinfo$"
+                   "^[^/]+.mp3$")
+       #:exclude '("^.dir-locals.el$" "^test.el$" "^tests.el$" "^[^/]+-test.el$"
+                   "^[^/]+-tests.el$")))
+    (home-page "https://github.com/wlemuel/alarm-clock")
+    (synopsis "Alarm Clock")
+    (description
+     "This program is an alarm management tool for Emacs.  To set an alarm clock, call
+`M-x alarm-clock-set', then enter time as the following tips.  To view alarm
+clock list, call `M-x alarm-clock-list-view', then use a key to set a new alarm
+clock, C-k to kill an alarm clock in the current line.")
+    (license license:gpl3)))
