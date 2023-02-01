@@ -3553,3 +3553,33 @@ in the software and documentation are those of the authors and should not be
 interpreted as representing official policies, either expressed or implied, of
 Roland Walker.")
     (license license:bsd-2)))
+
+(define-public emacs-pcache
+  (package
+    (name "emacs-pcache")
+    (version "20220724.1841")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/sigma/pcache.git")
+                    (commit "507230d094cc4a5025fe09b62569ad60c71c4226")))
+              (sha256
+               (base32
+                "1fjdn4g9ww70f3x6vbzi3gqs9dsmqg16isajlqlflzw2716zf2nh"))))
+    (build-system emacs-build-system)
+    (home-page "unspecified")
+    (synopsis "persistent caching for Emacs.")
+    (description
+     "pcache provides a persistent way of caching data, in a hashtable-like structure.
+ It relies on `eieio-persistent in the backend, so that any object that can be
+serialized by EIEIO can be stored with pcache.  pcache handles objects called
+\"repositories\" (`pcache-repository') and \"entries\" (`pcache-entry').  Each
+repository is identified by a unique name, that defines an entry in
+`pcache-directory'.  Subdirectories are allowed, by the use of a directory
+separator in the repository name.  Example: (let ((repo (pcache-repository
+\"plop\"))) (pcache-put repo foo 42) ; store value 42 with key foo (pcache-get
+repo foo) ; => 42 ) Keys can be pretty much any Lisp object, and are compared
+for equality using `eql Optionally, cache entries can expire: (let ((repo
+(pcache-repository \"plop\"))) (pcache-put repo foo 42 1) ; store value 42 with
+key foo for 1 second (sleep-for 1) (pcache-get repo foo) ; => nil )")
+    (license license:gpl2+)))
