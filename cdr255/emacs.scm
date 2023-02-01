@@ -1613,3 +1613,23 @@ metronome.el to your load path and require it.  Then M-x metronome to
 play/pause, and C-u M-x metronome to set a new tempo. (require metronome)
 (global-set-key (kbd \"C-c C-m\") metronome)")
     (license license:gpl3)))
+
+(define-public emacs-noflet
+  (package
+    (name "emacs-noflet")
+    (version "20141102.1454")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/nicferrier/emacs-noflet.git")
+                    (commit "7ae84dc3257637af7334101456dafe1759c6b68a")))
+              (sha256
+               (base32
+                "0g70gnmfi8n24jzfci9nrj0n9bn1qig7b8f9f325rin8h7x32ypf"))))
+    (build-system emacs-build-system)
+    (home-page "https://github.com/nicferrier/emacs-noflet")
+    (synopsis "locally override functions")
+    (description
+     "This let's you locally override functions, in the manner of `flet', but with
+access to the original function through the symbol: `this-fn'.")
+    (license license:gpl3)))
