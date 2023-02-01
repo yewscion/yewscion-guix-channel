@@ -2297,3 +2297,24 @@ Matthias David #+options: toc:nil #+ou:Zoom #+quand: 20/2/2021 #+projet:
 ox-minutes #+absent: C. Robert,T. tartanpion #+present: K. Soulet,I. Payet
 #+excuse:Sophie Fonsec,Karine Soulet #+logo: logo.png")
     (license license:gpl3)))
+
+(define-public emacs-ox-slack
+  (package
+    (name "emacs-ox-slack")
+    (version "20200108.1546")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/titaniumbones/ox-slack.git")
+                    (commit "bd797dcc58851d5051dc3516c317706967a44721")))
+              (sha256
+               (base32
+                "1kh2v08fqmsmfj44ik8pljs3fz47fg9zf6q4mr99c0m5ccj5ck7w"))))
+    (build-system emacs-build-system)
+    (propagated-inputs (list emacs-org emacs-ox-gfm))
+    (home-page "https://github.com/titaniumbones/ox-slack")
+    (synopsis "Slack Exporter for org-mode")
+    (description
+     "This library implements a Slack backend for the Org exporter, based on the `md
+and `gfm back-ends.")
+    (license license:gpl3+)))
