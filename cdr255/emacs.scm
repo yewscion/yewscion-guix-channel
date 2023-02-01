@@ -1914,3 +1914,25 @@ considered as entries.  Use `org-brain-visualize to see the relationships
 between entries, quickly add parents/children/friends/pins to an entry, and open
 them for editing.")
     (license license:expat)))
+
+(define-public emacs-org-cliplink
+  (package
+    (name "emacs-org-cliplink")
+    (version "20201126.1020")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/rexim/org-cliplink.git")
+                    (commit "13e0940b65d22bec34e2de4bc8cba1412a7abfbc")))
+              (sha256
+               (base32
+                "1avyiw8vlv4n1r7zqvc6wjlsz7jl2pqaprzpm782gzp0c999pssl"))))
+    (build-system emacs-build-system)
+    (home-page "http://github.com/rexim/org-cliplink")
+    (synopsis "insert org-mode links from the clipboard")
+    (description
+     "This package provides a simple command that takes a URL from the clipboard and
+inserts an org-mode link with a title of a page found by the URL into the
+current buffer This code was a part of my Emacs config almost a year.  I decided
+to publish it as a separate package in case someone needs this feature too.")
+    (license license:bsd-3)))
