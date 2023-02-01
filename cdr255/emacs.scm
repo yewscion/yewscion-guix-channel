@@ -2459,3 +2459,27 @@ Basic indentation, raw and normal string support - Automatic formatting on save
     (description
      "This package provides a simple command to restart Emacs from within Emacs")
     (license license:gpl3)))
+
+(define-public emacs-sass-mode
+  (package
+    (name "emacs-sass-mode")
+    (version "20190502.53")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/nex3/sass-mode.git")
+                    (commit "247a0d4b509f10b28e4687cd8763492bca03599b")))
+              (sha256
+               (base32
+                "1nhk12lhvkwdk8s8fx33p6rssi0gcfx2zkanq23rz6k28v5zi5yp"))))
+    (build-system emacs-build-system)
+    (propagated-inputs (list emacs-haml-mode))
+    (home-page "http://github.com/nex3/haml/tree/master")
+    (synopsis "Major mode for editing Sass files")
+    (description
+     "Because Sass's indentation schema is similar to that of YAML and Python, many
+indentation-related functions are similar to those in yaml-mode and python-mode.
+ To install, save this on your load path and add the following to your .emacs
+file: (require sass-mode) sass-mode requires haml-mode, which can be found at
+http://github.com/nex3/haml-mode.")
+    (license license:expat)))
