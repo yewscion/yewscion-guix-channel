@@ -2981,3 +2981,27 @@ expressed or implied, of Roland Walker.  No rights are claimed over data created
 by the Unicode Consortium, which are included here under the terms of the
 Unicode Terms of Use.")
     (license license:bsd-2)))
+
+(define-public emacs-uuidgen
+  (package
+    (name "emacs-uuidgen")
+    (version "20220405.1345")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/kanru/uuidgen-el.git")
+                    (commit "7b728c1d92e196c3acf87a004949335cfc18eab3")))
+              (sha256
+               (base32
+                "1z7x4p1qgyginn74xapd1iq0k53m9qbfk57dzc8srg7fcn5ip1js"))))
+    (build-system emacs-build-system)
+    (home-page "unspecified")
+    (synopsis "Provides various UUID generating functions")
+    (description
+     "This is a naive implementation of RFC4122 Universally Unique IDentifier
+generation in elisp.  Currently implemented are UUID v1 v3, v4 and v5
+generation.  The resolution of the time based UUID is microseconds, which is 10
+times of the suggested 100-nanosecond resolution, but should be enough for
+general usage.  Get development version from git: git clone
+git://github.com/kanru/uuidgen-el.git")
+    (license license:gpl3)))
