@@ -2061,3 +2061,25 @@ preview 13) highly customizable")
      "Add support for org links from pdftools buffers with more precise location
 control.  https://github.com/fuxialexander/org-pdftools/")
     (license license:gpl3)))
+
+(define-public emacs-org-scrum
+  (package
+    (name "emacs-org-scrum")
+    (version "20200131.1129")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/ianxm/emacs-scrum.git")
+                    (commit "f7a46bc4bc85305f0c2b72565170ea0e007c42fd")))
+              (sha256
+               (base32
+                "1x37jcfbdmyba3301fbrvmps93ibwcgn6dcqzv39qfsbpr5j0iik"))))
+    (build-system emacs-build-system)
+    (propagated-inputs (list emacs-org emacs-seq))
+    (home-page "https://github.com/ianxm/emacs-scrum")
+    (synopsis "org mode extensions for scrum planning and reporting")
+    (description
+     "This package provides functions that extend org-mode which allow it to generate
+reports used in the scrum software development process, such as a scrum board
+and burndown chart.")
+    (license license:gpl3)))
