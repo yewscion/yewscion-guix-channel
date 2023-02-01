@@ -1955,3 +1955,26 @@ to publish it as a separate package in case someone needs this feature too.")
     (description
      "Show the total clocked time of the current day in the mode line")
     (license license:gpl3+)))
+
+(define-public emacs-org-d20
+  (package
+    (name "emacs-org-d20")
+    (version "20210212.142")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://git.spwhitton.name/org-d20")
+                    (commit "e6149dcfbb6302d10109dd792fd0ffae7bfe2595")))
+              (sha256
+               (base32
+                "129zdnz97h6px0yz0f0if4gw96zxmsg24xc8vg51crsazqqz8l3b"))))
+    (build-system emacs-build-system)
+    (propagated-inputs (list emacs-s emacs-seq emacs-dash))
+    (home-page "https://spwhitton.name/tech/code/org-d20/")
+    (synopsis "minor mode for d20 tabletop roleplaying games")
+    (description
+     "; A minor mode intended for use in an Org-mode file in which you are ; keeping
+your GM notes for a tabletop roleplaying game that uses a ; d20. ; Example file
+footer: ; ; # Local Variables: ; # eval: (org-d20-mode 1) ; # org-d20-party:
+((\"Zahrat\" .  2) (\"Ennon\" .  4) (\"Artemis\" .  5))")
+    (license license:gpl3)))
