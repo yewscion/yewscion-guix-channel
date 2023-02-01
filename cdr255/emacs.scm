@@ -2440,3 +2440,22 @@ Emacs.  Some of its major features include: - syntax highlighting (font lock), -
 Basic indentation, raw and normal string support - Automatic formatting on save
 (configurable) - REPL support")
     (license license:gpl3)))
+
+(define-public emacs-restart-emacs
+  (package
+    (name "emacs-restart-emacs")
+    (version "20201127.1425")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/iqbalansari/restart-emacs.git")
+                    (commit "1607da2bc657fe05ae01f7fdf26f716eafead02c")))
+              (sha256
+               (base32
+                "0afy3icvlj9j6dl3jj6i286mwdhjl7kgvykv1wnbjx2c6gbwfpxa"))))
+    (build-system emacs-build-system)
+    (home-page "https://github.com/iqbalansari/restart-emacs")
+    (synopsis "Restart emacs from within emacs")
+    (description
+     "This package provides a simple command to restart Emacs from within Emacs")
+    (license license:gpl3)))
