@@ -1065,3 +1065,32 @@ languages with a lot of highlighting, like C and C++, produde the most beautiful
 animations.  More dense programming languages, like elisp, tend to \"kill\" many
 squares in the first generation, making them less suited for Game of Life seeds.")
     (license license:gpl3)))
+
+(define-public emacs-gemini-mode
+  (package
+    (name "emacs-gemini-mode")
+    (version "20221127.1619")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://git.carcosa.net/jmcbray/gemini.el.git")
+                    (commit "a7dd7c6ea4e036d0d5ecc4a5d284874c400f10ba")))
+              (sha256
+               (base32
+                "1pvlk56mhh4xh4gwzqldfk79jsjbcpivv5scd9811pv3afc30gsx"))))
+    (build-system emacs-build-system)
+    (home-page "https://git.carcosa.net/jmcbray/gemini.el")
+    (synopsis "A simple highlighting package for text/gemini")
+    (description
+     "This package provides a major mode for editing text/gemini files.  Currently, it
+only provides syntax-highlighting support.  This file is not part of GNU Emacs.
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU Affero General Public License as published by the Free
+Software Foundation, either version 3 of the License, or (at your option) any
+later version.  This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License
+for more details.  You should have received a copy of the GNU Affero General
+Public License along with this program.  If not, see
+<https://www.gnu.org/licenses/>.")
+    (license license:gpl3)))
