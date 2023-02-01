@@ -3328,3 +3328,28 @@ install sqlite command. (http://www.sqlite.org/) Please install this package
 from MELPA. (http://melpa.org/) ## Usage: See the online document:
 https://github.com/mhayashi1120/Emacs-esqlite")
     (license license:gpl3+)))
+
+(define-public emacs-pcsv
+  (package
+    (name "emacs-pcsv")
+    (version "20150220.1131")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/mhayashi1120/Emacs-pcsv.git")
+                    (commit "798e0933f8d0818beb17aebf3b1056bbf74e03d0")))
+              (sha256
+               (base32
+                "0aaprjczjf3al5vcypw1fsnz5a0xnnlhmvy0lc83i9aqbsa2y8af"))))
+    (build-system emacs-build-system)
+    (home-page "https://github.com/mhayashi1120/Emacs-pcsv/raw/master/pcsv.el")
+    (synopsis "Parser of csv")
+    (description
+     "pcsv provides parser of csv based on rfc4180
+http://www.rfc-editor.org/rfc/rfc4180.txt ## Install: Put this file into
+load-path'ed directory, and byte compile it if desired.  And put the following
+expression into your ~/.emacs. (require pcsv) ## Usage: Use `pcsv-parse-buffer`,
+`pcsv-parse-file`, `pcsv-parse-region` functions to parse csv.  To handle huge
+csv file, use the lazy parser `pcsv-file-parser`.  To handle csv buffer like
+cursor, use the `pcsv-parser`.")
+    (license license:gpl3+)))
