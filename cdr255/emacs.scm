@@ -542,4 +542,27 @@ for converting context-free grammars into parsers, syntax highlighters, and
 documentation.")
    (license license:gpl2+)))
 
+(define-public emacs-bongo
+  (package
+   (name "emacs-bongo")
+   (version "20201002.1020")
+   (source (origin
+            (method git-fetch)
+            (uri (git-reference
+                  (url "https://github.com/dbrock/bongo.git")
+                  (commit "9e9629090262bba6d0003dabe5a375e47a4477f1")))
+            (sha256
+             (base32
+              "1ayiqj8zc15kf3211asgc4hl7zv78y6n6m6rsb9svysak5srr3wy"))))
+   (build-system emacs-build-system)
+   (arguments
+    '(#:include '("^[^/]+.el$" "^[^/]+.texi$" "^images$" "^[^/]+.rb$")
+      #:exclude '()))
+   (home-page "unspecified")
+   (synopsis "play music with Emacs")
+   (description
+    "Bongo is a flexible and usable media player for GNU Emacs.  For detailed
+documentation see the projects README file at https://github.com/dbrock/bongo/")
+   (license license:gpl2+)))
+
 
