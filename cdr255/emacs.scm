@@ -903,3 +903,23 @@ buffer-after-point \"\")) (add-to-list easy-kill-alist (?f string-to-char-forwar
 (add-to-list easy-kill-alist (?t string-to-char-backward \"\")) (add-to-list
 easy-kill-alist (?T string-up-to-char-backward \"\"))")
    (license license:bsd-2)))
+
+(define-public emacs-elixir-mode
+  (package
+    (name "emacs-elixir-mode")
+    (version "20221017.2044")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/elixir-editors/emacs-elixir.git")
+                    (commit "4974ff9a83daf50f2f03dc0d6d00871296e088b0")))
+              (sha256
+               (base32
+                "1cc8qmfiz6azm7ly22cjhv7mmf5crmnfk3gx6315h0lz6rqh2885"))))
+    (build-system emacs-build-system)
+    (home-page "https://github.com/elixir-editors/emacs-elixir")
+    (synopsis "Major mode for editing Elixir files")
+    (description
+     "This package provides font-locking, indentation and navigation support for the
+Elixir programming language.")
+    (license license:gpl3)))
