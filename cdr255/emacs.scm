@@ -593,3 +593,28 @@ you type.  You will probably want to customize the `company-c-headers-path-user
 and `company-c-headers-path-system variables for your specific needs.")
    (license license:gpl2+)))
 
+(define-public emacs-company-ipa
+  (package
+   (name "emacs-company-ipa")
+   (version "20210307.1838")
+   (source (origin
+            (method git-fetch)
+            (uri (git-reference
+                  (url "https://gitlab.com/mguzmann89/company-ipa.git")
+                  (commit "8634021cac885f53f3274ef6dcce7eab19321046")))
+            (sha256
+             (base32
+              "0629my156zxjb3h636iirdd2rr58z3vsdinhq0w0y6f3544i05hx"))))
+   (build-system emacs-build-system)
+   (propagated-inputs (list emacs-company))
+   (home-page "https://github.com/mguzmann/company-ipa")
+   (synopsis "IPA backend for company")
+   (description
+    "This package adds an easy way of inserting IPA (International Phonetic Alphabet)
+into a document Usage ===== To install clone this package directly and load it
+(load-file \"PATH/company-ipa.el\") To activate: (add-to-list company-backends
+company-ipa-symbols-unicode) To use: type ~pp and you should get completions To
+change the prefix, execute: (company-ipa-set-trigger-prefix \"¬\") For best
+performance you should use this with company-flx: (company-flx-mode +1)")
+   (license license:gpl3)))
+
