@@ -2519,3 +2519,30 @@ http://github.com/nex3/haml-mode.")
     (synopsis "Major mode for editing Scala")
     (description "")
     (license license:gpl3)))
+
+(define-public emacs-shen-elisp
+  (package
+    (name "emacs-shen-elisp")
+    (version "20221211.1313")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/deech/shen-elisp.git")
+                    (commit "957ab44654fc7a7cc1b78181d244fa25166f9b09")))
+              (sha256
+               (base32
+                "0xfs48fryqjaiy9w7rwxsi9g950gbjq6haacah1lf8h59pa9ff2w"))))
+    (build-system emacs-build-system)
+    (arguments
+     '(#:include '("^shen[^/]+.el$")
+       #:exclude '()))
+    (home-page "https://github.com/deech/shen-elisp")
+    (synopsis "Shen implementation in Elisp")
+    (description
+     "This is an implemenatation of the Shen programming language in Elisp.  The end
+goal is to provide: 1.  An easy way to play with Shen with no other installation
+hassle (assuming you use Emacs).  2.  A first-class development experience when
+writing Shen.  The idea is that an editor that understands the code can be much
+more helpful than one that does not.  To this end the roadmap involves a full
+gamut of source code introspection and debugging tools.")
+    (license license:bsd-3)))
