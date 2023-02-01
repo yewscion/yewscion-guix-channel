@@ -3126,3 +3126,25 @@ writing mode similar to the famous Writeroom editor for OS X. writeroom-mode is
 meant for GNU Emacs 25 and isn't tested on older versions.  See the README or
 info manual for usage instructions.")
     (license license:bsd-3)))
+
+(define-public emacs-xml+
+  (package
+    (name "emacs-xml+")
+    (version "20170727.2351")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/bddean/xml-plus.git")
+                    (commit "232fa863c08fc159b21dd58c39ea45dce3334895")))
+              (sha256
+               (base32
+                "0b7v59dya346ds1wad0avrqhjimx5n9r3pcgqafagzf34hdcv3jy"))))
+    (build-system emacs-build-system)
+    (propagated-inputs (list emacs-dash))
+    (home-page "https://github.com/bddean/xml-plus")
+    (synopsis "Utilities for xml and html trees")
+    (description
+     "Utility functions for xml parse trees. - `xml+-query-all and `xml+-query-first
+are query functions that search descendants in node lists.  They don't work with
+namespace-aware parsing yet - `xml+-node-text gets node text")
+    (license license:gpl3+)))
