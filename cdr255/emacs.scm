@@ -2318,3 +2318,28 @@ ox-minutes #+absent: C. Robert,T. tartanpion #+present: K. Soulet,I. Payet
      "This library implements a Slack backend for the Org exporter, based on the `md
 and `gfm back-ends.")
     (license license:gpl3+)))
+
+(define-public emacs-ox-timeline
+  (package
+    (name "emacs-ox-timeline")
+    (version "20220321.2115")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/jjuliano/org-simple-timeline.git")
+                    (commit "b28bd4ccd5fa114c0f51b9766f0b9be7fe05fdd8")))
+              (sha256
+               (base32
+                "0l71bhbgs2g0gbfl8lf6p2hnnyma26qk67q59x935hkgjbb4vx1z"))))
+    (build-system emacs-build-system)
+    (home-page "https://github.com/jjuliano/org-simple-timeline")
+    (synopsis "HTML Timeline Back-End for Org Export Engine")
+    (description
+     "This library implements the Org-mode back-end generic exporter for HTML
+Timeline.  Installation ------------ Download the timeline scripts from
+https://squarechip.github.io/timeline/ Then copy the files relative to your html
+file.n The default (`org-timeline-source-url') is set to
+\"modules/timeline/dist\".  Usage ----- To test it, run: M-x
+org-timeline-export-as-html in an Org mode buffer.  See ox.el and ox-html.el for
+more details on how this exporter works.")
+    (license license:gpl3+)))
