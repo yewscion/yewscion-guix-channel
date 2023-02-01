@@ -1830,3 +1830,32 @@ RET.")
     (synopsis "Run OfflineIMAP from Emacs")
     (description "M-x offlineimap We need comint for `comint-truncate-buffer")
     (license license:gpl3)))
+
+(define-public emacs-org-analyzer
+  (package
+    (name "emacs-org-analyzer")
+    (version "20191001.1717")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/rksm/clj-org-analyzer.git")
+                    (commit "19da62aa4dcf1090be8f574f6f2d4c7e116163a8")))
+              (sha256
+               (base32
+                "1zfc93z6w5zvbqiypqvbnyv8ims1wgpcp61z1s152d0nq2y4pf50"))))
+    (build-system emacs-build-system)
+    (arguments
+     '(#:include '("^org-analyzer-el/[^/]+.jar$" "^org-analyzer-el/[^/]+.el$")
+       #:exclude '()))
+    (home-page "https://github.com/rksm/clj-org-analyzer")
+    (synopsis
+     "org-analyzer is a tool that extracts time tracking data from org files.")
+    (description
+     "org-analyzer is a tool that extracts time tracking data from org files (time
+data recording with `org-clock-in', those lines that start with \"CLOCK:\").  It
+then creates an interactive visualization of that data — outside of Emacs(!).
+In order to run the visualizer / parser you need to have java installed.  This
+Emacs package provides a simple way to start the visualizer via
+`org-analyzer-start and feed it the default org files.  See
+https://github.com/rksm/clj-org-analyzer for more information.")
+    (license license:gpl3)))
