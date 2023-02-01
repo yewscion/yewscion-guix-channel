@@ -2343,3 +2343,23 @@ file.n The default (`org-timeline-source-url') is set to
 org-timeline-export-as-html in an Org mode buffer.  See ox.el and ox-html.el for
 more details on how this exporter works.")
     (license license:gpl3+)))
+
+(define-public emacs-pikchr-mode
+  (package
+    (name "emacs-pikchr-mode")
+    (version "20210324.2125")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/kljohann/pikchr-mode.git")
+                    (commit "5d424c5c97ac854cc44c369e654e4f906fcae3c8")))
+              (sha256
+               (base32
+                "07qjz0mzl6cqgavv5sc9n1v7zq5q6f8is6nn126v0zk6rskp366q"))))
+    (build-system emacs-build-system)
+    (home-page "https://github.com/kljohann/pikchr-mode")
+    (synopsis "A major mode for the pikchr diagram markup language")
+    (description
+     "This package provides a major mode for the pikchr (https://pikchr.org/) diagram
+markup language.")
+    (license license:gpl3)))
