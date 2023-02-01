@@ -1522,3 +1522,28 @@ have the luacheck program installed (available from luarocks) and activate
 `flymake-mode'.  See \"M-x apropos-command ^lua-\" for a list of commands.  See
 \"M-x customize-group lua\" for a list of customizable variables.")
     (license license:gpl3)))
+
+(define-public emacs-markdown-changelog
+  (package
+    (name "emacs-markdown-changelog")
+    (version "20200120.2253")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/plandes/markdown-changelog.git")
+                    (commit "1a2c3a4c3e4196f2b5dbb145b01b4bc435a93a96")))
+              (sha256
+               (base32
+                "0dw9bz1iq8v816n0z4v9zc6nsrx4qzl99q2pj04f37s7x9vgmc4x"))))
+    (build-system emacs-build-system)
+    (propagated-inputs (list emacs-dash))
+    (home-page "https://github.com/plandes/markdown-changelog")
+    (synopsis "Maintain changelog entries")
+    (description
+     "Create and maintain Keep a Changelog based entries.  See
+https://keepachangelog.com/ for this specific change log format.  A nascent
+changelog is created with `markdown-changelog-new and
+`markdown-changelog-add-release is used to add a new entry.  For more
+information and motivation for markdown changelogs see
+https://github.com/plandes/markdown-changelog#motivation")
+    (license license:gpl2)))
