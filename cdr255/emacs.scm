@@ -2384,3 +2384,35 @@ markup language.")
 podcaster.el provides showing podscasts list.  Its actions are - Play podcast
 mp3(requires `avplay or `ffplay or `itunes')")
     (license license:gpl3+)))
+
+(define-public emacs-raku-mode
+  (package
+    (name "emacs-raku-mode")
+    (version "20210927.1227")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/Raku/raku-mode.git")
+                    (commit "977b14a7c1295ebf2aad2f807d3f8e7c27aeb47f")))
+              (sha256
+               (base32
+                "14r1m1iw123y623dxcbjmzn8dpmixc3l7s5svxxs0msxnh5b4fcy"))))
+    (build-system emacs-build-system)
+    (arguments
+     '(#:include '("^[^/]+.el$" "^[^/]+.el.in$"
+                   "^dir$"
+                   "^[^/]+.info$"
+                   "^[^/]+.texi$"
+                   "^[^/]+.texinfo$"
+                   "^doc/dir$"
+                   "^doc/[^/]+.info$"
+                   "^doc/[^/]+.texi$"
+                   "^doc/[^/]+.texinfo$")
+       #:exclude '("^.dir-locals.el$" "^test.el$" "^tests.el$" "^[^/]+-test.el$"
+                   "^[^/]+-tests.el$" "^nqp-mode.el$")))
+    (home-page "https://github.com/hinrik/perl6-mode")
+    (synopsis "Major mode for editing Raku code")
+    (description
+     "GNU Emacs 24 major mode for editing Raku code.  Currently only provides very
+basic syntax highlighting.")
+    (license license:gpl3)))
