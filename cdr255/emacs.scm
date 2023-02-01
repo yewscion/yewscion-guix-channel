@@ -479,3 +479,23 @@ Or, copy v-mode.el to some location in your Emacs load path.  Then add \"(requir
 v-mode)\" to your Emacs initialization (.emacs, init.el, or something).  Example
 config: (require v-mode)")
   (license license:gpl3)))
+
+(define-public emacs-elisp-autofmt
+  (package
+   (name "emacs-elisp-autofmt")
+   (version "20230131.1219")
+   (source (origin
+            (method url-fetch)
+            (uri (string-append "https://melpa.org/packages/elisp-autofmt-"
+                                version ".tar"))
+            (sha256
+             (base32
+              "0mg8cdp31w6p19b6ahc9nv8nhd29b3r0sjwayvim2hb7aiyfm54h"))))
+   (build-system emacs-build-system)
+   (home-page "https://codeberg.org/ideasman42/emacs-elisp-autofmt")
+   (synopsis "Emacs lisp auto-format")
+   (description
+    "Auto format emacs-lisp code on save. ; Usage (elisp-autofmt-buffer) ;
+Auto-format the current buffer.  You may also use the minor mode
+`elisp-autofmt-mode which enables formatting the buffer on save.")
+   (license #f)))
