@@ -454,3 +454,28 @@ based on the `md back-end.")
 search functionality, Zetteldeft provides a way to create and manage links
 between short notes.")
    (license license:gpl3)))
+
+(define-public emacs-v-mode
+  (package
+  (name "emacs-v-mode")
+  (version "20221007.635")
+  (source (origin
+            (method git-fetch)
+            (uri (git-reference
+                  (url "https://github.com/damon-kwok/v-mode.git")
+                  (commit "84f26ab0f0f5b23133292674da9fa4558207c33d")))
+            (sha256
+             (base32
+              "10kr5ga8l3061nj4y6qciy0v4mkfvv9mav3i5cl1sz6b6h8kdp66"))))
+  (build-system emacs-build-system)
+  (propagated-inputs (list emacs-dash emacs-hydra))
+  (home-page "https://github.com/damon-kwok/v-mode")
+  (synopsis "A major mode for the V programming language")
+  (description
+   "Description: This is a major mode for the V programming language For more
+details, see the project page at https://github.com/damon-kwok/v-mode
+Installation: The simple way is to use package.el: M-x package-install v-mode
+Or, copy v-mode.el to some location in your Emacs load path.  Then add \"(require
+v-mode)\" to your Emacs initialization (.emacs, init.el, or something).  Example
+config: (require v-mode)")
+  (license license:gpl3)))
