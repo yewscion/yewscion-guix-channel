@@ -2267,3 +2267,33 @@ EXPORT: __________ MY NOTES __________ * Heading 1 + Sub heading - More nesting
 required at minimum for lexical binding support. - Emacs 24.4 is required as
 ox-ascii got added to org-mode in that Emacs release.")
     (license license:gpl3+)))
+
+(define-public emacs-ox-report
+  (package
+    (name "emacs-ox-report")
+    (version "20220910.951")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/DarkBuffalo/ox-report.git")
+                    (commit "0c2357cd09841dfe180210443cae435b49826d75")))
+              (sha256
+               (base32
+                "0w2vkpy7ycg08sv0qpavaq1pvhxsrc4q487w7dq4gj7a9h8c2qkd"))))
+    (build-system emacs-build-system)
+    (propagated-inputs (list emacs-org-msg))
+    (home-page "https://github.com/DarkBuffalo/ox-report")
+    (synopsis "Export your org file to minutes report PDF file")
+    (description
+     "This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.  This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+details.  This is a another exporter for org-mode that translates Org-mode file
+to beautiful PDF file EXAMPLE ORG FILE HEADER: #+title:Readme ox-notes #+author:
+Matthias David #+options: toc:nil #+ou:Zoom #+quand: 20/2/2021 #+projet:
+ox-minutes #+absent: C. Robert,T. tartanpion #+present: K. Soulet,I. Payet
+#+excuse:Sophie Fonsec,Karine Soulet #+logo: logo.png")
+    (license license:gpl3)))
