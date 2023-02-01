@@ -2037,3 +2037,27 @@ disqus) 10) site visiting tracking (implemented using google analytics) 11)
 index/about page support (auto generated if no default provided) 12) site
 preview 13) highly customizable")
     (license license:gpl3)))
+
+(define-public emacs-org-pdftools
+  (package
+    (name "emacs-org-pdftools")
+    (version "20220320.301")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/fuxialexander/org-pdftools.git")
+                    (commit "967f48fb5038bba32915ee9da8dc4e8b10ba3376")))
+              (sha256
+               (base32
+                "0f47ww8r00b7lb1msybnmnqdhm9i2vwz5lrz9m9bn6gbh97mzhn8"))))
+    (build-system emacs-build-system)
+    (propagated-inputs (list emacs-org emacs-pdf-tools emacs-org-noter))
+    (arguments
+     '(#:include '("^org-pdftools.el$")
+       #:exclude '()))
+    (home-page "https://github.com/fuxialexander/org-pdftools")
+    (synopsis "Support for links to documents in pdfview mode")
+    (description
+     "Add support for org links from pdftools buffers with more precise location
+control.  https://github.com/fuxialexander/org-pdftools/")
+    (license license:gpl3)))
