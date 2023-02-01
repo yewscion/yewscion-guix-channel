@@ -3056,3 +3056,26 @@ with `completing-read and either for all the entries in the database, all the
 entries for a given artist or all the entries where the lyrics field contains a
 given string. - synchronous bulk request for lyrics for a given list of songs.")
     (license license:gpl3)))
+
+(define-public emacs-wc-goal-mode
+  (package
+    (name "emacs-wc-goal-mode")
+    (version "20140829.1359")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/bnbeckwith/wc-goal-mode.git")
+                    (commit "bf21ab9c5a449bcc20dd207a4915dcec218d2699")))
+              (sha256
+               (base32
+                "0p7j4hvcxfyjf0na9s3xv29dvmwq82s56lincfasd0ydcpz4fbwc"))))
+    (build-system emacs-build-system)
+    (home-page "https://github.com/bnbeckwith/wc-goal-mode")
+    (synopsis "Running word count with goals (minor mode)")
+    (description
+     "Read the following for how to use the how-many function
+http://www.neverfriday.com/sweetfriday/2008/06/emacs-tip-word-counting-with-a.html
+The following site had a good idea on how to produce number of chars
+http://xahlee.org/emacs/elisp_count-region.html Inspired by http://750words.com
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;")
+    (license license:gpl3+)))
