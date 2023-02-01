@@ -3005,3 +3005,23 @@ times of the suggested 100-nanosecond resolution, but should be enough for
 general usage.  Get development version from git: git clone
 git://github.com/kanru/uuidgen-el.git")
     (license license:gpl3)))
+
+(define-public emacs-verb
+  (package
+    (name "emacs-verb")
+    (version "20221113.2327")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/federicotdn/verb.git")
+                    (commit "cb07a35bac5e2e3400d8f9e764177b9a9457deb1")))
+              (sha256
+               (base32
+                "1psah3k956hkl3qw3hjzfw89lcvcjp3zh6ap9ln0p9d8q696zmba"))))
+    (build-system emacs-build-system)
+    (home-page "https://github.com/federicotdn/verb")
+    (synopsis "Organize and send HTTP requests")
+    (description
+     "Verb is a package that allows you to organize and send HTTP requests from Emacs.
+ See the project's README.md file for more details.")
+    (license license:gpl3)))
