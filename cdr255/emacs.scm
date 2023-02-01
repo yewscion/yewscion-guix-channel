@@ -566,4 +566,30 @@ documentation.")
 documentation see the projects README file at https://github.com/dbrock/bongo/")
    (license license:gpl2+)))
 
+(define-public emacs-company-c-headers
+  (package
+   (name "emacs-company-c-headers")
+   (version "20190825.1631")
+   (source (origin
+            (method git-fetch)
+            (uri (git-reference
+                  (url "https://github.com/randomphrase/company-c-headers.git")
+                  (commit "9d384571b1190e99d0a789e5296176d69a3d0771")))
+            (sha256
+             (base32
+              "149sbw2pmfwn52jrhavrnc16rkjz09g5kl9acl973k764mf215l0"))))
+   (build-system emacs-build-system)
+   (propagated-inputs (list emacs-company))
+   (home-page "unspecified")
+   (synopsis "Company mode backend for C/C++ header files")
+   (description
+    "This library enables the completion of C/C++ header file names using Company.
+To initialize it, just add it to `company-backends': (add-to-list
+company-backends company-c-headers) When you type an #include declaration within
+a supported major mode (see `company-c-headers-modes'), company-c-headers will
+search for header files within predefined search paths.  company-c-headers can
+search \"system\" and \"user\" paths, depending on the type of #include declaration
+you type.  You will probably want to customize the `company-c-headers-path-user
+and `company-c-headers-path-system variables for your specific needs.")
+   (license license:gpl2+)))
 
