@@ -1326,3 +1326,28 @@ specific command (e.g. iex -S mix, iex -S mix phx.server, etc)")
     (synopsis "IP subnet calculator")
     (description "Usage: evaluate (ipcalc \"192.168.0.23/21\")")
     (license license:bsd-2)))
+
+(define-public emacs-j-mode
+  (package
+    (name "emacs-j-mode")
+    (version "20171224.1856")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/zellio/j-mode.git")
+                    (commit "e8725ac8af95498faabb2ca3ab3bd809a8f148e6")))
+              (sha256
+               (base32
+                "0icrwny3cif0iwgyf9i25sj9i5gy056cn9ic2wwwbzqjqb4xg6dd"))))
+    (build-system emacs-build-system)
+    (home-page "http://github.com/zellio/j-mode")
+    (synopsis "Major mode for editing J programs")
+    (description
+     "This package provides font-lock and basic REPL integration for the [J
+programming language](http://www.jsoftware.com) ; Installation The only method
+of installation is to check out the project, add it to the load path, and load
+normally.  This may change one day.  Put this in your emacs config (add-to-list
+load-path \"/path/to/j-mode/\") (load \"j-mode\") Add for detection of j source
+files if the auto-load fails (add-to-list auto-mode-alist (\"\\\\.ij[rstp]$\" .
+j-mode)))")
+    (license license:gpl3)))
