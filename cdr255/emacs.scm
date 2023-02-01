@@ -2126,3 +2126,39 @@ org-mode, file; and so contains further examples demonstrating the special
 blocks it introduces.  Full documentation can be found at
 https://alhassy.github.io/org-special-block-extras")
     (license license:gpl3)))
+
+(define-public emacs-orgtbl-aggregate
+  (package
+    (name "emacs-orgtbl-aggregate")
+    (version "20230124.1042")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/tbanel/orgaggregate.git")
+                    (commit "50e36e201ff331443a31d12defc2dfea60fa9523")))
+              (sha256
+               (base32
+                "1pnhqqn4rf260d993iafd6mbhwhc813m5c3dpys1n1xjdwh8ya0i"))))
+    (build-system emacs-build-system)
+    (home-page "https://github.com/tbanel/orgaggregate/blob/master/README.org")
+    (synopsis "Create an aggregated Org table from another one")
+    (description
+     "This package provides a new org-mode table is automatically updated, based on
+another table acting as a data source and user-given specifications for how to
+perform aggregation.  Example: Starting from a source table of activities and
+quantities (whatever they are) over several days, #+TBLNAME: original | Day |
+Color | Level | Quantity | |-----------+-------+-------+----------| | Monday |
+Red | 30 | 11 | | Monday | Blue | 25 | 3 | | Tuesday | Red | 51 | 12 | | Tuesday
+| Red | 45 | 15 | | Tuesday | Blue | 33 | 18 | | Wednesday | Red | 27 | 23 | |
+Wednesday | Blue | 12 | 16 | | Wednesday | Blue | 15 | 15 | | Thursday | Red |
+39 | 24 | | Thursday | Red | 41 | 29 | | Thursday | Red | 49 | 30 | | Friday |
+Blue | 7 | 5 | | Friday | Blue | 6 | 8 | | Friday | Blue | 11 | 9 | an
+aggregation is built for each day (because several rows exist for each day),
+typing C-c C-c #+BEGIN: aggregate :table original :cols \"Day mean(Level)
+sum(Quantity)\" | Day | mean(Level) | sum(Quantity) |
+|-----------+-------------+---------------| | Monday | 27.5 | 14 | | Tuesday |
+43 | 45 | | Wednesday | 18 | 54 | | Thursday | 43 | 83 | | Friday | 8 | 22 |
+#+END A wizard can be used: M-x orgtbl-aggregate-insert-dblock-aggregate Full
+documentation here:
+https://github.com/tbanel/orgaggregate/blob/master/README.org")
+    (license license:gpl3)))
