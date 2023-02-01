@@ -1232,3 +1232,38 @@ instance, - scans declarations and places them in a menu.  See URL
 haskell-mode-view-news` (after Haskell Mode is installed) to show information on
 recent changes in Haskell Mode.")
     (license license:gpl3)))
+
+(define-public emacs-impatient-mode
+  (package
+    (name "emacs-impatient-mode")
+    (version "20200723.2117")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/skeeto/impatient-mode.git")
+                    (commit "479a2412596ff1dbdddeb7bdbba45482ce5b230c")))
+              (sha256
+               (base32
+                "09ns4csq36x4jnja8ayla6j29c5pyw9psf534rd56d7l33sbgyvl"))))
+    (build-system emacs-build-system)
+    (propagated-inputs (list emacs-simple-httpd emacs-htmlize))
+    (arguments
+     '(#:include '("^[^/]+.html$" "^[^/]+.js$" "^impatient-mode.el$")
+       #:exclude '()))
+    (home-page "https://github.com/netguy204/imp.el")
+    (synopsis "Serve buffers live over HTTP")
+    (description
+     "impatient-mode is a minor mode that publishes the live buffer through the local
+simple-httpd server under /imp/live/<buffer-name>/.  To unpublish a buffer,
+toggle impatient-mode off.  Start the simple-httpd server (`httpd-start') and
+visit /imp/ on the local server.  There will be a listing of all the buffers
+that currently have impatient-mode enabled.  This is likely to be found here:
+http://localhost:8080/imp/ Except for html-mode buffers, buffers will be
+prettied up with htmlize before being sent to clients.  This can be toggled at
+any time with `imp-toggle-htmlize'.  Because html-mode buffers are sent raw, you
+can use impatient-mode see your edits to an HTML document live! This is perhaps
+the primary motivation of this mode.  To receive updates the browser issues a
+long poll on the client waiting for the buffer to change -- server push.  The
+response happens in an `after-change-functions hook.  Buffers that do not run
+these hooks will not be displayed live to clients.")
+    (license license:public-domain)))
