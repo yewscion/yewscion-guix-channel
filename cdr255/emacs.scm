@@ -3654,3 +3654,35 @@ web-completion-data-sources) (setq web-completion-data-sources (cons (cons
     (synopsis "An Elisp API for programmatically using Git")
     (description "No description available.")
     (license license:gpl3+)))
+
+(define-public emacs-lf
+  (package
+    (name "emacs-lf")
+    (version "20210808.1921")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/alhassy/lf.git")
+                    (commit "35db92ca765a0544721fdeea036d77b7d192d083")))
+              (sha256
+               (base32
+                "0c22347dfrjdrn0cn4bqqsw8gd1663hkgycxkfivpyg0d734g5nq"))))
+    (build-system emacs-build-system)
+    (propagated-inputs (list emacs-s emacs-dash))
+    (home-page "https://alhassy.github.io/lf.el/")
+    (synopsis "A Language Features library for Emacs Lisp")
+    (description
+     "This library provides common desirable “L”anguage “F”eatures: 0.  A unifed
+interface for defining both variables and functions.  LF-DEFINE. 1.  A way to
+define typed, constrained, variables.  LF-DEFINE. 2.  A way to define type
+specifed functions.  LF-DEFINE. 3.  A macro to ease variable updates: (lf-define
+very-long-name (f it)) ≋ (setq very-long-name (f very-long-name)) 4.  A more
+verbose, yet friendlier, alternative to SETF: LF-DEFINE. Minimal Working
+Example: (lf-define age 0 [(integerp it) (<= 0 it 100)]) (lf-define age 123) ;;
+⇒ Error: Existing constraints for “age” violated! ;; “age” is not updated; it
+retains old value. (lf-define age 29) ;; OK, “age” is now 29.  This file has
+been tangled from a literate, org-mode, file.  There are numerous examples in
+tests.el.")
+    (license license:gpl3)))
+
+
