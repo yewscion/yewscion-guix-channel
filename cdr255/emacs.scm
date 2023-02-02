@@ -3706,3 +3706,22 @@ https://goo.gl/NXTJXk and also with https://goo.gl/ji4Viv in mind.  With
 \"thanks\" to Sue for being responsible for pointing me at the former, and thus
 reminding me of the latter.")
     (license license:gpl3+)))
+
+(define-public emacs-lolcat
+  (package
+    (name "emacs-lolcat")
+    (version "20190527.1145")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/xuchunyang/lolcat.el.git")
+                    (commit "4855e587a3b9681c077dac4b9f166dd860f439a4")))
+              (sha256
+               (base32
+                "0nbrc3wjmmy70ggwmzagkh5j1my7x6y67fyqgddkdrbnw543gly0"))))
+    (build-system emacs-build-system)
+    (home-page "https://github.com/xuchunyang/lolcat.el")
+    (synopsis "Rainbows and unicorns!")
+    (description
+     "Emacs Port of the Python version at https://github.com/tehmaze/lolcat")
+    (license license:gpl3+)))
