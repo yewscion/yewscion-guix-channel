@@ -3635,3 +3635,22 @@ own completion data, let say \"Bootstrap\" data: (unless (assoc \"Bootstrap\"
 web-completion-data-sources) (setq web-completion-data-sources (cons (cons
 \"Bootstrap\" \"/path/to/complete/data\") web-completion-data-sources)))")
     (license license:gpl3+)))
+
+(define-public emacs-git
+  (package
+    (name "emacs-git")
+    (version "20140128.1041")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/rejeep/git.el.git")
+                    (commit "a3396a7027a7d986598c6a2d6d5599bac918f3da")))
+              (sha256
+               (base32
+                "10siqf21ay6vl1r1v2c93rajzyjc67m4wq9q88pbij0z18vkq2f0"))))
+    (build-system emacs-build-system)
+    (propagated-inputs (list emacs-s emacs-dash emacs-f))
+    (home-page "http://github.com/rejeep/git.el")
+    (synopsis "An Elisp API for programmatically using Git")
+    (description "No description available.")
+    (license license:gpl3+)))
