@@ -3725,3 +3725,7 @@ reminding me of the latter.")
     (description
      "Emacs Port of the Python version at https://github.com/tehmaze/lolcat")
     (license license:gpl3+)))
+
+;;; Failing Packages:
+;;;
+;;; emacs-slack, emacs-xmlunicode, emacs-universal-emotions-emoticons.
