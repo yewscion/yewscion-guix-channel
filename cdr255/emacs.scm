@@ -3685,4 +3685,24 @@ been tangled from a literate, org-mode, file.  There are numerous examples in
 tests.el.")
     (license license:gpl3)))
 
-
+(define-public emacs-dad-joke
+  (package
+    (name "emacs-dad-joke")
+    (version "20170928.658")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/davep/dad-joke.el.git")
+                    (commit "bee47e7b746b403228fa7d7361cb095de19ac9ba")))
+              (sha256
+               (base32
+                "14snnnjs28jg6k8x6g90m3dbcx10306ipcd256d3l6czk9p17vpd"))))
+    (build-system emacs-build-system)
+    (home-page "https://github.com/davep/dad-joke.el")
+    (synopsis "Get/display dad jokes")
+    (description
+     "dad-joke.el is a terrible bit of elisp code inspired by seeing
+https://goo.gl/NXTJXk and also with https://goo.gl/ji4Viv in mind.  With
+\"thanks\" to Sue for being responsible for pointing me at the former, and thus
+reminding me of the latter.")
+    (license license:gpl3+)))
