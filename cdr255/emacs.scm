@@ -3605,3 +3605,33 @@ indentation-related functions are similar to those in yaml-mode and python-mode.
  To install, save this on your load path and add the following to your .emacs
 file: (require haml-mode)")
     (license license:expat)))
+
+(define-public emacs-web-completion-data
+  (package
+    (name "emacs-web-completion-data")
+    (version "20160318.848")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/osv/web-completion-data.git")
+                    (commit "c272c94e8a71b779c29653a532f619acad433a4f")))
+              (sha256
+               (base32
+                "19nzjgvd2i5745283ck3k2vylrr6lnk9h3ggzwrwdhyd3m9433vm"))))
+    (build-system emacs-build-system)
+    (arguments
+     '(#:include '("^[^/]+.el$" "^html-stuff$")
+       #:exclude '()))
+    (home-page "https://github.com/osv/web-completion-data")
+    (synopsis "Shared completion data for ac-html and company-web")
+    (description
+     "This is just dependency for ac-html, company-web `web-completion-data-sources is
+pair list of framework-name and directory of completion data This package
+provide default \"html\" completion data.  Completion data directory structure:
+html-attributes-complete - attribute completion html-attributes-list -
+attributes of tags-add-tables html-attributes-short-docs - attributes
+documantation html-tag-short-docs - tags documantation If you decide extend with
+own completion data, let say \"Bootstrap\" data: (unless (assoc \"Bootstrap\"
+web-completion-data-sources) (setq web-completion-data-sources (cons (cons
+\"Bootstrap\" \"/path/to/complete/data\") web-completion-data-sources)))")
+    (license license:gpl3+)))
