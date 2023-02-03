@@ -1141,35 +1141,6 @@ gnuplot-mode-hook (lambda () (flyspell-prog-mode) (add-hook before-save-hook
 whitespace-cleanup nil t)))")
     (license license:gpl3)))
 
-(define-public emacs-guix
-  (package
-    (name "emacs-guix")
-    (version "20221011.1244")
-    (source (origin
-              (method git-fetch)
-              (uri (git-reference
-                    (url "https://git.savannah.gnu.org/git/guix/emacs-guix.git")
-                    (commit "cf5b7a402ea503c3dcda85a86b9a6c6dd01896e0")))
-              (sha256
-               (base32
-                "0wxiipgv91rlk9bhspx370rykywi52rxg5m1f7680vzs3ckc7nyd"))))
-    (build-system emacs-build-system)
-    (propagated-inputs (list emacs-dash emacs-geiser emacs-bui emacs-magit-popup
-                             emacs-edit-indirect))
-    (arguments
-     '(#:include '("^elisp/[^/]+.el$" "^doc/[^/]+.texi$")
-       #:exclude '("^scheme/Makefile.am$")))
-    (home-page "https://emacs-guix.gitlab.io/website/")
-    (synopsis "Interface for GNU Guix")
-    (description
-     "Emacs-Guix (aka \"guix.el\") provides featureful visual interface for the GNU Guix
-package manager.  It allows you: - to search for packages and to look at their
-code (package recipes); - to manage your Guix profile(s) by installing/removing
-packages; - to look at, compare and remove profile generations; - to look at
-system services and generations (if you use Guix System); - to do many other
-things.  Run \"M-x guix-help\" to look at the summary of available commands.")
-    (license license:gpl3)))
-
 (define-public emacs-guru-mode
   (package
     (name "emacs-guru-mode")
