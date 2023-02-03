@@ -828,30 +828,6 @@ downloaded, processed and put in place.")
     "This package provides a simple solution to insert document string into the code.")
    (license license:gpl3)))
 
-(define-public emacs-easy-kill
-  (package
-   (name "emacs-easy-kill")
-   (version "20220511.557")
-   (source (origin
-            (method git-fetch)
-            (uri (git-reference
-                  (url "https://github.com/leoliu/easy-kill.git")
-                  (commit "de7d66c3c864a4722a973ee9bc228a14be49ba0c")))
-            (sha256
-             (base32
-              "0zr836c9c5bhf0cslwk6jqf1xn9w6wfjn4faisq5v8ydyxn78925"))))
-   (build-system emacs-build-system)
-   (home-page "https://github.com/leoliu/easy-kill")
-   (synopsis "kill & mark things easily")
-   (description
-    "`easy-kill aims to be a drop-in replacement for `kill-ring-save'.  To use:
-(global-set-key [remap kill-ring-save] #'easy-kill) `easy-mark is similar to
-`easy-kill but marks the region immediately.  It can be a handy replacement for
-`mark-sexp allowing `+'/`- to do list-wise expanding/shrinking.  To use:
-(global-set-key [remap mark-sexp] #'easy-mark) Please send bug reports or
-feature requests to: https://github.com/leoliu/easy-kill/issues")
-   (license license:gpl3)))
-
 (define-public emacs-easy-kill-extras
   (package
    (name "emacs-easy-kill-extras")
