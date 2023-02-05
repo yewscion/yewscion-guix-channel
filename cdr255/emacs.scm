@@ -484,14 +484,15 @@ config: (require v-mode)")
 (define-public emacs-elisp-autofmt
   (package
    (name "emacs-elisp-autofmt")
-   (version "20230131.1219")
+   (version "20230205.435")
    (source (origin
-            (method url-fetch)
-            (uri (string-append "https://melpa.org/packages/elisp-autofmt-"
-                                version ".tar"))
+            (method git-fetch)
+            (uri (git-reference
+                  (url "https://codeberg.org/ideasman42/emacs-elisp-autofmt.git")
+                  (commit "e2f016cb76b0a10fde43c12561eefbb846f16f88")))
             (sha256
              (base32
-              "0mg8cdp31w6p19b6ahc9nv8nhd29b3r0sjwayvim2hb7aiyfm54h"))))
+              "16qpam74v6iypcsy7zj77bfm13g9cvzf70yg56nqd3v0sk7wafnn"))))
    (build-system emacs-build-system)
    (home-page "https://codeberg.org/ideasman42/emacs-elisp-autofmt")
    (synopsis "Emacs lisp auto-format")
