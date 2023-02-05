@@ -841,7 +841,9 @@ downloaded, processed and put in place.")
              (base32
               "0yxfsp4zzzw9v4swgslsr4v35hs04sczskfyfdvw8wk0aahxcwrx"))))
    (build-system emacs-build-system)
-   (propagated-inputs (list emacs-easy-kill))
+   (propagated-inputs (list emacs-easy-kill
+                            emacs-ace-jump-mode
+                            emacs-multiple-cursors))
    (home-page "https://github.com/knu/easy-kill-extras.el")
    (synopsis "Extra functions for easy-kill.")
    (description
@@ -1373,9 +1375,12 @@ REPL facilities for interactive features, such readline, help, debugging.")
                 "111b8spkkalhys55j5a2yz67a1ykb51jdqm1vgij1b52j7qrxssf"))))
     (build-system emacs-build-system)
     (arguments
-     '(#:include '("^emacs/inferior-lfe.el$" "^emacs/lfe-mode.el$"
-                   "^emacs/lfe-indent.el$")
-       #:exclude '()))
+     '(#:include '("^.*\\.el$")
+       #:exclude '()
+       #:phases (modify-phases %standard-phases
+                               (add-after 'unpack 'changedir
+                                          (lambda* _
+                                            (chdir "emacs"))))))
     (home-page "unspecified")
     (synopsis "Lisp Flavoured Erlang mode")
     (description "Copied from `lisp-mode and modified for LFE.")
@@ -1594,6 +1599,7 @@ access to the original function through the symbol: `this-fn'.")
                (base32
                 "1fm65d39505kcgqaxnr5nkdilan45gpb1148m15d7gc5806n0sdz"))))
     (build-system emacs-build-system)
+    (propagated-inputs (list emacs-esxml))
     (home-page "https://depp.brause.cc/nov.el/")
     (synopsis "Major mode for reading EPUBs in Emacs")
     (description
