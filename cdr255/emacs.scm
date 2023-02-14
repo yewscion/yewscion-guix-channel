@@ -1973,8 +1973,11 @@ preview 13) highly customizable")
     (build-system emacs-build-system)
     (propagated-inputs (list emacs-org emacs-pdf-tools emacs-org-noter))
     (arguments
-     '(#:include '("^org-pdftools.el$")
-       #:exclude '()))
+     (list #:include #~'("^org-pdftools.el$")
+           #:phases #~(modify-phases %standard-phases
+                        (add-before 'install 'set-home
+                          (lambda _
+                            (setenv "HOME" "/tmp"))))))
     (home-page "https://github.com/fuxialexander/org-pdftools")
     (synopsis "Support for links to documents in pdfview mode")
     (description
