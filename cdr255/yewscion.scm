@@ -18,6 +18,7 @@
   #:use-module (gnu packages elf)
   #:use-module (gnu packages compression)
   #:use-module (gnu packages emacs)
+  #:use-module (gnu packages emacs-xyz)
   #:use-module (gnu packages web-browsers)
   #:use-module (gnu packages)
   #:use-module (guix build-system gnu)
@@ -217,20 +218,20 @@ It's meant to provide me with an easy way to set up and compile LaTeX projects i
       (arguments
        `(#:phases
          (modify-phases
-          %standard-phases
-          ;; This allows the paths for guile and java to be embedded in the scripts
-          ;; in bin/
-          (add-before
-           'patch-usr-bin-file 'remove-script-env-flags
-           (lambda* (#:key inputs #:allow-other-keys)
-             (substitute*
-              (find-files "./bin")
-              (("#!/usr/bin/env -S guile \\\\\\\\")
-               "#!/usr/bin/env guile \\")
-              (("\"java")
-               (string-append "\"" (search-input-file inputs "/bin/java"))))))
-          ;; Java and Guile programs don't need to be stripped.
-          (delete 'strip))))
+             %standard-phases
+           ;; This allows the paths for guile and java to be embedded in the scripts
+           ;; in bin/
+           (add-before
+               'patch-usr-bin-file 'remove-script-env-flags
+             (lambda* (#:key inputs #:allow-other-keys)
+               (substitute*
+                   (find-files "./bin")
+                 (("#!/usr/bin/env -S guile \\\\\\\\")
+                  "#!/usr/bin/env guile \\")
+                 (("\"java")
+                  (string-append "\"" (search-input-file inputs "/bin/java"))))))
+           ;; Java and Guile programs don't need to be stripped.
+           (delete 'strip))))
       (native-inputs (list pkg-config
                            guile-3.0-latest
                            autoconf
@@ -375,46 +376,46 @@ standardized pseudocode.")
   (let* ((revision "1")
          (commit "4cc9a64bfa48ad3630965623cb6910a114a52ed2"))
     (package
-     (name "pseudotaxus-grove")
-     (version (git-version "0.0.1" revision commit))
-     (source (origin
-              (method git-fetch)
-              (uri (git-reference
-                    (url "https://git.sr.ht/~yewscion/pseudotaxus-grove")
-                    (commit commit)))
-              (file-name (git-file-name name version))
-              (sha256
-               (base32
-                "0m2a8lc98j9fn6q1jyzbvmsbpd3zgmhiy39cvgxp2vc0i4l08wp1"))))
-     (outputs '("out"))
-     (build-system gnu-build-system)
-     (arguments
-      `(#:phases
-        (modify-phases
-         %standard-phases
-         ;; This allows the paths for guile and java to be embedded in the
-         ;; scripts in bin/
-         (add-before
-          'patch-usr-bin-file 'remove-script-env-flags
-          (lambda* (#:key inputs #:allow-other-keys)
-            (substitute*
-             (find-files "./bin")
-             (("#!/usr/bin/env -S guile \\\\\\\\")
-              "#!/usr/bin/env guile \\")
-             (("\"java")
-              (string-append "\"" (search-input-file inputs "/bin/java"))))))
-         ;; Java and Guile programs don't need to be stripped.
-         (delete 'strip))))
-     (native-inputs (list autoconf automake pkg-config texinfo pseudotaxus))
-     (inputs (list guile-3.0-latest))
-     (synopsis "The Pseudotaxus Core Library")
-     (description
-      (string-append
-       "A collection of algorithms implemented within the syntax of the "
-       "Pseudotaxus variant of Pseudocode."))
-     (home-page
-      "https://cdr255.com/projects/pseudotaxus-grove/")
-     (license license:agpl3+))))
+      (name "pseudotaxus-grove")
+      (version (git-version "0.0.1" revision commit))
+      (source (origin
+                (method git-fetch)
+                (uri (git-reference
+                      (url "https://git.sr.ht/~yewscion/pseudotaxus-grove")
+                      (commit commit)))
+                (file-name (git-file-name name version))
+                (sha256
+                 (base32
+                  "0m2a8lc98j9fn6q1jyzbvmsbpd3zgmhiy39cvgxp2vc0i4l08wp1"))))
+      (outputs '("out"))
+      (build-system gnu-build-system)
+      (arguments
+       `(#:phases
+         (modify-phases
+             %standard-phases
+           ;; This allows the paths for guile and java to be embedded in the
+           ;; scripts in bin/
+           (add-before
+               'patch-usr-bin-file 'remove-script-env-flags
+             (lambda* (#:key inputs #:allow-other-keys)
+               (substitute*
+                   (find-files "./bin")
+                 (("#!/usr/bin/env -S guile \\\\\\\\")
+                  "#!/usr/bin/env guile \\")
+                 (("\"java")
+                  (string-append "\"" (search-input-file inputs "/bin/java"))))))
+           ;; Java and Guile programs don't need to be stripped.
+           (delete 'strip))))
+      (native-inputs (list autoconf automake pkg-config texinfo pseudotaxus))
+      (inputs (list guile-3.0-latest))
+      (synopsis "The Pseudotaxus Core Library")
+      (description
+       (string-append
+        "A collection of algorithms implemented within the syntax of the "
+        "Pseudotaxus variant of Pseudocode."))
+      (home-page
+       "https://cdr255.com/projects/pseudotaxus-grove/")
+      (license license:agpl3+))))
 (define-public pseudotaxus-emacs
   (let* ((revision "1")
          (commit "fe4d77a2137131d53727582d2f0dd1c0b5b387f9"))
@@ -441,3 +442,39 @@ standardized pseudocode.")
       (home-page
        "https://cdr255.com/projects/pseudotaxus/")
       (license license:agpl3+))))
+(define-public emacs-compost-mode
+  (let ((revision "1")
+        (commit "966b5f5d3c800c1f6778046c8a7a8e39abb43468"))
+    (package
+      (name "emacs-compost-mode")
+      (version (git-version "0.1.0" revision commit))
+      (source (origin
+                (method git-fetch)
+                (uri (git-reference
+                      (url "https://git.sr.ht/~yewscion/emacs-compost-mode")
+                      (commit commit)))
+                (file-name (git-file-name name version))
+                (sha256
+                 (base32
+                  "05gx3skfbr713fkid38vlirkrsk47javk3nk6b3ai9xplkh7gh1n"))))
+    (build-system emacs-build-system)
+    (native-inputs (list texinfo))
+    (propagated-inputs (list emacs-deadgrep emacs-pdf-tools))
+    (arguments
+     (list #:phases #~(modify-phases %standard-phases
+                        (add-before 'install 'make-info
+                          (lambda* (#:key inputs #:allow-other-keys)
+                            (let ((makeinfo (search-input-file inputs
+                                                               "/bin/makeinfo")))
+                              (system (string-append makeinfo " "
+                                                     "doc/emacs-compost-mode.texi")))))
+                        (add-before 'install 'set-home
+                          (lambda _
+                            (setenv "HOME" "/tmp"))))))
+    (synopsis "Notetaking Mode for GNU Emacs")
+    (description
+     "An implementation of a variation on the Zettelkasten method of notetaking
+in GNU Emacs, leveraging org-mode, plain-text, and pdf-tools to create a
+directory of notes.")
+    (home-page "https://cdr255.com/projects/compost-mode")
+    (license license:agpl3+))))
