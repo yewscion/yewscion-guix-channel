@@ -459,7 +459,7 @@ standardized pseudocode.")
                   "1k00iak6zlbzwgga94dvnyr8hwvc8s5zlpw1ilg825nzaivnrjmh"))))
     (build-system emacs-build-system)
     (native-inputs (list texinfo))
-    (propagated-inputs (list emacs-deadgrep emacs-pdf-tools))
+    (propagated-inputs (list emacs-deadgrep emacs-pdf-tools emacs-ebib))
     (arguments
      (list #:phases #~(modify-phases %standard-phases
                         (add-before 'install 'make-info
