@@ -168,7 +168,7 @@ It's meant to provide me with an easy way to set up and compile LaTeX projects i
       (home-page "https://git.sr.ht/~yewscion/pagr")
       (license license:agpl3))))
 (define-public guile-cdr255
-  (let ((commit "6e93bf8baebc16bb5deabaacda4dacabf7579588")
+  (let ((commit "74a894dc2bff72de3f25273787f83d2313601652")
         (revision "1"))
     (package
       (name "guile-cdr255")
@@ -181,7 +181,7 @@ It's meant to provide me with an easy way to set up and compile LaTeX projects i
                 (file-name (git-file-name name version))
                 (sha256
                  (base32
-                  "0bl6ybky4vpjk0vl3lrbgrbjbh9axxl948wr19lbqhhzmk7m317n"))))
+                  "1fyg0lbsywz77891xycq2qj0x3yaz4789phhyb0cjbqjyskcramx"))))
       (build-system gnu-build-system)
       (arguments
        `(#:phases
