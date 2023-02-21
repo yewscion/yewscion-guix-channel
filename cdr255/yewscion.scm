@@ -168,7 +168,7 @@ It's meant to provide me with an easy way to set up and compile LaTeX projects i
       (home-page "https://git.sr.ht/~yewscion/pagr")
       (license license:agpl3))))
 (define-public guile-cdr255
-  (let ((commit "d3307355745aa28771174ce9915eaf6e13f5d043")
+  (let ((commit "90ef037f10d1547f42a7c3099d20a07c9fe7b708")
         (revision "1"))
     (package
       (name "guile-cdr255")
@@ -181,7 +181,7 @@ It's meant to provide me with an easy way to set up and compile LaTeX projects i
                 (file-name (git-file-name name version))
                 (sha256
                  (base32
-                  "1q4cnp4agqfaz2cns9mpn9rr340m50s7096j6i51g5dy9jjdfla5"))))
+                  "09r4gd8yfpjz3zq9p16in652kdf4drjbm3n5rmkpp1db965561p9"))))
       (build-system gnu-build-system)
       (arguments
        `(#:phases
@@ -199,11 +199,11 @@ It's meant to provide me with an easy way to set up and compile LaTeX projects i
        "https://sr.ht/~yewscion/guile-cdr255")
       (license license:agpl3+))))
 (define-public yewscion-scripts
-  (let ((commit "0748635f359b50889118097cb01ffc37d18bbd37")
+  (let ((commit "96b815701ec9d92d22b3034d1b707c315ce16b5d")
         (revision "1"))
     (package
       (name "yewscion-scripts")
-      (version (git-version "0.2.0" revision commit))
+      (version (git-version "0.2.1" revision commit))
       (source
        (origin
          (method git-fetch)
@@ -213,10 +213,11 @@ It's meant to provide me with an easy way to set up and compile LaTeX projects i
          (file-name (git-file-name name version))
          (sha256
           (base32
-           "006qcvknfsrmqlipr9m0ys8a9pgl9yqyp3v2lvl3r8mvr5jhbl4y"))))
+           "16vkv4s9dibak6lq4dcai3hxxbkr95dk7s2nh1x2afbhkhm11xif"))))
       (build-system gnu-build-system)
       (arguments
-       `(#:phases
+       `(#:make-flags '("GUILE_AUTO_COMPILE=0")
+         #:phases
          (modify-phases
              %standard-phases
            ;; This allows the paths for guile and java to be embedded in the scripts
