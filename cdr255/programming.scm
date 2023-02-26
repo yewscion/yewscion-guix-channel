@@ -173,7 +173,7 @@
 an implementation of the ISO standard 13751.")
       (license license:gpl3+))))
 (define-public carp
-  (let ((commit "e32ec43a26c51ebd136776566909f19476df6ed9")
+  (let ((commit "ca5774b1aeeab2bc4d6fa901b5a55682ebc2d539")
         (revision "3"))
     (package
       (name "carp")
@@ -186,7 +186,7 @@ an implementation of the ISO standard 13751.")
                (commit commit)))
          (file-name (git-file-name name version))
          (sha256
-          (base32 "14jdnv0ljqvpr9ych1plfw7hp5q57a8j1bv8h3v345x06z783d07"))))
+          (base32 "1m40arbwzzj3krq6f9vivnpd36rsqm1q1kc55rk7q86v36dik63f"))))
       (build-system haskell-build-system)
       (arguments
        `(#:phases
