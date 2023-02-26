@@ -80,7 +80,7 @@
                       texlive-generic-gettitlestring
                       texlive-generic-ifptex
                       texlive-generic-iftex
-                      texlive-generic-xstring
+                      texlive-xstring
                       texlive-hyperref
                       texlive-ifmtarg
                       texlive-kpathsea
