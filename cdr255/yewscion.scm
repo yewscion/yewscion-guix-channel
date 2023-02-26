@@ -362,7 +362,7 @@ standardized pseudocode.")
                   "1m9yrrbkbnjnv5na7ls4n128jgkl0jymywkqpi72zhxdx5kqai9p"))))
       (build-system gnu-build-system)
       (arguments
-       `(#:out-of-source? #t))
+       `(#:out-of-source? #f))
       (native-inputs (list autoconf automake pkg-config texinfo))
       (inputs (list ghc ghc-bnfc ghc-alex ghc-happy agda texlive-bin))
       (synopsis "Somewhat-standardized pseudocode syntax")
