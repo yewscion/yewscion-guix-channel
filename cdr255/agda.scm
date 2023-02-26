@@ -34,7 +34,7 @@
       (arguments
        (let ((library-directory (string-append "share/agda/agda-stdlib-"
                                                version "/")))
-         (list #:install-plan #~'(("src/" #$library-directory)
+         (list #:install-plan #~'(("src" #$library-directory)
                                   ("standard-library.agda-lib" #$library-directory)))))
       (synopsis "The Agda Standard Library")
       (description
@@ -45,3 +45,4 @@ performance.  If computational performance is important to you, then perhaps
 try agda-prelude instead.")
       (home-page "https://wiki.portal.chalmers.se/agda/pmwiki.php")
       (license license:expat))))
+
