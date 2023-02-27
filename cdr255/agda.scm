@@ -139,3 +139,19 @@ such as Coq, Epigram and NuPRL.")
 .NET Generic Dictionary implementation (at the time of 2015). .  See
 \"Data.Vector.Hashtables\" for documentation.")
     (license license:bsd-3)))
+
+(define-public my-emacs-agda2-mode
+  (package
+    (inherit my-agda)
+    (name "my-emacs-agda2-mode")
+    (build-system emacs-build-system)
+    (inputs '())
+    (arguments
+     `(#:phases
+       (modify-phases %standard-phases
+         (add-after 'unpack 'enter-elisp-dir
+           (lambda _ (chdir "src/data/emacs-mode") #t)))))
+    (home-page "https://agda.readthedocs.io/en/latest/tools/emacs-mode.html")
+    (synopsis "Emacs mode for Agda")
+    (description "This Emacs mode enables interactive development with
+Agda.  It also aids the input of Unicode characters.")))
