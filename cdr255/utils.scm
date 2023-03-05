@@ -25,6 +25,7 @@
   #:use-module (gnu packages video)
   #:use-module (gnu packages python-xyz)
   #:use-module (gnu packages glib)
+  #:use-module (gnu packages scheme)
   #:use-module (gnu packages)
   #:use-module (gnu packages python-web)
   #:use-module (gnu packages guile)
@@ -791,3 +792,18 @@ can be combined together using the @code{rules} component of this database.")
     (synopsis "Python SSDP library")
     (description "Python SSDP library")
     (license license:expat)))
+
+(define-public gerbil-0.17
+  (package
+   (inherit gerbil)
+   (name "gerbil")
+   (version "0.17")
+    (source
+     (origin
+       (method git-fetch)
+       (uri (git-reference
+             (url "https://github.com/vyzo/gerbil")
+             (commit (string-append "v" version))))
+       (file-name (git-file-name name version))
+       (sha256
+        (base32 "0xzi9mhrmzcajhlz5qcnz4yjlljvbkbm9426iifgjn47ac0965zw"))))))
