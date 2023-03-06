@@ -25,6 +25,7 @@
   #:use-module (gnu packages video)
   #:use-module (gnu packages python-xyz)
   #:use-module (gnu packages glib)
+  #:use-module (gnu packages scheme)
   #:use-module (gnu packages)
   #:use-module (gnu packages python-web)
   #:use-module (gnu packages guile)
@@ -154,8 +155,8 @@ https://bisqwit.iki.fi/source/adlmidi.html.")
                      license:gpl2+)))))
 
 (define stumpwm-contrib
-  (let ((commit "a7dc1c663d04e6c73a4772c8a6ad56a34381096a")
-        (revision "1"))
+  (let ((commit "4613a956add7a17986a3b26c341229466cd13f1d")
+        (revision "2"))
     (package
       (name "stumpwm-contrib")
       (version (git-version "0.0.1" revision commit)) ;no upstream release
@@ -167,7 +168,7 @@ https://bisqwit.iki.fi/source/adlmidi.html.")
                (commit commit)))
          (file-name (git-file-name name version))
          (sha256
-          (base32 "09akdaaya7lga5lzbq1aj1filsyjwvflghkidpmr0nk0jz5xx1g7"))))
+          (base32 "1g8h2vd5qsmaiz6ixlx9ykrv6a08izmkf0js18fvljvznpyhsznz"))))
       (build-system asdf-build-system/sbcl)
       (inputs
        `(("stumpwm" ,stumpwm "lib")))
@@ -175,15 +176,15 @@ https://bisqwit.iki.fi/source/adlmidi.html.")
       (synopsis "StumpWM interactive shell")
       (description "This package provides a StumpWM interactive shell.")
       (license (list license:gpl2+ license:gpl3+ license:bsd-2)))))
-(define-public sbcl-stumpwm-battery-portable
+(define-public my-sbcl-stumpwm-battery-portable
   (package
     (inherit stumpwm-contrib)
-    (name "sbcl-stumpwm-battery-portable")
+    (name "my-sbcl-stumpwm-battery-portable")
     (inputs
      `(("stumpwm" ,stumpwm "lib")))
     (arguments
      '(#:asd-systems '("battery-portable")
-       #:tests? #f
+       #:tests? #t
        #:phases
        (modify-phases %standard-phases
          (add-after 'unpack 'chdir
@@ -927,3 +928,17 @@ version='"
      (description "Modern, extensible Python build backend")
      (license #f))))
 
+(define-public gerbil-0.17
+  (package
+   (inherit gerbil)
+   (name "gerbil")
+   (version "0.17")
+    (source
+     (origin
+       (method git-fetch)
+       (uri (git-reference
+             (url "https://github.com/vyzo/gerbil")
+             (commit (string-append "v" version))))
+       (file-name (git-file-name name version))
+       (sha256
+        (base32 "0xzi9mhrmzcajhlz5qcnz4yjlljvbkbm9426iifgjn47ac0965zw"))))))

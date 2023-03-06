@@ -80,7 +80,7 @@
                       texlive-generic-gettitlestring
                       texlive-generic-ifptex
                       texlive-generic-iftex
-                      texlive-generic-xstring
+                      texlive-xstring
                       texlive-hyperref
                       texlive-ifmtarg
                       texlive-kpathsea
@@ -199,7 +199,11 @@ It's meant to provide me with an easy way to set up and compile LaTeX projects i
        "https://sr.ht/~yewscion/guile-cdr255")
       (license license:agpl3+))))
 (define-public yewscion-scripts
+<<<<<<< HEAD
   (let ((commit "67227e1b0ff1de11ef003249464acc069e7f3dee")
+=======
+  (let ((commit "dc7cd8375dc3fbe2c60475cd6a91297456a07efe")
+>>>>>>> 8e49c3017b97b280cf4cdd8f14d8a382450affef
         (revision "1"))
     (package
       (name "yewscion-scripts")
@@ -213,7 +217,11 @@ It's meant to provide me with an easy way to set up and compile LaTeX projects i
          (file-name (git-file-name name version))
          (sha256
           (base32
+<<<<<<< HEAD
            "0myx49ghsamn722k5mlqgq9ify3qbpbm32z3p1s180p5rhqddlz2"))))
+=======
+           "1zm72kwzpl7fvnja5995fcwrxcsii3p7x3b5rsrmjf0hwxic9sjm"))))
+>>>>>>> 8e49c3017b97b280cf4cdd8f14d8a382450affef
       (build-system gnu-build-system)
       (arguments
        `(#:make-flags '("GUILE_AUTO_COMPILE=0")
@@ -362,7 +370,7 @@ standardized pseudocode.")
                   "1m9yrrbkbnjnv5na7ls4n128jgkl0jymywkqpi72zhxdx5kqai9p"))))
       (build-system gnu-build-system)
       (arguments
-       `(#:out-of-source? #t))
+       `(#:out-of-source? #f))
       (native-inputs (list autoconf automake pkg-config texinfo))
       (inputs (list ghc ghc-bnfc ghc-alex ghc-happy agda texlive-bin))
       (synopsis "Somewhat-standardized pseudocode syntax")
