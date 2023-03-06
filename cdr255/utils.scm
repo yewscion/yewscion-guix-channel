@@ -796,6 +796,33 @@ can be combined together using the @code{rules} component of this database.")
     (synopsis "Python SSDP library")
     (description "Python SSDP library")
     (license license:expat)))
+
+(define-public python-twtxt
+  (package
+   (name "python-twtxt")
+   (version "1.3.1")
+   (source (origin
+            (method url-fetch)
+            (uri (pypi-uri "twtxt" version))
+            (sha256
+             (base32
+              "1zvi3dsqv1zjn62cvfpa0zn8v7lvjcml0j20n94181qnh07mhppi"))))
+   (build-system python-build-system)
+   (arguments
+    (list
+     #:tests? #f ));; "WARNING: Testing via this command is deprecated and
+                   ;; will be removed in a future version. Users looking for
+                   ;; a generic test entry point independent of test runner
+                   ;; are encouraged to use tox."
+   (propagated-inputs (list python-aiohttp python-click python-dateutil
+                            python-humanize-3.8.0))
+   (native-inputs (list python-pytest python-pytest-cov python-tox))
+   (home-page "https://github.com/buckket/twtxt")
+   (synopsis "Decentralised, minimalist microblogging service for hackers.")
+   (description
+    "Decentralised, minimalist microblogging service for hackers.")
+   (license license:expat)))
+
 (define-public python-humanize-3.8.0
   (package
    (name "python-humanize")
