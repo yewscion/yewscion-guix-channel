@@ -796,6 +796,40 @@ can be combined together using the @code{rules} component of this database.")
     (synopsis "Python SSDP library")
     (description "Python SSDP library")
     (license license:expat)))
+(define-public python-humanize-3.8.0
+  (package
+   (name "python-humanize")
+   (version "3.8.0")
+   (source (origin
+            (method url-fetch)
+            (uri (pypi-uri "humanize" version))
+            (sha256
+             (base32
+              "04qnipdc0x2bycmlx7a85nfh81cyy15rxy4m4s4fs1ya2fiqlvmx"))))
+   (build-system python-build-system)
+   (arguments
+    (list
+     #:phases
+     `(modify-phases %standard-phases
+                  (add-before 'build 'explicit-version
+                              ;; The version string is usually derived via setuptools-scm, but
+                              ;; without the git metadata available, the version string is set to
+                              ;; '0.0.0'.
+                              (lambda _
+                                (substitute* "setup.py"
+                                             (("setup\\(\\)") ,(string-append
+                                                                "setup(name='humanize',
+version='"
+                                                            version
+                                                            "',)")))
+                                )))))
+   (propagated-inputs (list python-importlib-metadata))
+   (native-inputs (list python-freezegun python-pytest python-pytest-cov))
+   (home-page "")
+   (synopsis "Python humanize utilities")
+   (description "Python humanize utilities")
+   (license license:expat)))
+
 (define python-hatch-0.23.0
   (let ((commit "704cdcd1a0cd3a621235ac9f5b2b90e7524e3cd3")
         (revision "1"))
