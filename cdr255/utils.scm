@@ -28,6 +28,10 @@
   #:use-module (gnu packages)
   #:use-module (gnu packages python-web)
   #:use-module (gnu packages guile)
+  #:use-module (gnu packages time)
+  #:use-module (gnu packages check)
+  #:use-module (gnu packages python-check)
+  #:use-module (gnu packages python-build)
   #:use-module (guix build-system asdf)
   #:use-module (guix build-system gnu)
   #:use-module (guix build-system copy)
@@ -42,7 +46,8 @@
   #:use-module (guix store)
   #:use-module (guix utils)
   #:use-module (guix gexp)
-  #:use-module (srfi srfi-1))
+  #:use-module (srfi srfi-1)
+  #:use-module (srfi srfi-11))
 (define-public adlmidi
   (let ((commit "0b87eee9df14fe24f1827a695a712ccb6c11e980")
         (revision "1"))
@@ -791,3 +796,38 @@ can be combined together using the @code{rules} component of this database.")
     (synopsis "Python SSDP library")
     (description "Python SSDP library")
     (license license:expat)))
+(define python-hatch-0.23.0
+  (let ((commit "704cdcd1a0cd3a621235ac9f5b2b90e7524e3cd3")
+        (revision "1"))
+    (package
+     (name "python-hatch-0.23.0")
+     (version (git-version "0.23.0" revision commit))
+     (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/pypa/hatch.git")
+                    (commit commit)))
+              (sha256
+               (base32
+                "1y41xgp4q8ghzmzxfhw68rmdx9j0f6pxgq326sml23qjyfh6f9n9"))))
+     (build-system python-build-system)
+     (arguments
+      (list
+       #:tests? #f))
+     (propagated-inputs (list python-wheel
+                              python-atomicwrites
+                              python-appdirs
+                              python-virtualenv
+                              python-twine
+                              python-semver
+                              python-pytest
+                              python-pexpect
+                              python-coverage
+                              python-colorama
+                              python-click
+                              python-parse))
+     (home-page "")
+     (synopsis "Modern, extensible Python build backend")
+     (description "Modern, extensible Python build backend")
+     (license #f))))
+
