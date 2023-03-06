@@ -831,3 +831,38 @@ can be combined together using the @code{rules} component of this database.")
      (description "Modern, extensible Python build backend")
      (license #f))))
 
+(define python-hatch-1.0.0
+  (let ((commit "eef7d0cc6a4d9c4459a4332ebce4b91ff22fbb08"))
+    (package
+     (name "python-hatch")
+     (version "1.0.0")
+     (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/pypa/hatch.git")
+                    (commit commit)))
+              (sha256
+               (base32
+                "1y41xgp4q8ghzmzxfhw68rmdx9j0f6pxgq326sml23qjyfh6f9n9"))))
+     (build-system pyproject-build-system)
+     (arguments
+      (list
+       #:tests? #f))
+     (propagated-inputs (list python-wheel
+                              python-atomicwrites
+                              python-appdirs
+                              python-virtualenv
+                              python-twine
+                              python-semver
+                              python-pytest
+                              python-pexpect
+                              python-coverage
+                              python-colorama
+                              python-click
+                              python-parse
+                              python-hatch-0.23.0))
+     (home-page "")
+     (synopsis "Modern, extensible Python build backend")
+     (description "Modern, extensible Python build backend")
+     (license #f))))
+
