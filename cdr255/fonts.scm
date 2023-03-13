@@ -206,3 +206,31 @@ characters.")
       (sha256
        (base32
         "11cm20xb92y8ra703f1ahh8jybxg5fc85pc9z2qdfv1157g753by"))))))
+
+(define-public font-blobmoji
+  (let* ((revision "1")
+         (commit "81e18d1eb8cb6b66df9e311b3b63ec086d910d18"))
+    (package
+      (name "font-blobmoji")
+      (version "15.0")
+      (source
+       (origin
+        (method url-fetch)
+        (uri
+         (list
+          (string-append
+           "https://github.com/C1710/blobmoji/releases/download/v"
+           version
+           "/Blobmoji.ttf")))
+        (sha256
+         (base32
+          "1ybqxd3nkx2ychya5jw6k2yvaw17achj4kapxwsrpfina1kxdhyw"))))
+      (outputs '("out"))
+      (build-system font-build-system)
+      (synopsis "Noto Emoji with extended Blob support")
+      (description "This font is intended to continue the development of the Blob emojis which have been replaced by different designs in 2017.")
+      (home-page "https://github.com/C1710/blobmoji")
+      (license (list
+                license:silofl1.1
+                license:asl2.0
+                license:public-domain)))))
