@@ -445,7 +445,7 @@ standardized pseudocode.")
       (license license:agpl3+))))
 (define-public emacs-compost-mode
   (let ((revision "1")
-        (commit "50775e4c7eb936e7e54b839bef516ca1a9f9e291"))
+        (commit "c546f13bb9518e360b087433b290f7c6a99af218"))
     (package
       (name "emacs-compost-mode")
       (version (git-version "0.1.0" revision commit))
@@ -457,10 +457,11 @@ standardized pseudocode.")
                 (file-name (git-file-name name version))
                 (sha256
                  (base32
-                  "0v1xvzj8z0l9g29709f9chqg7svr011j18z97ffgcb5713k5rj8k"))))
+                  "0vdkf52cxyv3wj29wm015c10plqmsb08r4g421j596jb4jiczyrr"))))
     (build-system emacs-build-system)
     (native-inputs (list texinfo))
-    (propagated-inputs (list emacs-deadgrep emacs-pdf-tools emacs-ebib))
+    (propagated-inputs (list emacs-deadgrep emacs-pdf-tools emacs-ebib
+                             emacs-f emacs-org))
     (arguments
      (list #:phases #~(modify-phases %standard-phases
                         (add-before 'install 'make-info
