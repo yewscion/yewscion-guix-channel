@@ -155,7 +155,7 @@ https://bisqwit.iki.fi/source/adlmidi.html.")
                      license:gpl2+)))))
 
 (define stumpwm-contrib
-  (let ((commit "4613a956add7a17986a3b26c341229466cd13f1d")
+  (let ((commit "36daccd715e1cc6c1badab7cd87e34a8514f3b6b")
         (revision "2"))
     (package
       (name "stumpwm-contrib")
@@ -168,7 +168,7 @@ https://bisqwit.iki.fi/source/adlmidi.html.")
                (commit commit)))
          (file-name (git-file-name name version))
          (sha256
-          (base32 "1g8h2vd5qsmaiz6ixlx9ykrv6a08izmkf0js18fvljvznpyhsznz"))))
+          (base32 "0xad6hpp2inkksjlynb21y3jscjwjs3cpfnk1rkmgh02f9dkavd1"))))
       (build-system asdf-build-system/sbcl)
       (inputs
        `(("stumpwm" ,stumpwm "lib")))
