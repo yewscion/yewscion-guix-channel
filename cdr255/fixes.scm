@@ -12,7 +12,8 @@
   #:use-module (guix store)
   #:use-module (guix utils)
   #:use-module (gnu packages java)
-  #:use-module (gnu packages groovy))
+  #:use-module (gnu packages groovy)
+  #:use-module (gnu packages emacs-xyz))
 
 (define-public java-logback-core
   (package
@@ -112,3 +113,25 @@ This module can be assimilated to a significantly improved version of log4j.
 Moreover, @code{logback-classic} natively implements the slf4j API so that you
 can readily switch back and forth between logback and other logging frameworks
 such as log4j or @code{java.util.logging} (JUL).")))
+
+(define-public emacs-org-965
+  (package
+   (inherit emacs-org)
+   (name "emacs-org")
+   (version "9.6.5")
+   (source
+     (origin
+       (method git-fetch)
+       (uri (git-reference
+             (url "https://git.savannah.gnu.org/git/emacs/org-mode")
+             (commit (string-append "release_" version))))
+       (file-name (git-file-name name version))
+       (sha256
+        (base32 "1dpqds0cx56va8cpvvhiqi116h7c4msfqxzvhnamm99ab4ccck1a"))))
+    (home-page "https://orgmode.org/")
+    (synopsis "Outline-based notes management and organizer")
+    (description "Org is an Emacs mode for keeping notes, maintaining TODO
+lists, and project planning with a fast and effective lightweight markup
+language.  It also is an authoring system with unique support for literate
+programming and reproducible research.")
+    (license license:gpl3+)))
