@@ -76,10 +76,10 @@
                       texlive-dvips
                       texlive-etoolbox
                       texlive-fontspec
-                      texlive-generic-etexcmds
-                      texlive-generic-gettitlestring
+                      texlive-etexcmds
+                      texlive-gettitlestring
                       texlive-generic-ifptex
-                      texlive-generic-iftex
+                      texlive-iftex
                       texlive-xstring
                       texlive-hyperref
                       texlive-ifmtarg
@@ -92,25 +92,25 @@
                       texlive-latex-endfloat
                       texlive-latex-environ
                       texlive-latex-everyhook
-                      texlive-latex-fancyhdr
-                      texlive-latex-fancyvrb
+                      texlive-fancyhdr
+                      texlive-fancyvrb
                       texlive-latex-float
                       texlive-latex-framed
                       texlive-latex-fvextra
                       texlive-latex-geometry
                       texlive-latex-ifplatform
-                      texlive-latex-kvoptions
-                      texlive-latex-letltxmacro
+                      texlive-kvoptions
+                      texlive-letltxmacro
                       texlive-latex-lineno
                       texlive-latex-lwarp
                       texlive-latex-minted
                       texlive-latex-newfloat
                       texlive-latex-newunicodechar
-                      texlive-latex-pdftexcmds
+                      texlive-pdftexcmds
                       texlive-latex-printlen
-                      texlive-latex-refcount
+                      texlive-refcount
                       texlive-latex-setspace
-                      texlive-latex-titlesec
+                      texlive-titlesec
                       texlive-latex-trimspaces
                       texlive-latex-upquote
                       texlive-latex-xkeyval
