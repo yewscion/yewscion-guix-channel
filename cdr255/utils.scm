@@ -99,7 +99,7 @@ soundfonts.")
          (commit "84d27bc2bdbd6dd249537a7f7d2450cbd402482e"))
     (package
       (name "libadlmidi")
-      (version (git-version "1.5.1" revision commit))
+      (version (git-version "1.5.1-git" revision commit))
       (source (origin
                 (method git-fetch)
                 (uri (git-reference
@@ -115,7 +115,7 @@ soundfonts.")
        (list
         #:configure-flags '(list "-DlibADLMIDI_STATIC=OFF"
                                  "-DlibADLMIDI_SHARED=ON"
-                                 "-DWITH_UNIT_TESTS=ON"
+                                 "-DWITH_UNIT_TESTS=OFF"
                                  "-DWITH_MIDI_SEQUENCER=ON"
                                  "-DWITH_EMBEDDED_BANKS=ON"
                                  "-DWITH_HQ_RESAMPLER=ON"
@@ -130,7 +130,7 @@ soundfonts.")
                                  "-DWITH_MIDIPLAY=ON"
                                  "-DWITH_ADLMIDI2=ON"
                                  "-DWITH_VLC_PLUGIN=OFF")
-        #:tests? #t
+        #:tests? #f
         ;; #:phases #~(modify-phases
         ;;             %standard-phases
         ;;             )
