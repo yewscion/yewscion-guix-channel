@@ -262,12 +262,13 @@ https://bisqwit.iki.fi/source/adlmidi.html.")
     (description
      "This StumpWM Module provides a notifications server for StumpWM.")
     (license license:gpl3+)))
+
 (define-public uxn
-  (let ((commit "f87c15c8b5274546a2198c35f5a6e30094f8f004")
+  (let ((commit "a740105b7616c882f45c2f11611c2d2e3396f1c0")
         (revision "1"))
     (package
       (name "uxn")
-      (version (git-version "android-1.5" revision commit))
+      (version (git-version "git" revision commit))
       (source (origin
                 (method git-fetch)
                 (uri (git-reference
@@ -276,7 +277,7 @@ https://bisqwit.iki.fi/source/adlmidi.html.")
                 (file-name (git-file-name name version))
                 (sha256
                  (base32
-                  "00fjzjswyd88na0grylsjxq9bp7z5sk9a6xiwwm30wxflszvqm3g"))))
+                  "1d9p6xbiwjajanmjk62zvqzylnpiywa1zplfv7jv6af92d61ily8"))))
       (build-system gnu-build-system)
       (arguments
        `(#:tests? #f
@@ -292,25 +293,37 @@ https://bisqwit.iki.fi/source/adlmidi.html.")
                     (replace
                         'build
                       (lambda* (#:key inputs outputs #:allow-other-keys)
-                        (setenv "HOME" "./")
-                        (setenv "CC" "gcc")
-                        (invoke "bash" "build.sh" "--install" "--no-run")
-                        (invoke "./bin/uxncli"
-                                "./bin/asma.rom"
-                                "./projects/examples/demos/piano.tal"
-                                "./bin/piano.rom")))
+                          (define (uxn-assemble source dest)
+                            (invoke "./bin/uxnasm"
+                                    (string-append "./projects/" source)
+                                    (string-append "./bin/" dest ".rom")))
+                          (setenv "HOME" "./")
+                          (setenv "CC" "gcc")
+                          (invoke "bash" "build.sh" "--install" "--no-run")
+                          (uxn-assemble "software/piano.tal" "piano")
+                          (uxn-assemble "software/asma.tal" "asma")
+                          (uxn-assemble "software/launcher.tal" "launcher")
+                          (uxn-assemble "software/calc.tal" "calc")
+                          (uxn-assemble "software/clock.tal" "clock")
+                          (uxn-assemble "software/neralie.tal" "neralie")
+                          (uxn-assemble "utils/hexdump.tal" "hexdump")))
                     (replace
                         'install
                       (lambda* (#:key outputs #:allow-other-keys)
                         (let* ((out (assoc-ref outputs "out"))
                                (dest-bin (string-append out "/bin"))
-                               (dest-lib (string-append out "/share"))
+                               (dest-lib (string-append out "/share/uxn"))
                                (dest-rom (string-append dest-lib "/rom")))
+
                           (mkdir-p dest-bin)
                           (mkdir-p dest-lib)
                           (install-file "./bin/uxnasm" dest-bin)
                           (install-file "./bin/uxncli" dest-bin)
                           (install-file "./bin/uxnemu" dest-bin)
+                          (install-file "./bin/calc.rom" dest-rom)
+                          (install-file "./bin/clock.rom" dest-rom)
+                          (install-file "./bin/neralie.rom" dest-rom)
+                          (install-file "./bin/hexdump.rom" dest-rom)
                           (install-file "./bin/launcher.rom" dest-rom)
                           (install-file "./bin/asma.rom" dest-rom)
                           (install-file "./bin/piano.rom" dest-rom)
