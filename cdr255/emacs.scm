@@ -2583,7 +2583,7 @@ follows. `;; SPDX-License-Identifier: AGPL-1.0-only` ## Customization -
                                   version ".tar"))
               (sha256
                (base32
-                "139bq2g6mlxwpm39rshrkmcgjfy4w40dkihj56bwhf4raxzg5x42"))))
+                "0a590if90wlkg91ynyjrz73b5ac5941fd4gg0j4b02jb2whrwv9v"))))
     (build-system emacs-build-system)
     (home-page "https://codeberg.org/acdw/titlecase.el")
     (synopsis "Title-case phrases")
