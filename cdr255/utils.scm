@@ -464,9 +464,9 @@ ncurses for text display.")
       (home-page "https://gist.github.com/tomykaira/f0fd86b6c73063283afe550bc5d77594")
       (license license:expat))))
 (define-public libgourou
-  (let* ((tag "0.8.0")
+  (let* ((tag "0.8.1")
          (revision "1")
-         (commit "6e3958f09e6eee9128c60e54ab81f2e834cd6ff8")
+         (commit "46afe771c788a32eb7a96234a4cea0810293942d")
          (version (git-version tag revision commit)))
     (package
       (name "libgourou")
@@ -478,7 +478,7 @@ ncurses for text display.")
                       (commit commit)))
                 (sha256
                  (base32
-                  "1bdscfvzn9paw6qv684jg7ka0v2grnmlps41afb8k5003fafxvwy"))))
+                  "00cg8lfjnryszvldy949xgpir6nz674kfrwwys8av4vy7piqm7jz"))))
       (outputs '("out" "bin"))
       (build-system gnu-build-system)
       (arguments
@@ -539,7 +539,7 @@ ncurses for text display.")
                                "utils/Makefile"
                              (("\\$\\(ROOT\\)/lib/pugixml/src/")
                               "")
-                             (("CXXFLAGS=-Wall -fPIC -I\\$\\(ROOT\\)/include -I")
+                             (("CXXFLAGS=-Wall -fPIC -I\\$\\(ROOT\\)/include")
                               (string-append
                                "CXXFLAGS=-Wall -fPIC "
                                "-I$(ROOT)/source/include -I"
@@ -594,11 +594,11 @@ ncurses for text display.")
                                 (dest-bin (string-append bin "/bin")))
                            (system "ls")
                            (system "ls utils")
+                           (install-file (string-append
+                                          "libgourou.so."
+                                          #$tag)
+                                         dest-lib)
                            (install-file "libgourou.so"
-                                         dest-lib)
-                           (install-file "utils/drmprocessorclientimpl.so"
-                                         dest-lib)
-                           (install-file "utils/utils_common.so"
                                          dest-lib)
                            (copy-recursively "include"
                                              dest-include)
@@ -609,6 +609,10 @@ ncurses for text display.")
                            (install-file "utils/acsmdownloader"
                                          dest-bin)
                            (install-file "utils/adept_activate"
+                                         dest-bin)
+                           (install-file "utils/adept_remove"
+                                         dest-bin)
+                           (install-file "utils/launcher"
                                          dest-bin)
                            (install-file "utils/adept_loan_mgt"
                                          dest-bin)))))))
@@ -628,68 +632,68 @@ It supports:
     ePub download from ACSM request file")
       (home-page "http://blog.soutade.fr/post/2021/07/libgourou-a-free-adept-protocol-implementation.html")
       (license license:lgpl3))))
-(define-public knock
-  (let* ((tag "1.3.1")
-         (revision "1")
-         (commit "488fcabd69ca6f9e306a3ca30ccef600209115b1")
-         (version (git-version tag revision commit)))
-    (package
-      (name "knock")
-      (version version)
-      (source (origin
-                (method git-fetch)
-                (uri (git-reference
-                      (url "https://github.com/BentonEdmondson/knock.git")
-                      (commit commit)))
-                (sha256
-                 (base32
-                  "1fp33wdx0rijv0v06ggc0d9yb4k5lhc4f48543pbaf2fql5npj4c"))))
-      (outputs '("out"))
-      (build-system gnu-build-system)
-      (arguments
-       (list
-        #:tests? #f
-        #:phases #~(modify-phases
-                       %standard-phases
-                     (delete 'configure)
-                     (replace 'build
-                       (lambda* (#:key inputs outputs #:allow-other-keys)
-                         (system (string-append
-                                  "g++ -std=c++17 -o knock -D KNOCK_VERSION=1.3 -I"
-                                  #$(this-package-native-input "libgourou")
-                                  "/include/libgourou -I"
-                                  #$(this-package-native-input "pugixml")
-                                  "/include -L"
-                                  #$(this-package-native-input "libgourou")
-                                  "/lib -L"
-                                  #$(this-package-native-input "curl")
-                                  "/lib -L"
-                                  #$(this-package-native-input "openssl")
-                                  "/lib -L"
-                                  #$(this-package-native-input "libzip")
-                                  "/lib -L"
-                                  #$(this-package-native-input "zlib")
-                                  "/lib -l:drmprocessorclientimpl.so "
-                                  "-l:utils_common.so -lgourou -lcrypto "
-                                  "-lcurl -lzip -lz -Wl,-rpath="
-                                  (assoc-ref outputs "out")
-                                  "/lib src/knock.cpp"))))
-                     (replace 'install
-                       (lambda* (#:key outputs #:allow-other-keys)
-                         (let* ((out (assoc-ref outputs "out"))
-                                (dest-bin (string-append out "/bin")))
-                           (install-file "knock" dest-bin)))))))
-      (native-inputs (list libgourou
-                           macaron-base64
-                           libzip
-                           pugixml
-                           openssl-3.0
-                           curl
-                           zlib))
-      (synopsis "Convert ACSM files to PDFs/EPUBs with one command on Linux")
-      (description "Convert ACSM files to PDF/EPUBs with one command on Linux.")
-      (home-page "https://github.com/BentonEdmondson/knock/")
-      (license license:gpl3))))
+;; (define-public knock
+;;   (let* ((tag "1.3.1")
+;;          (revision "1")
+;;          (commit "488fcabd69ca6f9e306a3ca30ccef600209115b1")
+;;          (version (git-version tag revision commit)))
+;;     (package
+;;       (name "knock")
+;;       (version version)
+;;       (source (origin
+;;                 (method git-fetch)
+;;                 (uri (git-reference
+;;                       (url "https://github.com/BentonEdmondson/knock.git")
+;;                       (commit commit)))
+;;                 (sha256
+;;                  (base32
+;;                   "1fp33wdx0rijv0v06ggc0d9yb4k5lhc4f48543pbaf2fql5npj4c"))))
+;;       (outputs '("out"))
+;;       (build-system gnu-build-system)
+;;       (arguments
+;;        (list
+;;         #:tests? #f
+;;         #:phases #~(modify-phases
+;;                        %standard-phases
+;;                      (delete 'configure)
+;;                      (replace 'build
+;;                        (lambda* (#:key inputs outputs #:allow-other-keys)
+;;                          (system (string-append
+;;                                   "g++ -std=c++17 -o knock -D KNOCK_VERSION=1.3 -I"
+;;                                   #$(this-package-native-input "libgourou")
+;;                                   "/include/libgourou -I"
+;;                                   #$(this-package-native-input "pugixml")
+;;                                   "/include -L"
+;;                                   #$(this-package-native-input "libgourou")
+;;                                   "/lib -L"
+;;                                   #$(this-package-native-input "curl")
+;;                                   "/lib -L"
+;;                                   #$(this-package-native-input "openssl")
+;;                                   "/lib -L"
+;;                                   #$(this-package-native-input "libzip")
+;;                                   "/lib -L"
+;;                                   #$(this-package-native-input "zlib")
+;;                                   "/lib -l:drmprocessorclientimpl.so "
+;;                                   "-l:utils_common.so -lgourou -lcrypto "
+;;                                   "-lcurl -lzip -lz -Wl,-rpath="
+;;                                   (assoc-ref outputs "out")
+;;                                   "/lib src/knock.cpp"))))
+;;                      (replace 'install
+;;                        (lambda* (#:key outputs #:allow-other-keys)
+;;                          (let* ((out (assoc-ref outputs "out"))
+;;                                 (dest-bin (string-append out "/bin")))
+;;                            (install-file "knock" dest-bin)))))))
+;;       (native-inputs (list libgourou
+;;                            macaron-base64
+;;                            libzip
+;;                            pugixml
+;;                            openssl-3.0
+;;                            curl
+;;                            zlib))
+;;       (synopsis "Convert ACSM files to PDFs/EPUBs with one command on Linux")
+;;       (description "Convert ACSM files to PDF/EPUBs with one command on Linux.")
+;;       (home-page "https://github.com/BentonEdmondson/knock/")
+;;       (license license:gpl3))))
 (define-public mikmod
   (let* ((tag "3.3.11.1-git")
          (revision "1")
