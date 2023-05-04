@@ -13,7 +13,9 @@
   #:use-module (guix utils)
   #:use-module (gnu packages java)
   #:use-module (gnu packages groovy)
-  #:use-module (gnu packages emacs-xyz))
+  #:use-module (gnu packages emacs-xyz)
+  #:use-module (gnu packages gcc)
+  #:use-module (srfi srfi-1))
 
 (define-public java-logback-core
   (package
@@ -135,3 +137,9 @@ such as log4j or @code{java.util.logging} (JUL).")))
 ;; language.  It also is an authoring system with unique support for literate
 ;; programming and reproducible research.")
 ;;     (license license:gpl3+)))
+
+(define-public gcc-unhidden
+  (package
+   (inherit gcc)
+   (name "gcc-unhidden")
+   (properties (alist-delete 'hidden? (package-properties gcc)))))
