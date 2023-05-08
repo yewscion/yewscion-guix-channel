@@ -199,7 +199,7 @@ It's meant to provide me with an easy way to set up and compile LaTeX projects i
        "https://sr.ht/~yewscion/guile-cdr255")
       (license license:agpl3+))))
 (define-public yewscion-scripts
-  (let ((commit "a227437d2a3adecca126100732f9e6fbc637118d")
+  (let ((commit "e9ab07ed0193d8fe71de30f7c92d95a598ff444f")
         (revision "1"))
     (package
       (name "yewscion-scripts")
@@ -213,7 +213,7 @@ It's meant to provide me with an easy way to set up and compile LaTeX projects i
          (file-name (git-file-name name version))
          (sha256
           (base32
-           "0q4gpx1bf9x0k2465c3qdwwsp8d4s2siagmc4s5ygm2rh8lkgf3r"))))
+           "06bh7wim9yqk3ja0sif0qcjw2b1fb7pvhl9v8bq0xvx2pgdpl4ga"))))
       (build-system gnu-build-system)
       (arguments
        `(#:make-flags '("GUILE_AUTO_COMPILE=0")
