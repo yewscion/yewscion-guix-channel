@@ -20,6 +20,7 @@
   #:use-module (gnu packages emacs)
   #:use-module (gnu packages emacs-xyz)
   #:use-module (gnu packages web-browsers)
+  #:use-module (gnu packages check)
   #:use-module (gnu packages)
   #:use-module (guix build-system gnu)
   #:use-module (guix build-system python)
@@ -480,3 +481,28 @@ in GNU Emacs, leveraging org-mode, plain-text, and pdf-tools to create a
 directory of notes.")
     (home-page "https://cdr255.com/projects/compost-mode")
     (license license:agpl3+))))
+(define-public c-cdr255
+  (let ((commit "d5646d62933c38732116be70d3651c8abca72b13")
+        (revision "1"))
+    (package
+     (name "c-cdr255")
+     (version "0.0.1")
+     (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://git.sr.ht/~yewscion/c-cdr255")
+                    (commit commit)))
+              (file-name (git-file-name name version))
+              (sha256
+               (base32
+                "1ra9ycxp18wkv3375b9l5j4jdd53vb32jvvn5175wjlj5hajxy5f"))))
+     (build-system gnu-build-system)
+     (native-inputs (list autoconf automake pkg-config texinfo check libtool))
+     (inputs (list guile-3.0))
+     (synopsis "Yewscion's C Library")
+     (description
+      (string-append
+       "A grab-bag collection of procedures I use in my projects."))
+     (home-page
+      "https://cdr255.com/projects/c-cdr255")
+     (license license:agpl3+))))
