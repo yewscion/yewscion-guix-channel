@@ -507,3 +507,30 @@ directory of notes.")
      (home-page
       "https://cdr255.com/projects/c-cdr255")
      (license license:agpl3+))))
+
+(define-public emacs-cdr255
+  (let ((commit "a9f1b741ff0204e7995f9e8d41ab561fe37b4c38")
+        (revision "1"))
+    (package
+     (name "emacs-cdr255")
+     (version "0.0.1")
+     (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://git.sr.ht/~yewscion/emacs-cdr255")
+                    (commit commit)))
+              (file-name (git-file-name name version))
+              (sha256
+               (base32
+                "00f976hdiji36kjqlc0bcnaq310vnh6xkyc6ksdh841l6bh0kvcv"))))
+     (build-system gnu-build-system)
+     (arguments
+      '(#:tests? #f))
+     (native-inputs (list autoconf automake pkg-config texinfo emacs-minimal emacs-f))
+     (synopsis "Yewscion's Emacs Lisp Library")
+     (description
+      (string-append
+       "A grab-bag collection of procedures I use in my projects."))
+     (home-page
+      "https://cdr255.com/projects/emacs-cdr255")
+     (license license:agpl3+))))
