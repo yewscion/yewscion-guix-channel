@@ -509,7 +509,7 @@ directory of notes.")
      (license license:agpl3+))))
 
 (define-public emacs-cdr255
-  (let ((commit "d09d0bbf167da4daeb101bce66f796aa5a533419")
+  (let ((commit "845b27d3098120290ca60ca87dc158dccdab35a6")
         (revision "1"))
     (package
      (name "emacs-cdr255")
@@ -522,7 +522,7 @@ directory of notes.")
               (file-name (git-file-name name version))
               (sha256
                (base32
-                "0x05mql8aryj8a4wrrqp6zi4q73wl7rl846b3mfbgamlp3xb6xgn"))))
+                "1s91by7pnzih2xf7algbqv3chjjnjd1cqbgi50vgbpwzal8b8xgx"))))
      (build-system gnu-build-system)
      (arguments
       '(#:tests? #f))
