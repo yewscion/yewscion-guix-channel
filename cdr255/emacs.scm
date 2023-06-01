@@ -3689,6 +3689,23 @@ users to modify easily reserved word lists. * Expand copybooks within a buffer.
 area.")
   (license license:gpl3+)))
 
+(define-public emacs-forth-mode
+  (package
+   (name "emacs-forth-mode")
+   (version "0.2")
+   (source (origin
+            (method url-fetch)
+            (uri (string-append "https://elpa.nongnu.org/nongnu/forth-mode-"
+                                version ".tar"))
+            (sha256
+             (base32
+              "0qk6kg8d38fcvbxa4gfsdyllzrrp9712w74sj29b90fppa11b530"))))
+   (build-system emacs-build-system)
+   (home-page "http://github.com/larsbrinkhoff/forth-mode")
+   (synopsis "Programming language mode for Forth")
+   (description "Programming language mode for Forth.")
+   (license license:gpl3)))
+
 ;;; Failing Packages:
 ;;;
 ;;; emacs-slack, emacs-xmlunicode, emacs-universal-emotions-emoticons.
