@@ -29,6 +29,10 @@
   #:use-module (gnu packages)
   #:use-module (gnu packages python-web)
   #:use-module (gnu packages guile)
+  #:use-module (gnu packages time)
+  #:use-module (gnu packages check)
+  #:use-module (gnu packages python-check)
+  #:use-module (gnu packages python-build)
   #:use-module (guix build-system asdf)
   #:use-module (guix build-system gnu)
   #:use-module (guix build-system copy)
@@ -43,7 +47,8 @@
   #:use-module (guix store)
   #:use-module (guix utils)
   #:use-module (guix gexp)
-  #:use-module (srfi srfi-1))
+  #:use-module (srfi srfi-1)
+  #:use-module (srfi srfi-11))
 (define-public adlmidi
   (let ((commit "0b87eee9df14fe24f1827a695a712ccb6c11e980")
         (revision "1"))
@@ -94,7 +99,7 @@ soundfonts.")
          (commit "84d27bc2bdbd6dd249537a7f7d2450cbd402482e"))
     (package
       (name "libadlmidi")
-      (version (git-version "1.5.1" revision commit))
+      (version (git-version "1.5.1-git" revision commit))
       (source (origin
                 (method git-fetch)
                 (uri (git-reference
@@ -110,7 +115,7 @@ soundfonts.")
        (list
         #:configure-flags '(list "-DlibADLMIDI_STATIC=OFF"
                                  "-DlibADLMIDI_SHARED=ON"
-                                 "-DWITH_UNIT_TESTS=ON"
+                                 "-DWITH_UNIT_TESTS=OFF"
                                  "-DWITH_MIDI_SEQUENCER=ON"
                                  "-DWITH_EMBEDDED_BANKS=ON"
                                  "-DWITH_HQ_RESAMPLER=ON"
@@ -125,7 +130,7 @@ soundfonts.")
                                  "-DWITH_MIDIPLAY=ON"
                                  "-DWITH_ADLMIDI2=ON"
                                  "-DWITH_VLC_PLUGIN=OFF")
-        #:tests? #t
+        #:tests? #f
         ;; #:phases #~(modify-phases
         ;;             %standard-phases
         ;;             )
@@ -150,7 +155,7 @@ https://bisqwit.iki.fi/source/adlmidi.html.")
                      license:gpl2+)))))
 
 (define stumpwm-contrib
-  (let ((commit "4613a956add7a17986a3b26c341229466cd13f1d")
+  (let ((commit "36daccd715e1cc6c1badab7cd87e34a8514f3b6b")
         (revision "2"))
     (package
       (name "stumpwm-contrib")
@@ -163,7 +168,7 @@ https://bisqwit.iki.fi/source/adlmidi.html.")
                (commit commit)))
          (file-name (git-file-name name version))
          (sha256
-          (base32 "1g8h2vd5qsmaiz6ixlx9ykrv6a08izmkf0js18fvljvznpyhsznz"))))
+          (base32 "0xad6hpp2inkksjlynb21y3jscjwjs3cpfnk1rkmgh02f9dkavd1"))))
       (build-system asdf-build-system/sbcl)
       (inputs
        `(("stumpwm" ,stumpwm "lib")))
@@ -257,12 +262,13 @@ https://bisqwit.iki.fi/source/adlmidi.html.")
     (description
      "This StumpWM Module provides a notifications server for StumpWM.")
     (license license:gpl3+)))
+
 (define-public uxn
-  (let ((commit "f87c15c8b5274546a2198c35f5a6e30094f8f004")
+  (let ((commit "a740105b7616c882f45c2f11611c2d2e3396f1c0")
         (revision "1"))
     (package
       (name "uxn")
-      (version (git-version "android-1.5" revision commit))
+      (version (git-version "git" revision commit))
       (source (origin
                 (method git-fetch)
                 (uri (git-reference
@@ -271,7 +277,7 @@ https://bisqwit.iki.fi/source/adlmidi.html.")
                 (file-name (git-file-name name version))
                 (sha256
                  (base32
-                  "00fjzjswyd88na0grylsjxq9bp7z5sk9a6xiwwm30wxflszvqm3g"))))
+                  "1d9p6xbiwjajanmjk62zvqzylnpiywa1zplfv7jv6af92d61ily8"))))
       (build-system gnu-build-system)
       (arguments
        `(#:tests? #f
@@ -287,25 +293,37 @@ https://bisqwit.iki.fi/source/adlmidi.html.")
                     (replace
                         'build
                       (lambda* (#:key inputs outputs #:allow-other-keys)
-                        (setenv "HOME" "./")
-                        (setenv "CC" "gcc")
-                        (invoke "bash" "build.sh" "--install" "--no-run")
-                        (invoke "./bin/uxncli"
-                                "./bin/asma.rom"
-                                "./projects/examples/demos/piano.tal"
-                                "./bin/piano.rom")))
+                          (define (uxn-assemble source dest)
+                            (invoke "./bin/uxnasm"
+                                    (string-append "./projects/" source)
+                                    (string-append "./bin/" dest ".rom")))
+                          (setenv "HOME" "./")
+                          (setenv "CC" "gcc")
+                          (invoke "bash" "build.sh" "--install" "--no-run")
+                          (uxn-assemble "software/piano.tal" "piano")
+                          (uxn-assemble "software/asma.tal" "asma")
+                          (uxn-assemble "software/launcher.tal" "launcher")
+                          (uxn-assemble "software/calc.tal" "calc")
+                          (uxn-assemble "software/clock.tal" "clock")
+                          (uxn-assemble "software/neralie.tal" "neralie")
+                          (uxn-assemble "utils/hexdump.tal" "hexdump")))
                     (replace
                         'install
                       (lambda* (#:key outputs #:allow-other-keys)
                         (let* ((out (assoc-ref outputs "out"))
                                (dest-bin (string-append out "/bin"))
-                               (dest-lib (string-append out "/share"))
+                               (dest-lib (string-append out "/share/uxn"))
                                (dest-rom (string-append dest-lib "/rom")))
+
                           (mkdir-p dest-bin)
                           (mkdir-p dest-lib)
                           (install-file "./bin/uxnasm" dest-bin)
                           (install-file "./bin/uxncli" dest-bin)
                           (install-file "./bin/uxnemu" dest-bin)
+                          (install-file "./bin/calc.rom" dest-rom)
+                          (install-file "./bin/clock.rom" dest-rom)
+                          (install-file "./bin/neralie.rom" dest-rom)
+                          (install-file "./bin/hexdump.rom" dest-rom)
                           (install-file "./bin/launcher.rom" dest-rom)
                           (install-file "./bin/asma.rom" dest-rom)
                           (install-file "./bin/piano.rom" dest-rom)
@@ -446,9 +464,9 @@ ncurses for text display.")
       (home-page "https://gist.github.com/tomykaira/f0fd86b6c73063283afe550bc5d77594")
       (license license:expat))))
 (define-public libgourou
-  (let* ((tag "0.8.0")
+  (let* ((tag "0.8.1")
          (revision "1")
-         (commit "6e3958f09e6eee9128c60e54ab81f2e834cd6ff8")
+         (commit "46afe771c788a32eb7a96234a4cea0810293942d")
          (version (git-version tag revision commit)))
     (package
       (name "libgourou")
@@ -460,7 +478,7 @@ ncurses for text display.")
                       (commit commit)))
                 (sha256
                  (base32
-                  "1bdscfvzn9paw6qv684jg7ka0v2grnmlps41afb8k5003fafxvwy"))))
+                  "00cg8lfjnryszvldy949xgpir6nz674kfrwwys8av4vy7piqm7jz"))))
       (outputs '("out" "bin"))
       (build-system gnu-build-system)
       (arguments
@@ -521,7 +539,7 @@ ncurses for text display.")
                                "utils/Makefile"
                              (("\\$\\(ROOT\\)/lib/pugixml/src/")
                               "")
-                             (("CXXFLAGS=-Wall -fPIC -I\\$\\(ROOT\\)/include -I")
+                             (("CXXFLAGS=-Wall -fPIC -I\\$\\(ROOT\\)/include")
                               (string-append
                                "CXXFLAGS=-Wall -fPIC "
                                "-I$(ROOT)/source/include -I"
@@ -576,11 +594,11 @@ ncurses for text display.")
                                 (dest-bin (string-append bin "/bin")))
                            (system "ls")
                            (system "ls utils")
+                           (install-file (string-append
+                                          "libgourou.so."
+                                          #$tag)
+                                         dest-lib)
                            (install-file "libgourou.so"
-                                         dest-lib)
-                           (install-file "utils/drmprocessorclientimpl.so"
-                                         dest-lib)
-                           (install-file "utils/utils_common.so"
                                          dest-lib)
                            (copy-recursively "include"
                                              dest-include)
@@ -591,6 +609,10 @@ ncurses for text display.")
                            (install-file "utils/acsmdownloader"
                                          dest-bin)
                            (install-file "utils/adept_activate"
+                                         dest-bin)
+                           (install-file "utils/adept_remove"
+                                         dest-bin)
+                           (install-file "utils/launcher"
                                          dest-bin)
                            (install-file "utils/adept_loan_mgt"
                                          dest-bin)))))))
@@ -610,68 +632,68 @@ It supports:
     ePub download from ACSM request file")
       (home-page "http://blog.soutade.fr/post/2021/07/libgourou-a-free-adept-protocol-implementation.html")
       (license license:lgpl3))))
-(define-public knock
-  (let* ((tag "1.3.1")
-         (revision "1")
-         (commit "488fcabd69ca6f9e306a3ca30ccef600209115b1")
-         (version (git-version tag revision commit)))
-    (package
-      (name "knock")
-      (version version)
-      (source (origin
-                (method git-fetch)
-                (uri (git-reference
-                      (url "https://github.com/BentonEdmondson/knock.git")
-                      (commit commit)))
-                (sha256
-                 (base32
-                  "1fp33wdx0rijv0v06ggc0d9yb4k5lhc4f48543pbaf2fql5npj4c"))))
-      (outputs '("out"))
-      (build-system gnu-build-system)
-      (arguments
-       (list
-        #:tests? #f
-        #:phases #~(modify-phases
-                       %standard-phases
-                     (delete 'configure)
-                     (replace 'build
-                       (lambda* (#:key inputs outputs #:allow-other-keys)
-                         (system (string-append
-                                  "g++ -std=c++17 -o knock -D KNOCK_VERSION=1.3 -I"
-                                  #$(this-package-native-input "libgourou")
-                                  "/include/libgourou -I"
-                                  #$(this-package-native-input "pugixml")
-                                  "/include -L"
-                                  #$(this-package-native-input "libgourou")
-                                  "/lib -L"
-                                  #$(this-package-native-input "curl")
-                                  "/lib -L"
-                                  #$(this-package-native-input "openssl")
-                                  "/lib -L"
-                                  #$(this-package-native-input "libzip")
-                                  "/lib -L"
-                                  #$(this-package-native-input "zlib")
-                                  "/lib -l:drmprocessorclientimpl.so "
-                                  "-l:utils_common.so -lgourou -lcrypto "
-                                  "-lcurl -lzip -lz -Wl,-rpath="
-                                  (assoc-ref outputs "out")
-                                  "/lib src/knock.cpp"))))
-                     (replace 'install
-                       (lambda* (#:key outputs #:allow-other-keys)
-                         (let* ((out (assoc-ref outputs "out"))
-                                (dest-bin (string-append out "/bin")))
-                           (install-file "knock" dest-bin)))))))
-      (native-inputs (list libgourou
-                           macaron-base64
-                           libzip
-                           pugixml
-                           openssl-3.0
-                           curl
-                           zlib))
-      (synopsis "Convert ACSM files to PDFs/EPUBs with one command on Linux")
-      (description "Convert ACSM files to PDF/EPUBs with one command on Linux.")
-      (home-page "https://github.com/BentonEdmondson/knock/")
-      (license license:gpl3))))
+;; (define-public knock
+;;   (let* ((tag "1.3.1")
+;;          (revision "1")
+;;          (commit "488fcabd69ca6f9e306a3ca30ccef600209115b1")
+;;          (version (git-version tag revision commit)))
+;;     (package
+;;       (name "knock")
+;;       (version version)
+;;       (source (origin
+;;                 (method git-fetch)
+;;                 (uri (git-reference
+;;                       (url "https://github.com/BentonEdmondson/knock.git")
+;;                       (commit commit)))
+;;                 (sha256
+;;                  (base32
+;;                   "1fp33wdx0rijv0v06ggc0d9yb4k5lhc4f48543pbaf2fql5npj4c"))))
+;;       (outputs '("out"))
+;;       (build-system gnu-build-system)
+;;       (arguments
+;;        (list
+;;         #:tests? #f
+;;         #:phases #~(modify-phases
+;;                        %standard-phases
+;;                      (delete 'configure)
+;;                      (replace 'build
+;;                        (lambda* (#:key inputs outputs #:allow-other-keys)
+;;                          (system (string-append
+;;                                   "g++ -std=c++17 -o knock -D KNOCK_VERSION=1.3 -I"
+;;                                   #$(this-package-native-input "libgourou")
+;;                                   "/include/libgourou -I"
+;;                                   #$(this-package-native-input "pugixml")
+;;                                   "/include -L"
+;;                                   #$(this-package-native-input "libgourou")
+;;                                   "/lib -L"
+;;                                   #$(this-package-native-input "curl")
+;;                                   "/lib -L"
+;;                                   #$(this-package-native-input "openssl")
+;;                                   "/lib -L"
+;;                                   #$(this-package-native-input "libzip")
+;;                                   "/lib -L"
+;;                                   #$(this-package-native-input "zlib")
+;;                                   "/lib -l:drmprocessorclientimpl.so "
+;;                                   "-l:utils_common.so -lgourou -lcrypto "
+;;                                   "-lcurl -lzip -lz -Wl,-rpath="
+;;                                   (assoc-ref outputs "out")
+;;                                   "/lib src/knock.cpp"))))
+;;                      (replace 'install
+;;                        (lambda* (#:key outputs #:allow-other-keys)
+;;                          (let* ((out (assoc-ref outputs "out"))
+;;                                 (dest-bin (string-append out "/bin")))
+;;                            (install-file "knock" dest-bin)))))))
+;;       (native-inputs (list libgourou
+;;                            macaron-base64
+;;                            libzip
+;;                            pugixml
+;;                            openssl-3.0
+;;                            curl
+;;                            zlib))
+;;       (synopsis "Convert ACSM files to PDFs/EPUBs with one command on Linux")
+;;       (description "Convert ACSM files to PDF/EPUBs with one command on Linux.")
+;;       (home-page "https://github.com/BentonEdmondson/knock/")
+;;       (license license:gpl3))))
 (define-public mikmod
   (let* ((tag "3.3.11.1-git")
          (revision "1")
@@ -792,6 +814,136 @@ can be combined together using the @code{rules} component of this database.")
     (synopsis "Python SSDP library")
     (description "Python SSDP library")
     (license license:expat)))
+
+(define-public python-twtxt
+  (package
+   (name "python-twtxt")
+   (version "1.3.1")
+   (source (origin
+            (method url-fetch)
+            (uri (pypi-uri "twtxt" version))
+            (sha256
+             (base32
+              "1zvi3dsqv1zjn62cvfpa0zn8v7lvjcml0j20n94181qnh07mhppi"))))
+   (build-system python-build-system)
+   (arguments
+    (list
+     #:tests? #f ));; "WARNING: Testing via this command is deprecated and
+                   ;; will be removed in a future version. Users looking for
+                   ;; a generic test entry point independent of test runner
+                   ;; are encouraged to use tox."
+   (propagated-inputs (list python-aiohttp python-click python-dateutil
+                            python-humanize-3.8.0))
+   (native-inputs (list python-pytest python-pytest-cov python-tox))
+   (home-page "https://github.com/buckket/twtxt")
+   (synopsis "Decentralised, minimalist microblogging service for hackers.")
+   (description
+    "Decentralised, minimalist microblogging service for hackers.")
+   (license license:expat)))
+
+(define-public python-humanize-3.8.0
+  (package
+   (name "python-humanize")
+   (version "3.8.0")
+   (source (origin
+            (method url-fetch)
+            (uri (pypi-uri "humanize" version))
+            (sha256
+             (base32
+              "04qnipdc0x2bycmlx7a85nfh81cyy15rxy4m4s4fs1ya2fiqlvmx"))))
+   (build-system python-build-system)
+   (arguments
+    (list
+     #:phases
+     `(modify-phases %standard-phases
+                  (add-before 'build 'explicit-version
+                              ;; The version string is usually derived via setuptools-scm, but
+                              ;; without the git metadata available, the version string is set to
+                              ;; '0.0.0'.
+                              (lambda _
+                                (substitute* "setup.py"
+                                             (("setup\\(\\)") ,(string-append
+                                                                "setup(name='humanize',
+version='"
+                                                            version
+                                                            "',)")))
+                                )))))
+   (propagated-inputs (list python-importlib-metadata))
+   (native-inputs (list python-freezegun python-pytest python-pytest-cov))
+   (home-page "")
+   (synopsis "Python humanize utilities")
+   (description "Python humanize utilities")
+   (license license:expat)))
+
+(define python-hatch-0.23.0
+  (let ((commit "704cdcd1a0cd3a621235ac9f5b2b90e7524e3cd3")
+        (revision "1"))
+    (package
+     (name "python-hatch-0.23.0")
+     (version (git-version "0.23.0" revision commit))
+     (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/pypa/hatch.git")
+                    (commit commit)))
+              (sha256
+               (base32
+                "1y41xgp4q8ghzmzxfhw68rmdx9j0f6pxgq326sml23qjyfh6f9n9"))))
+     (build-system python-build-system)
+     (arguments
+      (list
+       #:tests? #f))
+     (propagated-inputs (list python-wheel
+                              python-atomicwrites
+                              python-appdirs
+                              python-virtualenv
+                              python-twine
+                              python-semver
+                              python-pytest
+                              python-pexpect
+                              python-coverage
+                              python-colorama
+                              python-click
+                              python-parse))
+     (home-page "")
+     (synopsis "Modern, extensible Python build backend")
+     (description "Modern, extensible Python build backend")
+     (license #f))))
+
+(define python-hatch-1.0.0
+  (let ((commit "eef7d0cc6a4d9c4459a4332ebce4b91ff22fbb08"))
+    (package
+     (name "python-hatch")
+     (version "1.0.0")
+     (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/pypa/hatch.git")
+                    (commit commit)))
+              (sha256
+               (base32
+                "1y41xgp4q8ghzmzxfhw68rmdx9j0f6pxgq326sml23qjyfh6f9n9"))))
+     (build-system pyproject-build-system)
+     (arguments
+      (list
+       #:tests? #f))
+     (propagated-inputs (list python-wheel
+                              python-atomicwrites
+                              python-appdirs
+                              python-virtualenv
+                              python-twine
+                              python-semver
+                              python-pytest
+                              python-pexpect
+                              python-coverage
+                              python-colorama
+                              python-click
+                              python-parse
+                              python-hatch-0.23.0))
+     (home-page "")
+     (synopsis "Modern, extensible Python build backend")
+     (description "Modern, extensible Python build backend")
+     (license #f))))
 
 (define-public gerbil-0.17
   (package

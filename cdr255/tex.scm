@@ -1225,7 +1225,7 @@ settings to typeset Russian documents.")
                   texlive-grfext
                   texlive-hologo
                   texlive-tools
-                  texlive-latex-fancyvrb
+                  texlive-fancyvrb
                   texlive-xcolor
                   texlive-hyperref
                   texlive-stringenc
@@ -1322,7 +1322,7 @@ The facility is only available in PDF mode. ")
                   texlive-grfext
                   texlive-hologo
                   texlive-tools
-                  texlive-latex-fancyvrb
+                  texlive-fancyvrb
                   texlive-xcolor
                   texlive-hyperref
                   texlive-stringenc

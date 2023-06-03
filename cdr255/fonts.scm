@@ -10,6 +10,7 @@
   #:use-module (guix utils)
   #:use-module (guix deprecation)
   #:use-module (gnu packages)
+  #:use-module (gnu packages fonts)
   #:use-module (gnu packages check)
   #:use-module (gnu packages graphviz)
   #:use-module (gnu packages xml)
@@ -189,3 +190,47 @@ characters.")
     (synopsis "fifteen and quinze fonts by zeimusu")
     (description "Fifteen and Quinze: Narrow Monospaced fonts Quinze is a narrow monospaced font, for programming and terminal emulators. It is designed to be narrow, and allow 132 columns to be comfortably fitted on a screen The 1, l and I are clearly distinguished, as are O and 0. The ascii circumflex is presented as an arrow, consistent with its use as exponentiation operator. Fifteen is a faux bitmap font. This font is designed to be used as a monotype font for use in a terminal, or at a larger size, to look like an over scaled bitmap. It is designed for 15 pixel use. It is as narrow as I could make it, and works well in a 132 column terminal window. It is, of course, monospaced and has clearly distinct 1I and l, and the zero is slashed. Character set is limited in this first release to ascii + smart quotes.")
     (license license:silofl1.1)))
+
+(define-public font-openmoji-14
+  (package
+    (inherit font-openmoji)
+    (name "font-openmoji")
+    (version "14.0.0")
+    (source
+     (origin
+      (method url-fetch/zipbomb)
+      (uri
+       (string-append "https://github.com/hfg-gmuend/openmoji/"
+                      "releases/download/" version
+                      "/openmoji-font.zip"))
+      (sha256
+       (base32
+        "11cm20xb92y8ra703f1ahh8jybxg5fc85pc9z2qdfv1157g753by"))))))
+
+(define-public font-blobmoji
+  (let* ((revision "1")
+         (commit "81e18d1eb8cb6b66df9e311b3b63ec086d910d18"))
+    (package
+      (name "font-blobmoji")
+      (version "15.0")
+      (source
+       (origin
+        (method url-fetch)
+        (uri
+         (list
+          (string-append
+           "https://github.com/C1710/blobmoji/releases/download/v"
+           version
+           "/Blobmoji.ttf")))
+        (sha256
+         (base32
+          "1ybqxd3nkx2ychya5jw6k2yvaw17achj4kapxwsrpfina1kxdhyw"))))
+      (outputs '("out"))
+      (build-system font-build-system)
+      (synopsis "Noto Emoji with extended Blob support")
+      (description "This font is intended to continue the development of the Blob emojis which have been replaced by different designs in 2017.")
+      (home-page "https://github.com/C1710/blobmoji")
+      (license (list
+                license:silofl1.1
+                license:asl2.0
+                license:public-domain)))))
