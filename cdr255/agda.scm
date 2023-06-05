@@ -14,72 +14,72 @@
   #:use-module ((guix licenses) #:prefix license:)
   #:use-module (guix packages))
 
-(define-public agda-2.6.3
-  (package
-    (inherit agda)
-    (version "2.6.3")
-    (source (origin
-              (method url-fetch)
-              (uri (hackage-uri "Agda" version))
-              (sha256
-               (base32
-                "05k0insn1c2dbpddl1slcdn972j8vgkzzy870yxl43j75j0ckb5y"))))
-    (inputs (modify-inputs (package-inputs agda)
-              (append ghc-vector-hashtables)))))
-(define-public emacs-agda2-mode-2.6.3
-  (package
-    (inherit agda-2.6.3)
-    (name "emacs-agda2-mode")
-    (build-system emacs-build-system)
-    (inputs '())
-    (arguments
-     `(#:phases (modify-phases %standard-phases
-                  (add-after 'unpack 'enter-elisp-dir
-                    (lambda _
-                      (chdir "src/data/emacs-mode") #t)))))
-    (home-page "https://agda.readthedocs.io/en/latest/tools/emacs-mode.html")
-    (synopsis "Emacs mode for Agda")
-    (description "This Emacs mode enables interactive development with
-Agda.  It also aids the input of Unicode characters.")))
-(define-public agda-stdlib
-  (let* ((revision "1")
-         (commit "b2e6385c1636897dbee0b10f7194376ff2c1753b"))
-    (package
-      (name "agda-stdlib")
-      (version (git-version "1.7.2" revision commit))
-      (source (origin
-                (method git-fetch)
-                (uri (git-reference
-                      (url "https://github.com/agda/agda-stdlib")
-                      (commit commit)))
-                (file-name (git-file-name name version))
-                (sha256
-                 (base32
-                  "065hf24xjpciwdrvk4isslgcgi01q0k93ql0y1sjqqvy5ryg5xmy"))))
-      (outputs '("out"))
-      (build-system copy-build-system)
-      (arguments
-       (let ((library-directory (string-append "share/agda/agda-stdlib-"
-                                               version "/")))
-         (list #:install-plan #~'(("src" #$library-directory)
-                                  ("_build" #$library-directory)
-                                  ("standard-library.agda-lib" #$library-directory))
-               #:phases #~(modify-phases %standard-phases
-                            (add-before 'install 'create-interfaces
-                              (lambda _
-                                (map (lambda (x)
-                                       (system (string-append "agda " x)))
-                                     (find-files "src" ".*\\.agda"))))))))
-      (native-inputs (list agda-2.6.3))
-      (synopsis "The Agda Standard Library")
-      (description
-       "The standard library aims to contain all the tools needed to write
-both programs and proofs easily.  While we always try and write efficient
-code, we prioritize ease of proof over type-checking and normalization
-performance.  If computational performance is important to you, then perhaps
-try agda-prelude instead.")
-      (home-page "https://wiki.portal.chalmers.se/agda/pmwiki.php")
-      (license license:expat))))
+;; (define-public agda-2.6.3
+;;   (package
+;;     (inherit agda)
+;;     (version "2.6.3")
+;;     (source (origin
+;;               (method url-fetch)
+;;               (uri (hackage-uri "Agda" version))
+;;               (sha256
+;;                (base32
+;;                 "05k0insn1c2dbpddl1slcdn972j8vgkzzy870yxl43j75j0ckb5y"))))
+;;     (inputs (modify-inputs (package-inputs agda)
+;;               (append ghc-vector-hashtables)))))
+;; (define-public emacs-agda2-mode-2.6.3
+;;   (package
+;;     (inherit agda-2.6.3)
+;;     (name "emacs-agda2-mode")
+;;     (build-system emacs-build-system)
+;;     (inputs '())
+;;     (arguments
+;;      `(#:phases (modify-phases %standard-phases
+;;                   (add-after 'unpack 'enter-elisp-dir
+;;                     (lambda _
+;;                       (chdir "src/data/emacs-mode") #t)))))
+;;     (home-page "https://agda.readthedocs.io/en/latest/tools/emacs-mode.html")
+;;     (synopsis "Emacs mode for Agda")
+;;     (description "This Emacs mode enables interactive development with
+;; Agda.  It also aids the input of Unicode characters.")))
+;; (define-public agda-stdlib
+;;   (let* ((revision "1")
+;;          (commit "b2e6385c1636897dbee0b10f7194376ff2c1753b"))
+;;     (package
+;;       (name "agda-stdlib")
+;;       (version (git-version "1.7.2" revision commit))
+;;       (source (origin
+;;                 (method git-fetch)
+;;                 (uri (git-reference
+;;                       (url "https://github.com/agda/agda-stdlib")
+;;                       (commit commit)))
+;;                 (file-name (git-file-name name version))
+;;                 (sha256
+;;                  (base32
+;;                   "065hf24xjpciwdrvk4isslgcgi01q0k93ql0y1sjqqvy5ryg5xmy"))))
+;;       (outputs '("out"))
+;;       (build-system copy-build-system)
+;;       (arguments
+;;        (let ((library-directory (string-append "share/agda/agda-stdlib-"
+;;                                                version "/")))
+;;          (list #:install-plan #~'(("src" #$library-directory)
+;;                                   ("_build" #$library-directory)
+;;                                   ("standard-library.agda-lib" #$library-directory))
+;;                #:phases #~(modify-phases %standard-phases
+;;                             (add-before 'install 'create-interfaces
+;;                               (lambda _
+;;                                 (map (lambda (x)
+;;                                        (system (string-append "agda " x)))
+;;                                      (find-files "src" ".*\\.agda"))))))))
+;;       (native-inputs (list agda-2.6.3))
+;;       (synopsis "The Agda Standard Library")
+;;       (description
+;;        "The standard library aims to contain all the tools needed to write
+;; both programs and proofs easily.  While we always try and write efficient
+;; code, we prioritize ease of proof over type-checking and normalization
+;; performance.  If computational performance is important to you, then perhaps
+;; try agda-prelude instead.")
+;;       (home-page "https://wiki.portal.chalmers.se/agda/pmwiki.php")
+;;       (license license:expat))))
 
 (define-public ghc-vector-hashtables
   (package
