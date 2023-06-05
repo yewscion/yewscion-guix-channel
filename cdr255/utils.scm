@@ -33,6 +33,21 @@
   #:use-module (gnu packages check)
   #:use-module (gnu packages python-check)
   #:use-module (gnu packages python-build)
+  #:use-module (gnu packages gnome)
+  #:use-module (gnu packages gl)
+  #:use-module (gnu packages databases)
+  #:use-module (gnu packages file-systems)
+  #:use-module (gnu packages xdisorg)
+  #:use-module (gnu packages pcre)
+  #:use-module (gnu packages gtk)
+  #:use-module (gnu packages sqlite)  
+  #:use-module (gnu packages swig)  
+  #:use-module (gnu packages geo)
+  #:use-module (gnu packages java)
+  #:use-module (gnu packages boost)
+  #:use-module (gnu packages ssh)
+  #:use-module (gnu packages web)
+  #:use-module (gnu packages libevent)
   #:use-module (guix build-system asdf)
   #:use-module (guix build-system gnu)
   #:use-module (guix build-system copy)
@@ -40,6 +55,7 @@
   #:use-module (guix build-system meson)
   #:use-module (guix build-system python)
   #:use-module (guix build-system pyproject)
+  #:use-module (guix build utils)  
   #:use-module (guix download)
   #:use-module (guix gexp)
   #:use-module (guix git-download)
@@ -326,6 +342,8 @@ https://bisqwit.iki.fi/source/adlmidi.html.")
                           (install-file "./bin/hexdump.rom" dest-rom)
                           (install-file "./bin/launcher.rom" dest-rom)
                           (install-file "./bin/asma.rom" dest-rom)
+                          (install-file "./bin/launcher.rom" dest-bin)
+                          (install-file "./bin/asma.rom" dest-bin)
                           (install-file "./bin/piano.rom" dest-rom)
                           (copy-recursively "./projects"
                                             (string-append dest-lib "/projects/"))
@@ -959,3 +977,256 @@ version='"
        (file-name (git-file-name name version))
        (sha256
         (base32 "0xzi9mhrmzcajhlz5qcnz4yjlljvbkbm9426iifgjn47ac0965zw"))))))
+
+
+(define-public mysql-workbench-community
+  (let* ((revision "1")
+         (commit "4e1ee2964e2104c4054a398ba6093cf7f7937e36"))
+    (package
+     (name "mysql-workbench-community")
+     (version (git-version "8.0.33" revision commit))
+     (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/mysql/mysql-workbench.git")
+                    (commit commit)))
+              (file-name (git-file-name name version))
+              (sha256
+               (base32
+                "0bdrsjvxiizn3rd77s0afp2rk29zbyjh2ibp3ixbg15drb716qmq"))))
+     (outputs '("out"))
+     (build-system cmake-build-system)
+     (arguments
+      (list
+       #:configure-flags #~(list
+                            "-DCMAKE_CXX_STANDARD=11"
+                              (string-append
+                               "-DWITH_ANTLR_JAR="
+                               #$(this-package-native-input
+                                  "antlr4")
+                               "/share/java/antlr4.jar")
+                              
+                              (string-append
+                               "-DMySQL_INCLUDE_DIRS="
+                               #$(this-package-native-input
+                                  "mysql")
+                               "/include/mysql")
+                              
+                              (string-append
+                               "-DMySQL_LIBRARIES="
+                               #$(this-package-native-input
+                                  "mysql")
+                               "/lib")
+                              
+                              (string-append
+                               "-DMySQLCppConn_INCLUDE_DIRS="
+                               #$(this-package-native-input
+                                  "mysql-connector-cpp")
+                               "/include")
+                              
+                              (string-append
+                               "-DMySQLCppConn_LIBRARIES="
+                               #$(this-package-native-input
+                                  "mysql-connector-cpp")
+                               "/lib")
+                              (string-append
+                               "-DUNIXODBC_INCLUDE_PATH="
+                               #$(this-package-native-input
+                                  "unixodbc")
+                               "/include")
+                              (string-append
+                               "-DUNIXODBC_INCLUDE_DIRS="
+                               #$(this-package-native-input
+                                  "unixodbc")
+                               "/include")
+                              (string-append
+                               "-DUNIXODBC_LIBRARIES="
+                               #$(this-package-native-input
+                                  "unixodbc")
+                               "/lib")
+                               )
+        ;; #:tests? #f
+        ;; #:phases #~(modify-phases
+        ;;             %standard-phases
+        ;;             )
+        ))
+     (native-inputs (list
+                     antlr4
+                     java-antlr4-runtime-cpp
+                     autoconf
+                     automake
+                     pkg-config
+                     libtool
+                     libzip
+                     libxml2
+                     libsigc++
+                     libglade
+                     mesa
+                     mysql
+                     pixman
+                     pcre
+                     pango
+                     cairo
+                     python
+                     sqlite
+                     swig
+                     gdal
+                     gtk+
+                     gtk
+                     gtkmm-3
+                     openssl
+                     libsecret
+                     proj
+                     mysql-connector-cpp
+                     vsqlite++
+                     boost
+                     libssh
+                     rapidjson
+                     unixodbc-2311
+                     icedtea-7
+                           ))
+      ;; (inputs (list ))
+      ;; (propagated-inputs (list ))
+      (synopsis "")
+      (description ".")
+      (home-page "")
+      (license license:gpl3))))
+
+(define-public mysql-connector-cpp
+  (let* ((revision "1")
+         (commit "9f64d3245d21ed1718211d70eb2a09394ff19c7f"))
+    (package
+      (name "mysql-connector-cpp")
+      (version (git-version "1.1.8" revision commit))
+      (source (origin
+                (method git-fetch)
+                (uri (git-reference
+                      (url "https://github.com/mysql/mysql-connector-cpp.git")
+                      (commit commit)))
+                (file-name (git-file-name name version))
+                (sha256
+                 (base32
+                  "1rv8imvs8imxkn4y9agl9802lz40w7zn36x3fvypz5m0dy2p9mc3"))))
+      (outputs '("out"))
+      (build-system cmake-build-system)
+      (arguments
+      (list
+       #:configure-flags #~(list
+                            "-DCMAKE_ENABLE_C++11=true"
+                              (string-append
+                               "-DMySQL_INCLUDE_DIRS="
+                               #$(this-package-native-input
+                                  "mysql")
+                               "/include/mysql")
+                              (string-append
+                               "-DMySQL_LIBRARIES="
+                               #$(this-package-native-input
+                                  "mysql")
+                               "/share/mysql")
+                               )
+        #:tests? #f
+        ;; #:phases #~(modify-phases
+        ;;             %standard-phases
+        ;;             )
+        ))
+      (native-inputs (list boost
+                           openssl
+                           mysql
+                           zlib))
+      ;; (inputs (list ))
+      ;; (propagated-inputs (list ))
+      (synopsis "")
+      (description ".")
+      (home-page "")
+      (license license:gpl3))))
+
+(define-public vsqlite++
+  (let* ((revision "1")
+         (commit "1bc5a9851195b9c67fd48cc82a4ccba378e63534"))
+    (package
+      (name "vsqlite++")
+      (version (git-version "0.3.13" revision commit))
+      (source (origin
+                (method git-fetch)
+                (uri (git-reference
+                      (url "https://github.com/vinzenz/vsqlite--.git")
+                      (commit commit)))
+                (file-name (git-file-name name version))
+                (sha256
+                 (base32
+                  "1b0s14axvqg3maqv28br5c72sbid4ilxi5j8vcxj10klr2fvyag1"))))
+      (outputs '("out"))
+      (build-system gnu-build-system)
+      (arguments
+       (list
+        ;; #:tests? #f
+        ;; #:phases #~(modify-phases
+        ;;             %standard-phases
+        ;;             )
+        ))
+      (native-inputs (list boost
+                           sqlite
+                           autoconf
+                           automake
+                           libtool))
+      ;; (inputs (list ))
+      ;; (propagated-inputs (list ))
+      (synopsis "")
+      (description ".")
+      (home-page "")
+      (license license:gpl3))))
+
+(define-public unixodbc-2311
+  (package
+   (inherit unixodbc)
+   (name "unixodbc")
+   (version "2.3.11")
+   (source (origin
+            (method url-fetch)
+            (uri
+             (string-append
+              "ftp://ftp.unixodbc.org/pub/unixODBC/unixODBC-"
+              version ".tar.gz"))
+            (sha256
+             (base32 "0p1vqxkw58k22mn7az7vj2s1c5dddn2khwy8cqy7wd0qf675rrfr"))))
+))
+
+;; (define-public tic-80
+;;   (let* ((revision "1")
+;;          (commit "b09c50c61f2e8f66959ee9539e5a05feaeaf8ae1"))
+;;     (package
+;;       (name "tic-80")
+;;       (version (git-version "1.0.2164" revision commit))
+;;       (source (origin
+;;                 (method git-fetch)
+;;                 (uri (git-reference
+;;                       (url "https://github.com/nesbox/tic-80.git")
+;;                       (commit commit)))
+;;                 (file-name (git-file-name name version))
+;;                 (sha256
+;;                  (base32
+;;                   "11bzkn0a0n59w0a2qc8zr7imnqgddnqv37bs26jraar526hsdijx"))))
+;;       (outputs '("out"))
+;;       (build-system cmake-build-system)
+;;       (arguments
+;;        (list
+;;         #:configure-flags '(list "-dbuild_pro=on")
+;;         ;; #:tests? #f
+;;          #:phases #~(modify-phases
+;;                      %standard-phases
+;;                      (add-before 'configure 'graft-sources
+;;                        (lambda* (#:key inputs #:allow-other-keys)
+;;                          (begin
+;;                            (display inputs)
+;;                            ()
+;;                      )))
+;;         ))
+;;       (native-inputs (list sdl2
+;;                            libzip
+;;                            libuv))
+;;       ;; (inputs (list ))
+;;       ;; (propagated-inputs (list ))
+;;       (synopsis "the tiny computer")
+;;       (description "tic-80 is a free and open source fantasy computer for making, playing and sharing tiny games.  with tic-80 you get built-in tools for development: code, sprites, maps, sound editors and the command line, which is enough to create a mini retro game.  games are packaged into a cartridge file, which can be easily distributed. tic-80 works on all popular platforms. this means your cartridge can be played in any device.  to make a retro styled game, the whole process of creation and execution takes place under some technical limitations: 240x136 pixel display, 16 color palette, 256 8x8 color sprites, 4 channel sound.")
+;;       (home-page "https://tic80.com/")
+;;       (license license:expat))))
