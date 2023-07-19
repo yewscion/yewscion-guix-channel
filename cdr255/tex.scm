@@ -124,10 +124,10 @@ copied to their outputs; otherwise the TEXLIVE-BUILD-SYSTEM is used."
       (list "doc/latex/lwarp/"
             "scripts/lwarp/"
             "source/latex/lwarp/")
-       (base32 "19aj3wq990yw1px0g9wlwmmir9wrm9pr0fsra5j15ykllx3h215h")))
+       (base32 "079hwbsj3a27j4a0yrcvnlq33hijmk0l0szyfssj9ns6habnrygk")))
     (build-system texlive-build-system)
     (arguments
-     `(#:tex-directory "latex/lwarp"
+     `(;#:tex-directory "latex/lwarp"
        #:build-targets '("lwarp.ins")
        #:phases
        (modify-phases
@@ -140,23 +140,6 @@ copied to their outputs; otherwise the TEXLIVE-BUILD-SYSTEM is used."
                                (string-append
                                 cwd
                                 "/source/latex/lwarp:")))))
-        (add-before 'install
-                    'bin-script
-                    (lambda* (#:key outputs #:allow-other-keys)
-                      (call-with-output-file "lwarpmk"
-                        (lambda (port)
-                          (let* ((out
-                                  (string-append
-                                   (assoc-ref outputs "out")
-                                   "/share/texmf-dist/scripts")))
-                            (display
-                             (string-append
-                              "#!/bin/bash\n"
-                              "exec -a \"$0\" \""
-                              out
-                              "/lwarp/lwarpmk.lua\" \"$@\"")
-                                              port))))
-                      (chmod "lwarpmk" #o755)))
         (add-after 'install
                    'install-more
                    (lambda* (#:key outputs #:allow-other-keys)
@@ -174,8 +157,20 @@ copied to their outputs; otherwise the TEXLIVE-BUILD-SYSTEM is used."
                            (string-append (assoc-ref outputs "doc")
                                           "/share/doc/" ,name "-" ,version))
                           (source-doc "doc/latex/lwarp/"))
-                       (install-file "lwarpmk"
-                                     dest-bin)
+                       (call-with-output-file
+                           (string-append dest-bin "lwarpmk")
+                         (lambda (port)
+                           (display
+                             (string-append
+                              "#!/bin/bash\n"
+                              "exec -a \"$0\" \""
+                              (string-append
+                               out
+                               "/share/texmf-dist/scripts")
+                              "/lwarp/lwarpmk.lua\" \"$@\"")
+                                              port)))
+                       (chmod (string-append dest-bin "lwarpmk") #o755)
+                                             
                        (install-file "scripts/lwarp/lwarpmk.lua"
                                      dest-script)
                        (install-file (string-append source-doc
@@ -191,7 +186,7 @@ copied to their outputs; otherwise the TEXLIVE-BUILD-SYSTEM is used."
                              perl
                              poppler
                              xindy
-                             texlive-base))
+                             texlive-scheme-basic))
     (home-page "https://ctan.org/pkg/lwarp")
     (synopsis "Converts LaTeX to HTML")
     (description
@@ -241,7 +236,7 @@ for backward compatibility.")
        (base32 "1q5v8h52kmvwzsdqbr1blqln1mragynsbwk3bcp2icnldzclrj6z")))
     (build-system texlive-build-system)
     (arguments
-     `(#:tex-directory "latex/xpatch"
+     `(;#:tex-directory "latex/xpatch"
        #:build-targets '("xpatch.ins")
        #:phases (modify-phases
                  %standard-phases
@@ -291,7 +286,7 @@ Philipp Lehmann’s etoolbox.")
        (base32 "1sbjp8k5vxhrniwqjb61d2562vzi5bz6vrn1hml9rj5p9wi8js4c")))
     (build-system texlive-build-system)
     (arguments
-     `(#:tex-directory "latex/catchfile"
+     `(;#:tex-directory "latex/catchfile"
        #:build-targets '("catchfile.dtx")
        #:phases (modify-phases
                  %standard-phases
@@ -388,7 +383,7 @@ the opening and closing commands again on a line of their own.")
 ;; guide.
 
 ;; This version of the package requires use of csquotes ≥4.3, BibLaTeX ≥3.4, and
-;; the biber backend for BibLaTeX ≥2.5.")
+;; the texlive-biber backend for BibLaTeX ≥2.5.")
 ;;       (license license:lppl1.3c))))
 (define-public texlive-latex-setspace
   (let ((template (simple-texlive-package
@@ -396,7 +391,7 @@ the opening and closing commands again on a line of their own.")
                    (list "/tex/latex/setspace/"
                          "/doc/latex/setspace/")
                    (base32
-                    "00ik8qgkw3ivh3z827zjf7gbwkbsmdcmv22c6ap543mpgaqqjcfm")
+                    "0bvspbka1jhpysyhh3sd1vkkm6xjj2ahj0mzv2inzqbrrbydr9gr")
                    #:trivial? #t)))
     (package
       (inherit template)
@@ -424,7 +419,7 @@ spacings also available.")
        (base32 "0q1k8qbm704xbgrnaj5dv1rbkfyyzd65m8ybrip334gsmn4223ni")))
     (build-system texlive-build-system)
     (arguments
-     `(#:tex-directory "latex/endfloat"
+     `(;#:tex-directory "latex/endfloat"
        #:build-targets '("endfloat.ins")
        #:phases (modify-phases
                  %standard-phases
@@ -457,14 +452,8 @@ spacings also available.")
                                                              "COPYING")
                                                              dest-doc)
                                 (install-file (string-append source-doc
-                                                             "efxmpl.cfg")
-                                                             dest-doc)
-                                (install-file (string-append source-doc
                                                              "endfloat.pdf")
-                                                             dest-doc)
-                                (delete-file-recursively
-                                 (string-append out
-                                                "endfloat/efxmpl.cfg"))))))))
+                                                             dest-doc)))))))
     (home-page "https://ctan.org/pkg/endfloat")
     (synopsis "Move floats to the end, leaving markers where they belong")
     (description
@@ -488,10 +477,10 @@ endfloat.")
       (number->string %texlive-revision)
       (list "doc/latex/minted/"
             "source/latex/minted/")
-       (base32 "15l5lk5fkw6f88rmm784j6k4f0ansrksdc3jnywij90pm57qx2g0")))
+       (base32 "14b6xdp8yzmams9gxqk3bmwna6d2c3h90wgkl4sgf302m67fqh74")))
     (build-system texlive-build-system)
     (arguments
-     `(#:tex-directory "latex/minted"
+     `(;#:tex-directory "latex/minted"
        #:build-targets '("minted.ins")
        #:phases (modify-phases
                  %standard-phases
@@ -516,9 +505,6 @@ endfloat.")
                                                              "README")
                                                              dest-doc)
                                 (install-file (string-append source-doc
-                                                             "Makefile")
-                                                             dest-doc)
-                                (install-file (string-append source-doc
                                                              "minted.pdf")
                                                              dest-doc)))))))
     (home-page "https://ctan.org/pkg/minted")
@@ -541,10 +527,10 @@ the highlighted source code output using fancyvrb.")
       (number->string %texlive-revision)
       (list "doc/latex/fvextra/"
             "source/latex/fvextra/")
-       (base32 "00p0m643ah7d82k1ilz1nkmnbb733vqcz1paxk5n6y1k6awm1gks")))
+       (base32 "0jmhrh43lxjiy0p6308bmqpgfxf7b3rl0n9hkph3dzii9z7czw2h")))
     (build-system texlive-build-system)
     (arguments
-     `(#:tex-directory "latex/fvextra"
+     `(;#:tex-directory "latex/fvextra"
        #:build-targets '("fvextra.ins")
        #:phases (modify-phases
                  %standard-phases
@@ -584,7 +570,7 @@ Parts of fvextra were originally developed as part of pythontex and minted.")
                    (list "/tex/latex/lineno/"
                          "/doc/latex/lineno/")
                    (base32
-                    "061c618kgw4vz9jh8f9vx591n733srafkbrq2qxsjx9szkvzbbki")
+                    "1naqdd62gld0hx6ss0d7sllnbqslzxjcgzj7cnycs303lb03h738")
                    #:trivial? #t)))
     (package
       (inherit template)
@@ -611,7 +597,7 @@ Line numbering may be extended to footnote lines, using the fnlineno package.")
        (base32 "068l3zj9d5h6j078xsxqmzvfbj599xfcnkd7v4an31d1v21x2qc7")))
     (build-system texlive-build-system)
     (arguments
-     `(#:tex-directory "latex/datetime2"
+     `(;#:tex-directory "latex/datetime2"
        #:build-targets '("datetime2.ins")
        #:phases (modify-phases
                  %standard-phases
@@ -705,7 +691,7 @@ This package replaces datetime.sty which is now obsolete.")
        (base32 "1nh1lmbgaf4axkvcqkf70gsyr51m3wpjmqc6gvsqv8i3461s0gik")))
     (build-system texlive-build-system)
     (arguments
-     `(#:tex-directory "latex/datetime2-english"
+     `(;#:tex-directory "latex/datetime2-english"
        #:build-targets '("datetime2-english.ins")
        #:phases (modify-phases
                  %standard-phases
@@ -769,26 +755,39 @@ setting is on.
         (package-version "2.5.1"))
     (package
      (name "xindy")
-     (version  (string-append package-version "-" revision))
+     (version  (string-append package-version "-"
+                              revision "-"
+                              (number->string %texlive-revision)))
      (source (origin
-              (method url-fetch)
-              (uri (string-append
-                    "http://mirrors.ctan.org/indexing/xindy/base/xindy-"
-                    package-version ".tar.gz"))
+               (method svn-fetch)
+               (uri (svn-reference
+                      (url "svn://www.tug.org/texlive/tags/texlive-2023.0/Build/source/utils/xindy/xindy-src/")
+                      (revision %texlive-revision)))
               (sha256
                (base32
-                "0hxsx4zw19kmixkmrln17sxgg1ln4pfp4lpfn5v5fyr1nwfyk3ic"))))
+                "1g93sg56xlj96jd7ry65z874n757kfbgldv8w9k81gjv0300zpay"))))
      (build-system gnu-build-system)
+     (arguments
+      '(#:phases
+                (modify-phases
+                    %standard-phases
+                    (add-before 'configure 'autoreconf
+                                (lambda* _
+                                  (system "autoreconf -fiv")))
+                    )))
      (native-inputs (list pkg-config
+                          autoconf
+                          automake
                           clisp
                           sed
                           perl
-                          texlive-fonts-ec
-                          texlive-base
+                          texlive-ec
+                          texlive-scheme-basic
                           libiconv
                           texlive-inputenx
                           texlive-cm-super
-                          texlive-latex-base))
+                          texlive-cyrillic
+                          texlive-latex-bin))
      (home-page "https://ctan.org/pkg/xindy")
      (description
       "Xindy was developed after an impasse had been encountered in the attempt
@@ -817,80 +816,6 @@ markup terms and in terms of the collating order of the text being processed.")
 like interface.  For backwards compatibility, each of the \\everyX token lists
 can be set without interfering with the hooks.")
       (license license:lppl1.3))))
-(define-public texlive-svn-prov
-  (let ((template (simple-texlive-package
-                   "texlive-svn-prov"
-                   (list "/tex/latex/svn-prov/"
-                         "/doc/latex/svn-prov/")
-                   (base32
-                    "19vgp4bzj3i33yw35a6sg4pkbsv0ynxpg65ffm69gd4kqhqm934v")
-                   #:trivial? #t)))
-    (package
-      (inherit template)
-     (home-page "https://ctan.org/pkg/svn-prov")
-     (description
-      "The package introduces Subversion variants of the standard LaTeX macros
-\\ProvidesPackage, \\ProvidesClass, and \\ProvidesFile where the file name and
-date is extracted from Subversion Id keywords.  The file name may also be given
-explicitly as an optional argument.")
-     (synopsis "Subversion variants of \\Provides… macros")
-     (license license:lppl))))
-;; (define-public texlive-latex-newfloat
-;;   (package
-;;     (name "texlive-latex-newfloat")
-;;     (version (string-append
-;;               (number->string %texlive-revision)
-;;              "-1"))
-;;     (outputs '("out" "doc"))
-;;     (source
-;;      (texlive-origin
-;;       name
-;;       (number->string %texlive-revision)
-;;       (list "doc/latex/newfloat/"
-;;             "source/latex/newfloat/")
-;;        (base32 "1j6h4q8lf6ksfdygm6d13j5zkmlq7f9xmly0vhyjmd3bsfqmidmi")))
-;;     (build-system texlive-build-system)
-;;     (arguments
-;;      `(#:tex-directory "latex/newfloat"
-;;        #:build-targets '("newfloat.ins")
-;;        #:phases (modify-phases
-;;                  %standard-phases
-;;                  (add-after 'unpack
-;;                             'set-TEXINPUTS
-;;                             (lambda _
-;;                               (let ((cwd (getcwd)))
-;;                                 (setenv "TEXINPUTS"
-;;                                         (string-append
-;;                                          cwd
-;;                                          "/source/latex/newfloat:")))))
-;;                  (add-after 'install 'install-more
-;;                             (lambda* (#:key outputs #:allow-other-keys)
-;;                               (let* ((dest-doc
-;;                                       (string-append (assoc-ref outputs "doc")
-;;                                                      "/share/doc/"
-;;                                                      ,name "-"
-;;                                                      ,version))
-;;                                      (source-doc
-;;                                       "doc/latex/newfloat/"))
-;;                                 (install-file (string-append source-doc
-;;                                                              "README")
-;;                                                              dest-doc)
-;;                                 (install-file (string-append source-doc
-;;                                                              "CHANGELOG")
-;;                                                              dest-doc)
-;;                                 (install-file (string-append source-doc
-;;                                                              "SUMMARY")
-;;                                                              dest-doc)
-;;                                 (install-file (string-append source-doc
-;;                                                              "newfloat.pdf")
-;;                                                              dest-doc)))))))
-;;     (home-page "https://ctan.org/pkg/newfloat")
-;;     (synopsis "Define new floating environments")
-;;     (description
-;;      "The package offers the command \\DeclareFloatingEnvironment, which the
-;; user may use to define new floating environments which behave like the LaTeX
-;; standard foating environments figure and table.")
-;;     (license license:lppl1.3)))
 (define-public texlive-latex-printlen
   (let ((template (simple-texlive-package
                    "texlive-latex-printlen"
@@ -928,7 +853,7 @@ will be printed in point units but without any stretch or shrink values.")
        (base32 "1sycqkdvpv3aha6dh6syghh3lh3zzlld610r2ypd50dpdvj0vl7z")))
     (build-system texlive-build-system)
     (arguments
-     `(#:tex-directory "latex/cleveref"
+     `(;#:tex-directory "latex/cleveref"
        #:build-targets '("cleveref.ins")
        #:phases (modify-phases
                  %standard-phases
@@ -997,10 +922,10 @@ numerically-consecutive labels to a reference range.")
       (number->string %texlive-revision)
       (list "doc/latex/memoir/"
             "source/latex/memoir/")
-       (base32 "0k95814kvyirlpgy63c3n1pv1b8zsp4fr0568fcaa002cryfgnar")))
+       (base32 "1y4m5z5z8ffvd26fg09vim629qp0rh5jw7bg9ik88gwcy550lg8f")))
     (build-system texlive-build-system)
     (arguments
-     `(#:tex-directory "latex/memoir"
+     `(;#:tex-directory "latex/memoir"
        #:build-targets '("memoir.ins" "mempatch.ins")
        #:phases (modify-phases
                  %standard-phases
@@ -1056,10 +981,10 @@ automatically if it detects that it is running under memoir. ")
       (number->string %texlive-revision)
       (list "doc/latex/lipsum/"
             "source/latex/lipsum/")
-       (base32 "0qlfvx5684dbcwbsmhk487ppryj7fkr8w2zhqllmhrzhqsqq43w5")))
+       (base32 "13fqw9l139c18w4bj89ln1fzchfwqp5fgx57hc49r5ihdas8rd3h")))
     (build-system texlive-build-system)
     (arguments
-     `(#:tex-directory "latex/lipsum"
+     `(;#:tex-directory "latex/lipsum"
        #:build-targets '("lipsum.ins")
        #:phases (modify-phases
                  %standard-phases
@@ -1107,7 +1032,7 @@ automatically if it detects that it is running under memoir. ")
        (base32 "0isdki5qsiy8dskzhnx86sf6z1aln6f2y2zvpizy36qk5jwcji2x")))
     (build-system texlive-build-system)
     (arguments
-     `(#:tex-directory "latex/venndiagram"
+     `(;#:tex-directory "latex/venndiagram"
        #:build-targets '("venndiagram.ins")
        #:phases (modify-phases
                  %standard-phases
@@ -1148,47 +1073,47 @@ automatically if it detects that it is running under memoir. ")
     (description
      "The package assists generation of simple two- and three-set Venn diagrams for lectures or assignment sheets.")
     (license license:lppl)))
-(define-public texlive-babel-russian
-  (let ((template (simple-texlive-package
-                   "texlive-babel-russian"
-                   (list "/source/generic/babel-russian/")
-                   (base32
-                    "12ik2dwkih2g0gqpbg83j0kcfwsb5grccx27grgi0wjazk0nicq6"))))
-    (package
-      (inherit template)
-      (arguments
-       (substitute-keyword-arguments (package-arguments template)
-         ((#:tex-directory _ '())
-          "generic/babel-russian")
-         ((#:build-targets _ '())
-          ''("russianb.ins")) ; TODO: use dtx and build documentation
-         ((#:phases phases) `(modify-phases ,phases
-                               (add-after 'unpack 'chdir
-                                 (lambda _
-                                   (chdir "source/generic/babel-russian")))))))
-      (home-page "https://www.ctan.org/pkg/babel-russian")
-      (synopsis "Babel support for Russian")
-      (description
-       "This package provides the language definition file for support of Russian
-in @code{babel}.  It provides all the necessary macros, definitions and
-settings to typeset Russian documents.")
-      (license license:lppl1.3c+))))
+;; (define-public texlive-babel-russian
+;;   (let ((template (simple-texlive-package
+;;                    "texlive-babel-russian"
+;;                    (list "/source/generic/babel-russian/")
+;;                    (base32
+;;                     "12ik2dwkih2g0gqpbg83j0kcfwsb5grccx27grgi0wjazk0nicq6"))))
+;;     (package
+;;       (inherit template)
+;;       (arguments
+;;        (substitute-keyword-arguments (package-arguments template)
+;;         ;; ((#:tex-directory _ '())
+;;         ;;  "generic/babel-russian")
+;;          ((#:build-targets _ '())
+;;           ''("russianb.ins")) ; TODO: use dtx and build documentation
+;;          ((#:phases phases) `(modify-phases ,phases
+;;                                (add-after 'unpack 'chdir
+;;                                  (lambda _
+;;                                    (chdir "source/generic/babel-russian")))))))
+;;       (home-page "https://www.ctan.org/pkg/babel-russian")
+;;       (synopsis "Babel support for Russian")
+;;       (description
+;;        "This package provides the language definition file for support of Russian
+;; in @code{babel}.  It provides all the necessary macros, definitions and
+;; settings to typeset Russian documents.")
+;;      (license license:lppl1.3c+))))
 (define-public texlive-luatex-luamplib
   (package
     (name "texlive-luatex-luamplib")
     (version (string-append
               (number->string %texlive-revision)
              "-1"))
-    (outputs '("out" "doc"))
+    (outputs '("out"))
     (source
      (texlive-origin
       name
       (number->string %texlive-revision)
       (list "source/luatex/luamplib/")
-       (base32 "1j9in4gvhr15xq00vplzv8if1fsipyijb0lpdss6vv5jkg45ps38")))
+       (base32 "140ghg5l9vndgx62zfhs7cx93ibph6hjghy4267f6h4d45bizk2n")))
     (build-system texlive-build-system)
     (arguments
-     `(#:tex-directory "luatex/luamplib"
+     `(;#:tex-directory "luatex/luamplib"
        #:build-targets '("luamplib.dtx")
        #:phases (modify-phases
                  %standard-phases
@@ -1204,24 +1129,25 @@ settings to typeset Russian documents.")
                             (lambda _
                               ;; From Makefile
                               (system "cd source/luatex/luamplib/ && latexmk -lualatex -recorder- luamplib.dtx")))
-                 (add-after 'install 'install-docs
-                            (lambda* (#:key outputs #:allow-other-keys)
-                              (let* ((dest-doc
-                                      (string-append (assoc-ref outputs "doc")
-                                                     "/share/doc/"
-                                                     ,name "-"
-                                                     ,version))
-                                     (source-doc
-                                      "source/luatex/luamplib/"))
-                                (install-file (string-append source-doc
-                                                             "luamplib.pdf")
-                                              dest-doc)))))))
+                 ;; (add-after 'install 'install-docs
+                 ;;            (lambda* (#:key outputs #:allow-other-keys)
+                 ;;              (let* ((dest-doc
+                 ;;                      (string-append (assoc-ref outputs "doc")
+                 ;;                                     "/share/doc/"
+                 ;;                                     ,name "-"
+                 ;;                                     ,version))
+                 ;;                     (source-doc
+                 ;;                      "source/luatex/luamplib/"))
+                 ;;                (install-file (string-append source-doc
+                 ;;                                             "luamplib.pdf")
+                 ;;                              dest-doc))))
+                 )))
 
     (inputs (list texlive-libertine
                   texlive-metalogo
-                  texlive-latex-mdwtools
+                  texlive-mdwtools
                   texlive-inconsolata
-                  texlive-fonts-iwona
+                  texlive-iwona
                   texlive-grfext
                   texlive-hologo
                   texlive-tools
@@ -1249,11 +1175,11 @@ The facility is only available in PDF mode. ")
      (texlive-origin
       name
       (number->string %texlive-revision)
-      (list "source/latex/hologo/")
-       (base32 "0by96mq2whsflfva842givdb92swmhpfiniysxck17g9dwlq6qmq")))
+      (list "source/generic/hologo/")
+       (base32 "04d83z1pw6scg4cd1616ix291zi9dz5nnvw9xc8hd4lfxf15nx1c")))
     (build-system texlive-build-system)
     (arguments
-     `(#:tex-directory "latex/hologo"
+     `(;#:tex-directory "latex/hologo"
        #:build-targets '("hologo.dtx")
        #:phases (modify-phases
                  %standard-phases
@@ -1277,7 +1203,7 @@ The facility is only available in PDF mode. ")
     (version (string-append
               (number->string %texlive-revision)
              "-1"))
-    (outputs '("out" "doc"))
+    (outputs '("out"))
     (source
      (texlive-origin
       name
@@ -1286,7 +1212,7 @@ The facility is only available in PDF mode. ")
        (base32 "1qjilvy77072jpbdc4p4qfy5d4n2ww2wcm5drwvai6p2aclqf29x")))
     (build-system texlive-build-system)
     (arguments
-     `(#:tex-directory "latex/fonttable"
+     `(;#:tex-directory "latex/fonttable"
        #:build-targets '("fonttable.ins")
        #:phases (modify-phases
                  %standard-phases
@@ -1302,23 +1228,24 @@ The facility is only available in PDF mode. ")
                             (lambda _
                               ;; From Makefile
                               (system "cd source/latex/fonttable/ && latexmk -lualatex -recorder- fonttable.dtx")))
-                 (add-after 'install 'install-docs
-                            (lambda* (#:key outputs #:allow-other-keys)
-                              (let* ((dest-doc
-                                      (string-append (assoc-ref outputs "doc")
-                                                     "/share/doc/"
-                                                     ,name "-"
-                                                     ,version))
-                                     (source-doc
-                                      "source/latex/fonttable/"))
-                                (install-file (string-append source-doc
-                                                             "fonttable.pdf")
-                                              dest-doc)))))))
+                 ;; (add-after 'install 'install-docs
+                 ;;            (lambda* (#:key outputs #:allow-other-keys)
+                 ;;              (let* ((dest-doc
+                 ;;                      (string-append (assoc-ref outputs "doc")
+                 ;;                                     "/share/doc/"
+                 ;;                                     ,name "-"
+                 ;;                                     ,version))
+                 ;;                     (source-doc
+                 ;;                      "source/latex/fonttable/"))
+                 ;;                (install-file (string-append source-doc
+                 ;;                                             "fonttable.pdf")
+                 ;;                              dest-doc))))
+                 )))
     (inputs (list texlive-libertine
                   texlive-metalogo
-                  texlive-latex-mdwtools
+                  texlive-mdwtools
                   texlive-inconsolata
-                  texlive-fonts-iwona
+                  texlive-iwona
                   texlive-grfext
                   texlive-hologo
                   texlive-tools
