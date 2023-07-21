@@ -2576,7 +2576,7 @@ follows. `;; SPDX-License-Identifier: AGPL-1.0-only` ## Customization -
 (define-public emacs-titlecase
   (package
     (name "emacs-titlecase")
-    (version "20220728.2253")
+    (version "20230714.323")
     (source (origin
               (method url-fetch)
               (uri (string-append "https://melpa.org/packages/titlecase-"
