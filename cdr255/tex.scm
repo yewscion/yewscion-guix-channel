@@ -158,7 +158,7 @@ copied to their outputs; otherwise the TEXLIVE-BUILD-SYSTEM is used."
                                           "/share/doc/" ,name "-" ,version))
                           (source-doc "doc/latex/lwarp/"))
                        (call-with-output-file
-                           (string-append dest-bin "lwarpmk")
+                           (string-append dest-bin "/lwarpmk")
                          (lambda (port)
                            (display
                              (string-append
@@ -169,7 +169,7 @@ copied to their outputs; otherwise the TEXLIVE-BUILD-SYSTEM is used."
                                "/share/texmf-dist/scripts")
                               "/lwarp/lwarpmk.lua\" \"$@\"")
                                               port)))
-                       (chmod (string-append dest-bin "lwarpmk") #o755)
+                       (chmod (string-append dest-bin "/lwarpmk") #o755)
                                              
                        (install-file "scripts/lwarp/lwarpmk.lua"
                                      dest-script)
