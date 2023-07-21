@@ -210,7 +210,7 @@ operating systems and TeX distributions.  A quick-start tutorial is provided.")
                    (list "/doc/generic/ifptex/"
                          "/tex/generic/ifptex/")
                    (base32
-                    "1ig52bijh6jm7pdg91nqx3l5wq0fdajg2zr4v450gnyzzc8d3gky")
+                    "0l5mclz9cwj756ah0nqbiai0b5m9368dz4ykb0ih5irm6cmswdfm")
                    #:trivial? #t)))
     (package
       (inherit template)
