@@ -157,6 +157,7 @@ copied to their outputs; otherwise the TEXLIVE-BUILD-SYSTEM is used."
                            (string-append (assoc-ref outputs "doc")
                                           "/share/doc/" ,name "-" ,version))
                           (source-doc "doc/latex/lwarp/"))
+		       (mkdir dest-bin)
                        (call-with-output-file
                            (string-append dest-bin "/lwarpmk")
                          (lambda (port)
