@@ -127,22 +127,41 @@ copied to their outputs; otherwise the TEXLIVE-BUILD-SYSTEM is used."
        (base32 "079hwbsj3a27j4a0yrcvnlq33hijmk0l0szyfssj9ns6habnrygk")))
     (build-system texlive-build-system)
     (arguments
-     `(;#:tex-directory "latex/lwarp"
-       #:build-targets '("lwarp.ins")
+     `(#:build-targets '("lwarp.ins")
+       #:link-scripts '("lwarpmk")
        #:phases
        (modify-phases
         %standard-phases
-        (add-after 'unpack
-                   'set-TEXINPUTS
-                   (lambda _
-                     (let ((cwd (getcwd)))
-                       (setenv "TEXINPUTS"
-                               (string-append
-                                cwd
-                                "/source/latex/lwarp:")))))
+        ;; (add-after 'unpack
+        ;;            'set-TEXINPUTS
+        ;;            (lambda _
+        ;;              (let ((cwd (getcwd)))
+        ;;                (setenv "TEXINPUTS"
+        ;;                        (string-append
+        ;;                         cwd
+        ;;                         "/source/latex/lwarp:")))))
+        (add-before 'install
+            'prep-install
+          (lambda* (#:key outputs #:allow-other-keys)
+            (invoke "ls")
+            (display (getcwd))
+            (rename-file (string-append (getcwd)
+                                        "/scripts/lwarp/lwarpmk.lua")
+                         (string-append (getcwd)
+                                        "/scripts/lwarp/lwarpmk"))))
         (add-after 'install
                    'install-more
-                   (lambda* (#:key outputs #:allow-other-keys)
+          (lambda* (#:key outputs #:allow-other-keys)
+            (use-modules (ice-9 ftw))
+            (define (find-all-files-with-suffix directory suffix)
+              (scandir directory
+                       (lambda (x)
+                         (pattern-in-suffix? x suffix (+ 1 (string-length suffix))))))
+            (define (pattern-in-suffix? item pattern suffix)
+              (if (and (>= (string-length item) (string-length pattern))
+                       (>= (string-length item) suffix))
+                  (string-contains item pattern (- (string-length item) suffix))
+                  #f))
                      (let*
                          ((out
                            (assoc-ref outputs
@@ -153,27 +172,38 @@ copied to their outputs; otherwise the TEXLIVE-BUILD-SYSTEM is used."
                           (dest-script
                            (string-append out
                                           "/share/texmf-dist/scripts/lwarp/"))
+                          (dest-latex
+                           (string-append out
+                                          "/share/texmf-dist/tex/latex/lwarp/"))
                           (dest-doc
                            (string-append (assoc-ref outputs "doc")
                                           "/share/doc/" ,name "-" ,version))
+                          (source-latex (find-all-files-with-suffix "./build/" "sty"))
                           (source-doc "doc/latex/lwarp/"))
-		       (mkdir dest-bin)
-                       (call-with-output-file
-                           (string-append dest-bin "/lwarpmk")
-                         (lambda (port)
-                           (display
-                             (string-append
-                              "#!/bin/bash\n"
-                              "exec -a \"$0\" \""
-                              (string-append
-                               out
-                               "/share/texmf-dist/scripts")
-                              "/lwarp/lwarpmk.lua\" \"$@\"")
-                                              port)))
-                       (chmod (string-append dest-bin "/lwarpmk") #o755)
+		       (mkdir-p dest-bin)
+                       (mkdir-p dest-latex)
+                       (invoke "pwd")
+                       (invoke "ls")
+                       (for-each (lambda (x)
+                                   (install-file (string-append "./build/" x)
+                                                 dest-latex))
+                                 source-latex)
+                       ;; (call-with-output-file
+                       ;;     (string-append dest-bin "/lwarpmk")
+                       ;;   (lambda (port)
+                       ;;     (display
+                       ;;       (string-append
+                       ;;        "#!/bin/bash\n"
+                       ;;        "exec -a \"$0\" \""
+                       ;;        (string-append
+                       ;;         out
+                       ;;         "/share/texmf-dist/scripts")
+                       ;;        "/lwarp/lwarpmk.lua\" \"$@\"")
+                       ;;                        port)))
+                       ;;(chmod (string-append dest-bin "/lwarpmk") #o755)
                                              
-                       (install-file "scripts/lwarp/lwarpmk.lua"
-                                     dest-script)
+                       ;; (install-file "scripts/lwarp/lwarpmk.lua"
+                       ;;               dest-script)
                        (install-file (string-append source-doc
                                                     "lwarp.pdf")
                                                     dest-doc)
