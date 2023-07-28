@@ -898,13 +898,35 @@ will be printed in point units but without any stretch or shrink values.")
                                          "/source/latex/cleveref:")))))
                  (add-after 'install 'install-more
                             (lambda* (#:key outputs #:allow-other-keys)
-                              (let* ((dest-doc
+                              (use-modules (ice-9 ftw))
+                              (define (find-all-files-with-suffix directory suffix)
+                                (scandir directory
+                                         (lambda (x)
+                                           (pattern-in-suffix? x suffix (+ 1 (string-length suffix))))))
+                              (define (pattern-in-suffix? item pattern suffix)
+                                (if (and (>= (string-length item) (string-length pattern))
+                                         (>= (string-length item) suffix))
+                                    (string-contains item pattern (- (string-length item) suffix))
+                                    #f))                              
+                              (let* ((dest-latex
+                                      (string-append (assoc-ref outputs "out")
+                                                     (string-append
+                                                      "/share/texmf-dist/tex/latex/"
+                                                      (car (reverse (string-split ,name #\-)))
+                                                      "/")))
+                                     (dest-doc
                                       (string-append (assoc-ref outputs "doc")
                                                      "/share/doc/"
                                                      ,name "-"
                                                      ,version))
+                                     (source-latex (find-all-files-with-suffix "./build/" "sty"))
                                      (source-doc
                                       "doc/latex/cleveref/"))
+                                (mkdir-p dest-latex)
+                                (for-each (lambda (x)
+                                            (install-file (string-append "./build/" x)
+                                                          dest-latex))
+                                          source-latex)
                                 (install-file (string-append source-doc
                                                              "README")
                                               dest-doc)
