@@ -591,8 +591,7 @@ the highlighted source code output using fancyvrb.")
        (base32 "0jmhrh43lxjiy0p6308bmqpgfxf7b3rl0n9hkph3dzii9z7czw2h")))
      (build-system texlive-build-system)
      (arguments
-      `(;#:tex-directory "latex/fvextra"
-        #:build-targets '("fvextra.ins")
+      `(#:build-targets '("fvextra.ins")
                         #:phases (modify-phases
                                   %standard-phases
                                   (add-after 'unpack
@@ -604,20 +603,43 @@ the highlighted source code output using fancyvrb.")
                                                           cwd
                                                           "/source/latex/fvextra:")))))
                                   (add-after 'install 'install-more
-                                             (lambda* (#:key outputs #:allow-other-keys)
-                                               (let* ((dest-doc
-                                                       (string-append (assoc-ref outputs "doc")
-                                                                      "/share/doc/"
-                                                                      ,name "-"
-                                                                      ,version))
-                                                      (source-doc
-                                                       "doc/latex/fvextra/"))
-                                                 (install-file (string-append source-doc
-                                                                              "README")
-                                                               dest-doc)
-                                                 (install-file (string-append source-doc
-                                                                              "fvextra.pdf")
-                                                               dest-doc)))))))
+                  (lambda* (#:key outputs #:allow-other-keys)
+                    (use-modules (ice-9 ftw))
+                    (define (find-all-files-with-suffix directory suffix)
+                      (scandir directory
+                               (lambda (x)
+                                 (pattern-in-suffix? x suffix (+ 1 (string-length suffix))))))
+                    (define (pattern-in-suffix? item pattern suffix)
+                      (if (and (>= (string-length item) (string-length pattern))
+                               (>= (string-length item) suffix))
+                          (string-contains item pattern (- (string-length item) suffix))
+                          #f))
+                    (let*
+                        ((out
+                          (assoc-ref outputs
+                                     "out"))
+                         (dest-bin
+                          (string-append out
+                                         "/bin"))
+                         (dest-script
+                          (string-append out
+                                         "/share/texmf-dist/scripts/fvextra/"))
+                         (dest-latex
+                          (string-append out
+                                         "/share/texmf-dist/tex/latex/fvextra/"))
+                         (dest-doc
+                          (string-append (assoc-ref outputs "doc")
+                                         "/share/doc/" ,name "-" ,version))
+                         (source-latex (find-all-files-with-suffix "./build/" "sty"))
+                         (source-doc "doc/latex/fvextra/"))
+		      (mkdir-p dest-bin)
+                      (mkdir-p dest-latex)
+                      (invoke "pwd")
+                      (invoke "ls")
+                      (for-each (lambda (x)
+                                  (install-file (string-append "./build/" x)
+                                                dest-latex))
+                                source-latex)))))))
      (home-page "https://ctan.org/pkg/fvextra")
      (synopsis "Extensions and patches for fancyvrb")
      (description
