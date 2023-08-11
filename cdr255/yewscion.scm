@@ -33,7 +33,7 @@
   #:use-module (guix utils)
   #:use-module (gnu packages java))
 (define-public genpro
-  (let ((commit "dc204dec2630a53978ad9c3da278071b28143fec")
+  (let ((commit "5e0ecf346fb5d827883be6697857c1153768c4fe")
         (revision "1"))
     (package
      (name "genpro")
@@ -47,7 +47,7 @@
        (file-name (git-file-name name version))
        (sha256
         (base32
-         "0dwy42mijm0dz5qi2w0ikpm11l9y6mmx6cfasawn28nssn76padk"))))
+         "1xisrfw8nqyd1d7k47lmm5mgxwmajgzwigqlb6yqbfzsr8njmvpq"))))
      (build-system gnu-build-system)
      (arguments
       `(#:tests? #f))
