@@ -50,6 +50,44 @@
   #:use-module (ice-9 ftw)
   #:use-module (ice-9 match)
   #:use-module ((srfi srfi-1) #:hide (zip)))
+
+(define (find-all-files-with-suffix directory suffix)
+  (scandir directory
+           (lambda (x)
+             (pattern-in-suffix? x suffix (+ 1 (string-length suffix))))))
+(define (pattern-in-suffix? item pattern suffix)
+  (if (and (>= (string-length item) (string-length pattern))
+           (>= (string-length item) suffix))
+      (string-contains item pattern (- (string-length item) suffix))
+      #f))
+
+(define-syntax copy-sty
+  (syntax-rules ()
+    ((copy-sty package-name prefix-name package-version)
+     (begin
+       `(let*
+           ((out
+             (assoc-ref outputs
+                        "out"))
+            (dest-script
+             (string-append out
+                            "/share/texmf-dist/scripts/"
+                            package-name
+                            "/"))
+            (dest-sty
+             (string-append out
+                            "/share/texmf-dist/tex/"
+                            prefix-name
+                            "/"
+                            package-name
+                            "/"))
+            (source-sty (find-files "./build/" ".*\\.sty")))
+         (mkdir-p dest-sty)
+         (for-each (lambda (x)
+                     (install-file x
+                                   dest-sty))
+                   source-sty))))))
+
 (define* (simple-texlive-package name locations hash
                                  #:key trivial?)
   "Return a template for a simple TeX Live package with the given NAME,
@@ -132,14 +170,6 @@ copied to their outputs; otherwise the TEXLIVE-BUILD-SYSTEM is used."
       #:phases
       (modify-phases
        %standard-phases
-       ;; (add-after 'unpack
-       ;;            'set-TEXINPUTS
-       ;;            (lambda _
-       ;;              (let ((cwd (getcwd)))
-       ;;                (setenv "TEXINPUTS"
-       ;;                        (string-append
-       ;;                         cwd
-       ;;                         "/source/latex/lwarp:")))))
        (add-before 'install
                    'prep-install
                    (lambda* (#:key outputs #:allow-other-keys)
@@ -152,67 +182,7 @@ copied to their outputs; otherwise the TEXLIVE-BUILD-SYSTEM is used."
        (add-after 'install
                   'install-more
                   (lambda* (#:key outputs #:allow-other-keys)
-                    (use-modules (ice-9 ftw))
-                    (define (find-all-files-with-suffix directory suffix)
-                      (scandir directory
-                               (lambda (x)
-                                 (pattern-in-suffix? x suffix (+ 1 (string-length suffix))))))
-                    (define (pattern-in-suffix? item pattern suffix)
-                      (if (and (>= (string-length item) (string-length pattern))
-                               (>= (string-length item) suffix))
-                          (string-contains item pattern (- (string-length item) suffix))
-                          #f))
-                    (let*
-                        ((out
-                          (assoc-ref outputs
-                                     "out"))
-                         (dest-bin
-                          (string-append out
-                                         "/bin"))
-                         (dest-script
-                          (string-append out
-                                         "/share/texmf-dist/scripts/lwarp/"))
-                         (dest-latex
-                          (string-append out
-                                         "/share/texmf-dist/tex/latex/lwarp/"))
-                         (dest-doc
-                          (string-append (assoc-ref outputs "doc")
-                                         "/share/doc/" ,name "-" ,version))
-                         (source-latex (find-all-files-with-suffix "./build/" "sty"))
-                         (source-doc "doc/latex/lwarp/"))
-		      (mkdir-p dest-bin)
-                      (mkdir-p dest-latex)
-                      (invoke "pwd")
-                      (invoke "ls")
-                      (for-each (lambda (x)
-                                  (install-file (string-append "./build/" x)
-                                                dest-latex))
-                                source-latex)
-                      ;; (call-with-output-file
-                      ;;     (string-append dest-bin "/lwarpmk")
-                      ;;   (lambda (port)
-                      ;;     (display
-                      ;;       (string-append
-                      ;;        "#!/bin/bash\n"
-                      ;;        "exec -a \"$0\" \""
-                      ;;        (string-append
-                      ;;         out
-                      ;;         "/share/texmf-dist/scripts")
-                      ;;        "/lwarp/lwarpmk.lua\" \"$@\"")
-                      ;;                        port)))
-                      ;;(chmod (string-append dest-bin "/lwarpmk") #o755)
-                      
-                      ;; (install-file "scripts/lwarp/lwarpmk.lua"
-                      ;;               dest-script)
-                      (install-file (string-append source-doc
-                                                   "lwarp.pdf")
-                                    dest-doc)
-                      (install-file (string-append source-doc
-                                                   "lwarp_tutorial.txt")
-                                    dest-doc)
-                      (install-file (string-append source-doc
-                                                   "/README.txt")
-                                    dest-doc)))))))
+                    ,(copy-sty "lwarp" "latex" (version)))))))
    (propagated-inputs (list lua
                             perl
                             poppler
@@ -267,8 +237,7 @@ for backward compatibility.")
      (base32 "1q5v8h52kmvwzsdqbr1blqln1mragynsbwk3bcp2icnldzclrj6z")))
    (build-system texlive-build-system)
    (arguments
-    `(;#:tex-directory "latex/xpatch"
-      #:build-targets '("xpatch.ins")
+    `(#:build-targets '("xpatch.ins")
                       #:phases (modify-phases
                                 %standard-phases
                                 (add-after 'unpack
@@ -281,20 +250,8 @@ for backward compatibility.")
                                                         "/source/latex/xpatch:")))))
                                 (add-after 'install
                                            'install-more
-                                           (lambda* (#:key outputs #:allow-other-keys)
-                                             (let* ((dest-doc
-                                                     (string-append (assoc-ref outputs "doc")
-                                                                    "/share/doc/"
-                                                                    ,name "-"
-                                                                    ,version))
-                                                    (source-doc
-                                                     "doc/latex/xpatch/"))
-                                               (install-file (string-append source-doc
-                                                                            "xpatch.pdf")
-                                                             dest-doc)
-                                               (install-file (string-append source-doc
-                                                                            "README")
-                                                             dest-doc)))))))
+                                  (lambda* (#:key outputs #:allow-other-keys)
+                                             ,(copy-sty "xpatch" "latex" (version)))))))
    (home-page "https://ctan.org/pkg/xpatch")
    (synopsis "Extending etoolbox patching commands")
    (description
@@ -317,8 +274,7 @@ Philipp Lehmann’s etoolbox.")
      (base32 "1sbjp8k5vxhrniwqjb61d2562vzi5bz6vrn1hml9rj5p9wi8js4c")))
    (build-system texlive-build-system)
    (arguments
-    `(;#:tex-directory "latex/catchfile"
-      #:build-targets '("catchfile.dtx")
+    `(#:build-targets '("catchfile.dtx")
                       #:phases (modify-phases
                                 %standard-phases
                                 (add-after 'unpack
@@ -331,19 +287,7 @@ Philipp Lehmann’s etoolbox.")
                                                         "/source/latex/catchfile:")))))
                                 (add-after 'install 'install-more
                                            (lambda* (#:key outputs #:allow-other-keys)
-                                             (let* ((dest-doc
-                                                     (string-append (assoc-ref outputs "doc")
-                                                                    "/share/doc/"
-                                                                    ,name "-"
-                                                                    ,version))
-                                                    (source-doc
-                                                     "doc/latex/catchfile/"))
-                                               (install-file (string-append source-doc
-                                                                            "catchfile.pdf")
-                                                             dest-doc)
-                                               (install-file (string-append source-doc
-                                                                            "README.md")
-                                                             dest-doc)))))))
+                                             ,(copy-sty "catchfile" "latex" (version)))))))
    (home-page "https://ctan.org/pkg/catchfile")
    (synopsis "Catch an external file into a macro")
    (description
@@ -374,48 +318,6 @@ Other ‘comment’ environments are defined and selected/deselected with
 used as \\versiona … \\endversiona or \\begin{versiona} … \\end{versiona} with
 the opening and closing commands again on a line of their own.")
      (license license:gpl2))))
-;; (define-public texlive-generic-xstring
-;;   (let ((template (simple-texlive-package
-;;                    "texlive-generic-xstring"
-;;                    (list "/doc/generic/xstring/"
-;;                          "/tex/generic/xstring/")
-;;                    (base32
-;;                     "1azpq855kq1l4686bjp8haxim5c8wycz1b6lcg5q7x8kb4g9sppn")
-;;                    #:trivial? #t)))
-;;     (package
-;;       (inherit template)
-;;       (home-page "https://ctan.org/pkg/xstring")
-;;       (synopsis "String manipulation for (La)TeX.")
-;;       (description "The package provides macros for manipulating strings —
-;; testing a string’s contents, extracting substrings, substitution of substrings
-;; and providing numbers such as string length, position of, or number of
-;; recurrences of, a substring.
-
-;; The package works equally in Plain TeX and LaTeX (though e-TeX is always
-;; required).  The strings to be processed may contain (expandable) macros.")
-;;       (license license:lppl1.3c))))
-;; (define-public texlive-biblatex-apa
-;;   (let ((template (simple-texlive-package
-;;                    "texlive-biblatex-apa"
-;;                    (list "/tex/latex/biblatex-apa/"
-;;                          "/doc/latex/biblatex-apa/")
-;;                    (base32
-;;                     "0ivf7xbzj4xd57sqfbi87hbr73rraqifkzvx06yxgq0gmzz0x6wl")
-;;                    #:trivial? #t)))
-;;     (package
-;;       (inherit template)
-;;       (home-page "https://ctan.org/pkg/biblatex-apa")
-;;       (synopsis "BibLaTeX citation and reference style for APA")
-;;       (description "This is a fairly complete BibLaTeX style (citations and
-;; references) for APA (American Psychological Association) publications.  It
-;; implements and automates most of the guidelines in the APA 7th edition style
-;; guide for citations and references.  An example document is also given which
-;; typesets every citation and reference example in the APA 7th edition style
-;; guide.
-
-;; This version of the package requires use of csquotes ≥4.3, BibLaTeX ≥3.4, and
-;; the texlive-biber backend for BibLaTeX ≥2.5.")
-;;       (license license:lppl1.3c))))
 (define-public texlive-latex-setspace
   (let ((template (simple-texlive-package
                    "texlive-latex-setspace"
@@ -450,8 +352,7 @@ spacings also available.")
      (base32 "0q1k8qbm704xbgrnaj5dv1rbkfyyzd65m8ybrip334gsmn4223ni")))
    (build-system texlive-build-system)
    (arguments
-    `(;#:tex-directory "latex/endfloat"
-      #:build-targets '("endfloat.ins")
+    `(#:build-targets '("endfloat.ins")
                       #:phases (modify-phases
                                 %standard-phases
                                 (add-after 'unpack
@@ -466,25 +367,7 @@ spacings also available.")
                                               "source/latex/endfloat/endfloat.drv")))
                                 (add-after 'install 'install-more
                                            (lambda* (#:key outputs #:allow-other-keys)
-                                             (let* ((out (string-append
-                                                          (assoc-ref outputs "out")
-                                                          "/share/texmf-dist/tex/latex/"))
-                                                    (dest-doc
-                                                     (string-append (assoc-ref outputs "doc")
-                                                                    "/share/doc/"
-                                                                    ,name "-"
-                                                                    ,version))
-                                                    (source-doc
-                                                     "doc/latex/endfloat/"))
-                                               (install-file (string-append source-doc
-                                                                            "README")
-                                                             dest-doc)
-                                               (install-file (string-append source-doc
-                                                                            "COPYING")
-                                                             dest-doc)
-                                               (install-file (string-append source-doc
-                                                                            "endfloat.pdf")
-                                                             dest-doc)))))))
+                                             ,(copy-sty "endfloat" "latex" (version)))))))
    (home-page "https://ctan.org/pkg/endfloat")
    (synopsis "Move floats to the end, leaving markers where they belong")
    (description
@@ -526,48 +409,8 @@ endfloat.")
                                "/source/latex/minted:")))))
        (add-after 'install 'install-more
                   (lambda* (#:key outputs #:allow-other-keys)
-                    (use-modules (ice-9 ftw))
-                    (define (find-all-files-with-suffix directory suffix)
-                      (scandir directory
-                               (lambda (x)
-                                 (pattern-in-suffix? x suffix (+ 1 (string-length suffix))))))
-                    (define (pattern-in-suffix? item pattern suffix)
-                      (if (and (>= (string-length item) (string-length pattern))
-                               (>= (string-length item) suffix))
-                          (string-contains item pattern (- (string-length item) suffix))
-                          #f))
-                    (let*
-                        ((out
-                          (assoc-ref outputs
-                                     "out"))
-                         (dest-bin
-                          (string-append out
-                                         "/bin"))
-                         (dest-script
-                          (string-append out
-                                         "/share/texmf-dist/scripts/minted/"))
-                         (dest-latex
-                          (string-append out
-                                         "/share/texmf-dist/tex/latex/minted/"))
-                         (dest-doc
-                          (string-append (assoc-ref outputs "doc")
-                                         "/share/doc/" ,name "-" ,version))
-                         (source-latex (find-all-files-with-suffix "./build/" "sty"))
-                         (source-doc "doc/latex/minted/"))
-		      (mkdir-p dest-bin)
-                      (mkdir-p dest-latex)
-                      (invoke "pwd")
-                      (invoke "ls")
-                      (for-each (lambda (x)
-                                  (install-file (string-append "./build/" x)
-                                                dest-latex))
-                                source-latex)
-                      (install-file (string-append source-doc
-                                                   "README")
-                                    dest-doc)
-                      (install-file (string-append source-doc
-                                                   "minted.pdf")
-                                    dest-doc)))))))
+                    ,(copy-sty "minted" "latex" (version))
+                    )))))
     (home-page "https://ctan.org/pkg/minted")
     (synopsis "Highlighted source code for LaTeX")
     (description
@@ -604,42 +447,7 @@ the highlighted source code output using fancyvrb.")
                                                           "/source/latex/fvextra:")))))
                                   (add-after 'install 'install-more
                   (lambda* (#:key outputs #:allow-other-keys)
-                    (use-modules (ice-9 ftw))
-                    (define (find-all-files-with-suffix directory suffix)
-                      (scandir directory
-                               (lambda (x)
-                                 (pattern-in-suffix? x suffix (+ 1 (string-length suffix))))))
-                    (define (pattern-in-suffix? item pattern suffix)
-                      (if (and (>= (string-length item) (string-length pattern))
-                               (>= (string-length item) suffix))
-                          (string-contains item pattern (- (string-length item) suffix))
-                          #f))
-                    (let*
-                        ((out
-                          (assoc-ref outputs
-                                     "out"))
-                         (dest-bin
-                          (string-append out
-                                         "/bin"))
-                         (dest-script
-                          (string-append out
-                                         "/share/texmf-dist/scripts/fvextra/"))
-                         (dest-latex
-                          (string-append out
-                                         "/share/texmf-dist/tex/latex/fvextra/"))
-                         (dest-doc
-                          (string-append (assoc-ref outputs "doc")
-                                         "/share/doc/" ,name "-" ,version))
-                         (source-latex (find-all-files-with-suffix "./build/" "sty"))
-                         (source-doc "doc/latex/fvextra/"))
-		      (mkdir-p dest-bin)
-                      (mkdir-p dest-latex)
-                      (invoke "pwd")
-                      (invoke "ls")
-                      (for-each (lambda (x)
-                                  (install-file (string-append "./build/" x)
-                                                dest-latex))
-                                source-latex)))))))
+                    ,(copy-sty "minted" "latex" (version)))))))
      (home-page "https://ctan.org/pkg/fvextra")
      (synopsis "Extensions and patches for fancyvrb")
      (description
@@ -680,41 +488,20 @@ Line numbering may be extended to footnote lines, using the fnlineno package.")
        (base32 "068l3zj9d5h6j078xsxqmzvfbj599xfcnkd7v4an31d1v21x2qc7")))
      (build-system texlive-build-system)
      (arguments
-      `(;#:tex-directory "latex/datetime2"
-        #:build-targets '("datetime2.ins")
-                        #:phases (modify-phases
-                                  %standard-phases
-                                  (add-after 'unpack
-                                             'set-TEXINPUTS
-                                             (lambda _
-                                               (let ((cwd (getcwd)))
-                                                 (setenv "TEXINPUTS"
-                                                         (string-append
-                                                          cwd
-                                                          "/source/latex/datetime2:")))))
-                                  (add-after 'install 'install-more
-                                             (lambda* (#:key outputs #:allow-other-keys)
-                                               (let* ((dest-doc
-                                                       (string-append (assoc-ref outputs "doc")
-                                                                      "/share/doc/"
-                                                                      ,name "-"
-                                                                      ,version))
-                                                      (source-doc
-                                                       "doc/latex/datetime2/"))
-                                                 (install-file (string-append source-doc
-                                                                              "README")
-                                                               dest-doc)
-                                                 (install-file (string-append source-doc
-                                                                              "CHANGES")
-                                                               dest-doc)
-                                                 (mkdir-p (string-append dest-doc "/samples/"))
-                                                 (copy-recursively (string-append source-doc
-                                                                                  "samples")
-                                                                   (string-append dest-doc
-                                                                                  "/samples/"))
-                                                 (install-file (string-append source-doc
-                                                                              "datetime2.pdf")
-                                                               dest-doc)))))))
+      `(#:build-targets '("datetime2.ins")
+        #:phases (modify-phases
+                  %standard-phases
+                  (add-after 'unpack
+                             'set-TEXINPUTS
+                             (lambda _
+                               (let ((cwd (getcwd)))
+                                 (setenv "TEXINPUTS"
+                                         (string-append
+                                          cwd
+                                          "/source/latex/datetime2:")))))
+                  (add-after 'install 'install-more
+                    (lambda* (#:key outputs #:allow-other-keys)
+                      ,(copy-sty "datetime2" "latex" (version)))))))
      (home-page "https://ctan.org/pkg/datetime2")
      (synopsis "Formats for dates, times and time zones")
      (description
@@ -734,31 +521,7 @@ bundle).
 
 This package replaces datetime.sty which is now obsolete.")
      (license license:lppl1.3)))
-  ;; In Guix Proper now.
-  ;;
-  ;; (define-public texlive-tracklang
-  ;;   (let ((template (simple-texlive-package
-  ;;                    "texlive-tracklang"
-  ;;                    (list "/tex/latex/tracklang/"
-  ;;                          "/tex/generic/tracklang/"
-  ;;                          "/doc/generic/tracklang/")
-  ;;                    (base32
-  ;;                     "075q6yd7lq2qzaaim2zv9h27lcfmbxkrpilfrnzygfvkbhzqmi0i")
-  ;;                    #:trivial? #t)))
-  ;;     (package
-  ;;       (inherit template)
-  ;;       (home-page "https://ctan.org/pkg/tracklang")
-  ;;       (synopsis "Language and dialect tracker")
-  ;;       (description "The tracklang package is provided for package developers who
-  ;; want a simple interface to find out which languages the user has requested
-  ;; through packages such as babel or polyglossia.
-
-  ;; This package does not provide any translations!  Its purpose is simply to track
-  ;; which languages have been requested by the user.
-
-  ;; Generic TeX code is in tracklang.tex for non-LaTeX users.")
-  ;;       (license license:lppl1.3))))
-  (define-public texlive-latex-datetime2-english
+(define-public texlive-latex-datetime2-english
     (package
      (name "texlive-latex-datetime2-english")
      (version (string-append
@@ -774,49 +537,34 @@ This package replaces datetime.sty which is now obsolete.")
        (base32 "1nh1lmbgaf4axkvcqkf70gsyr51m3wpjmqc6gvsqv8i3461s0gik")))
      (build-system texlive-build-system)
      (arguments
-      `(;#:tex-directory "latex/datetime2-english"
-        #:build-targets '("datetime2-english.ins")
-                        #:phases (modify-phases
-                                  %standard-phases
-                                  (add-after 'unpack
-                                             'set-TEXINPUTS
-                                             (lambda _
-                                               (let ((cwd (getcwd)))
-                                                 (setenv "TEXINPUTS"
-                                                         (string-append
-                                                          cwd
-                                                          "/source/latex/datetime2-english:")))))
-                                  (add-after 'install 'install-more
-                                             (lambda* (#:key outputs #:allow-other-keys)
-                                               (let* ((dest-doc
-                                                       (string-append (assoc-ref outputs "doc")
-                                                                      "/share/doc/"
-                                                                      ,name "-"
-                                                                      ,version))
-                                                      (source-doc
-                                                       "doc/latex/datetime2-english/"))
-                                                 (install-file (string-append source-doc
-                                                                              "README")
-                                                               dest-doc)
-                                                 (install-file (string-append source-doc
-                                                                              "CHANGES")
-                                                               dest-doc)
-                                                 (install-file (string-append
-                                                                source-doc
-                                                                "datetime2-english-sample.pdf")
-                                                               (string-append
-                                                                dest-doc
-                                                                "/samples/"))
-                                                 (install-file (string-append
-                                                                source-doc
-                                                                "datetime2-english-sample.tex")
-                                                               (string-append
-                                                                dest-doc
-                                                                "/samples/"))
-                                                 (install-file (string-append
-                                                                source-doc
-                                                                "datetime2-english.pdf")
-                                                               dest-doc)))))))
+      `(#:build-targets '("datetime2-english.ins")
+        #:phases (modify-phases
+                     %standard-phases
+                   (add-after 'unpack
+                       'set-TEXINPUTS
+                     (lambda _
+                       (let ((cwd (getcwd)))
+                         (setenv "TEXINPUTS"
+                                 (string-append
+                                  cwd
+                                  "/source/latex/datetime2-english:")))))
+                   (add-after 'install 'install-more
+                     (lambda* (#:key outputs #:allow-other-keys)
+                       (let*
+                           ((out
+                             (assoc-ref outputs
+                                        "out"))
+                            (dest-ldf
+                             (string-append
+                              out
+                              "/share/texmf-dist/"
+                              "tex/latex/datetime2-contrib/datetime2-english/"))
+                            (source-ldf (find-files "./build/" ".*\\.ldf")))
+                         (mkdir-p dest-ldf)
+                         (for-each (lambda (x)
+                                     (install-file x
+                                                   dest-ldf))
+                                   source-ldf)))))))
      (home-page "https://ctan.org/pkg/datetime2-english")
      (synopsis "English language module for the datetime2 package")
      (description
@@ -936,55 +684,20 @@ will be printed in point units but without any stretch or shrink values.")
        (base32 "1sycqkdvpv3aha6dh6syghh3lh3zzlld610r2ypd50dpdvj0vl7z")))
      (build-system texlive-build-system)
      (arguments
-      `(;#:tex-directory "latex/cleveref"
-        #:build-targets '("cleveref.ins")
-                        #:phases (modify-phases
-                                  %standard-phases
-                                  (add-after 'unpack
-                                             'set-TEXINPUTS
-                                             (lambda _
-                                               (let ((cwd (getcwd)))
-                                                 (setenv "TEXINPUTS"
-                                                         (string-append
-                                                          cwd
-                                                          "/source/latex/cleveref:")))))
-                                  (add-after 'install 'install-more
-                                             (lambda* (#:key outputs #:allow-other-keys)
-                                               (use-modules (ice-9 ftw))
-                                               (define (find-all-files-with-suffix directory suffix)
-                                                 (scandir directory
-                                                          (lambda (x)
-                                                            (pattern-in-suffix? x suffix (+ 1 (string-length suffix))))))
-                                               (define (pattern-in-suffix? item pattern suffix)
-                                                 (if (and (>= (string-length item) (string-length pattern))
-                                                          (>= (string-length item) suffix))
-                                                     (string-contains item pattern (- (string-length item) suffix))
-                                                     #f))                              
-                                               (let* ((dest-latex
-                                                       (string-append (assoc-ref outputs "out")
-                                                                      (string-append
-                                                                       "/share/texmf-dist/tex/latex/"
-                                                                       (car (reverse (string-split ,name #\-)))
-                                                                       "/")))
-                                                      (dest-doc
-                                                       (string-append (assoc-ref outputs "doc")
-                                                                      "/share/doc/"
-                                                                      ,name "-"
-                                                                      ,version))
-                                                      (source-latex (find-all-files-with-suffix "./build/" "sty"))
-                                                      (source-doc
-                                                       "doc/latex/cleveref/"))
-                                                 (mkdir-p dest-latex)
-                                                 (for-each (lambda (x)
-                                                             (install-file (string-append "./build/" x)
-                                                                           dest-latex))
-                                                           source-latex)
-                                                 (install-file (string-append source-doc
-                                                                              "README")
-                                                               dest-doc)
-                                                 (install-file (string-append source-doc
-                                                                              "cleveref.pdf")
-                                                               dest-doc)))))))
+      `(#:build-targets '("cleveref.ins")
+        #:phases (modify-phases
+                     %standard-phases
+                   (add-after 'unpack
+                       'set-TEXINPUTS
+                     (lambda _
+                       (let ((cwd (getcwd)))
+                         (setenv "TEXINPUTS"
+                                 (string-append
+                                  cwd
+                                  "/source/latex/cleveref:")))))
+                   (add-after 'install 'install-more
+                     (lambda* (#:key outputs #:allow-other-keys)
+                       ,(copy-sty "cleveref" "latex" (version)))))))
      (home-page "https://ctan.org/pkg/cleveref")
      (synopsis "intelligent cross-referencing")
      (description
@@ -1030,10 +743,9 @@ numerically-consecutive labels to a reference range.")
        (base32 "1y4m5z5z8ffvd26fg09vim629qp0rh5jw7bg9ik88gwcy550lg8f")))
      (build-system texlive-build-system)
      (arguments
-      `(;#:tex-directory "latex/memoir"
-        #:build-targets '("memoir.ins" "mempatch.ins")
-                        #:phases (modify-phases
-                                  %standard-phases
+      `(#:build-targets '("memoir.ins" "mempatch.ins")
+        #:phases (modify-phases
+                     %standard-phases
                                   (add-after 'unpack
                                              'set-TEXINPUTS
                                              (lambda _
@@ -1043,20 +755,28 @@ numerically-consecutive labels to a reference range.")
                                                           cwd
                                                           "/source/latex/memoir:")))))
                                   (add-after 'install 'install-more
-                                             (lambda* (#:key outputs #:allow-other-keys)
-                                               (let* ((dest-doc
-                                                       (string-append (assoc-ref outputs "doc")
-                                                                      "/share/doc/"
-                                                                      ,name "-"
-                                                                      ,version))
-                                                      (source-doc
-                                                       "doc/latex/memoir/"))
-                                                 (install-file (string-append source-doc
-                                                                              "README")
-                                                               dest-doc)
-                                                 (install-file (string-append source-doc
-                                                                              "setpage-example.pdf")
-                                                               dest-doc)))))))
+                                    (lambda* (#:key outputs #:allow-other-keys)                                      
+                                      ,(copy-sty "memoir" "latex" (version))
+
+                                      (let*
+                                          ((out
+                                            (assoc-ref outputs
+                                                       "out"))
+                                           (dest
+                                            (string-append out
+                                                           "/share/texmf-dist/tex/"
+                                                           "latex/memoir/"))
+                                           (source-clo (find-files "./build/" ".*\\.clo"))
+                                           (source-cls (find-files "./build/" ".*\\.cls"))
+                                           (source-gst (find-files "./build/" ".*\\.gst"))
+                                           (sources (append source-clo
+                                                            source-cls
+                                                            source-gst)))
+                                        (mkdir-p dest)
+                                        (for-each (lambda (x)
+                                                    (install-file x
+                                                                  dest))
+                                                  sources)))))))
      (home-page "https://ctan.org/pkg/memoir")
      (synopsis "Typeset fiction, non-fiction and mathematical books")
      (description
@@ -1089,33 +809,20 @@ automatically if it detects that it is running under memoir. ")
        (base32 "13fqw9l139c18w4bj89ln1fzchfwqp5fgx57hc49r5ihdas8rd3h")))
      (build-system texlive-build-system)
      (arguments
-      `(;#:tex-directory "latex/lipsum"
-        #:build-targets '("lipsum.ins")
-                        #:phases (modify-phases
-                                  %standard-phases
-                                  (add-after 'unpack
-                                             'set-TEXINPUTS
-                                             (lambda _
-                                               (let ((cwd (getcwd)))
-                                                 (setenv "TEXINPUTS"
-                                                         (string-append
-                                                          cwd
-                                                          "/source/latex/lipsum:")))))
-                                  (add-after 'install 'install-more
-                                             (lambda* (#:key outputs #:allow-other-keys)
-                                               (let* ((dest-doc
-                                                       (string-append (assoc-ref outputs "doc")
-                                                                      "/share/doc/"
-                                                                      ,name "-"
-                                                                      ,version))
-                                                      (source-doc
-                                                       "doc/latex/lipsum/"))
-                                                 (install-file (string-append source-doc
-                                                                              "README.txt")
-                                                               dest-doc)
-                                                 (install-file (string-append source-doc
-                                                                              "lipsum.pdf")
-                                                               dest-doc)))))))
+      `(#:build-targets '("lipsum.ins")
+        #:phases (modify-phases
+                     %standard-phases
+                   (add-after 'unpack
+                       'set-TEXINPUTS
+                     (lambda _
+                       (let ((cwd (getcwd)))
+                         (setenv "TEXINPUTS"
+                                 (string-append
+                                  cwd
+                                  "/source/latex/lipsum:")))))
+                   (add-after 'install 'install-more
+                     (lambda* (#:key outputs #:allow-other-keys)
+                       ,(copy-sty "lipsum" "latex" (version)))))))
      (home-page "https://ctan.org/pkg/lipsum")
      (synopsis "Easy access to the Lorem Ipsum and other dummy texts")
      (description
@@ -1137,79 +844,33 @@ automatically if it detects that it is running under memoir. ")
        (base32 "0isdki5qsiy8dskzhnx86sf6z1aln6f2y2zvpizy36qk5jwcji2x")))
      (build-system texlive-build-system)
      (arguments
-      `(;#:tex-directory "latex/venndiagram"
-        #:build-targets '("venndiagram.ins")
-                        #:phases (modify-phases
-                                  %standard-phases
-                                  (add-after 'unpack
-                                             'set-TEXINPUTS
-                                             (lambda _
-                                               (let ((cwd (getcwd)))
-                                                 (setenv "TEXINPUTS"
-                                                         (string-append
-                                                          cwd
-                                                          "/source/latex/venndiagram:")))))
-                                  (add-after 'install 'install-more
-                                             (lambda* (#:key outputs #:allow-other-keys)
-                                               (let* ((dest-doc
-                                                       (string-append (assoc-ref outputs "doc")
-                                                                      "/share/doc/"
-                                                                      ,name "-"
-                                                                      ,version))
-                                                      (source-doc
-                                                       "doc/latex/venndiagram/"))
-                                                 (install-file (string-append source-doc
-                                                                              "README")
-                                                               dest-doc)
-                                                 (install-file (string-append source-doc
-                                                                              "CHANGES")
-                                                               dest-doc)
-                                                 (install-file (string-append source-doc
-                                                                              "samples/venn-sample.pdf")
-                                                               dest-doc)
-                                                 (install-file (string-append source-doc
-                                                                              "samples/venn-sample.tex")
-                                                               dest-doc)
-                                                 (install-file (string-append source-doc
-                                                                              "venndiagram.pdf")
-                                                               dest-doc)))))))
-     (home-page "https://ctan.org/pkg/lipsum")
+      `(#:build-targets '("venndiagram.ins")
+        #:phases (modify-phases
+                     %standard-phases
+                   (add-after 'unpack
+                       'set-TEXINPUTS
+                     (lambda _
+                       (let ((cwd (getcwd)))
+                         (setenv "TEXINPUTS"
+                                 (string-append
+                                  cwd
+                                  "/source/latex/venndiagram:")))))
+                   (add-after 'install 'install-more
+                     (lambda* (#:key outputs #:allow-other-keys)
+                       ,(copy-sty "venndiagram" "latex" (version)))))))
+     (home-page "https://ctan.org/pkg/venndiagram")
      (synopsis "Creating Venn diagrams with TikZ")
      (description
       "The package assists generation of simple two- and three-set Venn diagrams for lectures or assignment sheets.")
      (license license:lppl)))
-  ;; (define-public texlive-babel-russian
-  ;;   (let ((template (simple-texlive-package
-  ;;                    "texlive-babel-russian"
-  ;;                    (list "/source/generic/babel-russian/")
-  ;;                    (base32
-  ;;                     "12ik2dwkih2g0gqpbg83j0kcfwsb5grccx27grgi0wjazk0nicq6"))))
-  ;;     (package
-  ;;       (inherit template)
-  ;;       (arguments
-  ;;        (substitute-keyword-arguments (package-arguments template)
-  ;;         ;; ((#:tex-directory _ '())
-  ;;         ;;  "generic/babel-russian")
-  ;;          ((#:build-targets _ '())
-  ;;           ''("russianb.ins")) ; TODO: use dtx and build documentation
-  ;;          ((#:phases phases) `(modify-phases ,phases
-  ;;                                (add-after 'unpack 'chdir
-  ;;                                  (lambda _
-  ;;                                    (chdir "source/generic/babel-russian")))))))
-  ;;       (home-page "https://www.ctan.org/pkg/babel-russian")
-  ;;       (synopsis "Babel support for Russian")
-  ;;       (description
-  ;;        "This package provides the language definition file for support of Russian
-  ;; in @code{babel}.  It provides all the necessary macros, definitions and
-  ;; settings to typeset Russian documents.")
-  ;;      (license license:lppl1.3c+))))
-  (define-public texlive-luatex-luamplib
-    (package
-     (name "texlive-luatex-luamplib")
-     (version (string-append
+(define-public texlive-luatex-luamplib
+  (package
+    (name "texlive-luatex-luamplib")
+    (version (string-append
                (number->string %texlive-revision)
                "-1"))
-     (outputs '("out"))
+    (outputs '("out"
+               "doc"))
      (source
       (texlive-origin
        name
@@ -1218,37 +879,56 @@ automatically if it detects that it is running under memoir. ")
        (base32 "140ghg5l9vndgx62zfhs7cx93ibph6hjghy4267f6h4d45bizk2n")))
      (build-system texlive-build-system)
      (arguments
-      `(;#:tex-directory "luatex/luamplib"
-        #:build-targets '("luamplib.dtx")
-                        #:phases (modify-phases
-                                  %standard-phases
-                                  (add-after 'unpack
-                                             'set-TEXINPUTS
-                                             (lambda _
-                                               (let ((cwd (getcwd)))
-                                                 (setenv "TEXINPUTS"
-                                                         (string-append
-                                                          cwd
-                                                          "/source/luatex/luamplib:")))))
-                                  (add-after 'build 'build-docs
-                                             (lambda _
-                                               ;; From Makefile
-                                               (system "cd source/luatex/luamplib/ && latexmk -lualatex -recorder- luamplib.dtx")))
-                                  ;; (add-after 'install 'install-docs
-                                  ;;            (lambda* (#:key outputs #:allow-other-keys)
-                                  ;;              (let* ((dest-doc
-                                  ;;                      (string-append (assoc-ref outputs "doc")
-                                  ;;                                     "/share/doc/"
-                                  ;;                                     ,name "-"
-                                  ;;                                     ,version))
-                                  ;;                     (source-doc
-                                  ;;                      "source/luatex/luamplib/"))
-                                  ;;                (install-file (string-append source-doc
-                                  ;;                                             "luamplib.pdf")
-                                  ;;                              dest-doc))))
-                                  )))
-
+      `(#:build-targets '("luamplib.dtx")
+        #:phases (modify-phases
+                     %standard-phases
+                   (add-after 'unpack
+                       'set-TEXINPUTS
+                     (lambda _
+                       (let ((cwd (getcwd)))
+                         (setenv "TEXINPUTS"
+                                 (string-append
+                                  cwd
+                                  "/source/luatex/luamplib:")))))
+                   (add-after 'build 'build-docs
+                     (lambda _
+                       ;; From Makefile
+                       (system "cd source/luatex/luamplib/ && latexmk -lualatex -recorder- luamplib.dtx")))
+                   (add-after 'install 'install-more
+                     (lambda* (#:key outputs #:allow-other-keys)
+                       (let*
+                           ((dest
+                              (string-append
+                               (assoc-ref outputs
+                                          "out")
+                               "/share/texmf-dist/tex/"
+                               "luatex/luamplib/"))
+                            (dest-doc
+                             (string-append
+                              (assoc-ref outputs
+                                         "doc")
+                              "/texmf-dist/doc/luatex/luamplib/"))
+                             (source-sty (find-files "./build/" ".*\\.sty"))
+                             (source-lua (find-files "./build/" ".*\\.lua"))
+                             (sources (append source-sty
+                                              source-lua)))
+                         (mkdir-p dest)
+                         (mkdir-p dest-doc)
+                         (install-file "./source/luatex/luamplib/luamplib.pdf"
+                                       dest-doc)
+                         (for-each (lambda (x)
+                                     (install-file x
+                                                   dest))
+                                   sources)))))))
      (inputs (list texlive-libertine
+                   texlive-latexmk
+                   texlive-pdftexcmds
+                   texlive-infwarerr
+                   texlive-latex-kvoptions
+                   texlive-fontspec
+                   texlive-hologo
+                   texlive-hypdoc
+                   texlive-latex-epstopdf-pkg
                    texlive-metalogo
                    texlive-mdwtools
                    texlive-inconsolata
@@ -1284,19 +964,21 @@ The facility is only available in PDF mode. ")
        (base32 "04d83z1pw6scg4cd1616ix291zi9dz5nnvw9xc8hd4lfxf15nx1c")))
      (build-system texlive-build-system)
      (arguments
-      `(;#:tex-directory "latex/hologo"
-        #:build-targets '("hologo.dtx")
-                        #:phases (modify-phases
-                                  %standard-phases
-                                  (add-after 'unpack
-                                             'set-TEXINPUTS
-                                             (lambda _
-                                               (let ((cwd (getcwd)))
-                                                 (setenv "TEXINPUTS"
-                                                         (string-append
-                                                          cwd
-                                                          "/source/latex/hologo:")))))
-                                  )))
+      `(#:build-targets '("hologo.dtx")
+        #:phases (modify-phases
+                     %standard-phases
+                   (add-after 'unpack
+                       'set-TEXINPUTS
+                     (lambda _
+                       (let ((cwd (getcwd)))
+                         (setenv "TEXINPUTS"
+                                 (string-append
+                                  cwd
+                                  "/source/latex/hologo:")))))
+                   (add-after 'install 'install-more
+                     (lambda* (#:key outputs #:allow-other-keys)
+                       ,(copy-sty "hologo" "latex" (version))))
+                   )))
      (home-page "https://ctan.org/pkg/hologo")
      (synopsis "A collection of logos with bookmark support")
      (description
@@ -1317,37 +999,36 @@ The facility is only available in PDF mode. ")
        (base32 "1qjilvy77072jpbdc4p4qfy5d4n2ww2wcm5drwvai6p2aclqf29x")))
      (build-system texlive-build-system)
      (arguments
-      `(;#:tex-directory "latex/fonttable"
-        #:build-targets '("fonttable.ins")
-                        #:phases (modify-phases
-                                  %standard-phases
-                                  (add-after 'unpack
-                                             'set-TEXINPUTS
-                                             (lambda _
-                                               (let ((cwd (getcwd)))
-                                                 (setenv "TEXINPUTS"
-                                                         (string-append
-                                                          cwd
-                                                          "/source/latex/fonttable:")))))
-                                  (add-after 'build 'build-docs
-                                             (lambda _
-                                               ;; From Makefile
-                                               (system "cd source/latex/fonttable/ && latexmk -lualatex -recorder- fonttable.dtx")))
-                                  ;; (add-after 'install 'install-docs
-                                  ;;            (lambda* (#:key outputs #:allow-other-keys)
-                                  ;;              (let* ((dest-doc
-                                  ;;                      (string-append (assoc-ref outputs "doc")
-                                  ;;                                     "/share/doc/"
-                                  ;;                                     ,name "-"
-                                  ;;                                     ,version))
-                                  ;;                     (source-doc
-                                  ;;                      "source/latex/fonttable/"))
-                                  ;;                (install-file (string-append source-doc
-                                  ;;                                             "fonttable.pdf")
-                                  ;;                              dest-doc))))
-                                  )))
+      `(#:build-targets '("fonttable.ins")
+        #:phases (modify-phases
+                     %standard-phases
+                   (add-after 'unpack
+                       'set-TEXINPUTS
+                     (lambda _
+                       (let ((cwd (getcwd)))
+                         (setenv "TEXINPUTS"
+                                 (string-append
+                                  cwd
+                                  "/source/latex/fonttable:")))))
+                   ;;(add-after 'build 'build-docs
+                   ;;(lambda _
+                   ;; From Makefile
+                   ;; Not Working 2023-08-11
+                   ;;(system "cd source/latex/fonttable/ && pdflatex fonttable.dtx && pdflatex fonttable.dtx")))
+                   (add-after 'install 'install-more
+                     (lambda* (#:key outputs #:allow-other-keys)
+                       ,(copy-sty "fonttable" "latex" (version))))
+                   )))
      (inputs (list texlive-libertine
                    texlive-metalogo
+                   texlive-amsfonts
+                   texlive-bin
+                   texlive-cm
+                   texlive-pdftexcmds
+                   texlive-infwarerr
+                   texlive-latex-kvoptions
+                   texlive-fontspec
+                   texlive-hypdoc
                    texlive-mdwtools
                    texlive-inconsolata
                    texlive-iwona
