@@ -87,9 +87,9 @@
                     autoconf
                     automake
                     pkg-config
-                    texlive-base
+                    texlive-scheme-basic
                     texlive-bin
-                    texlive-tex-texinfo))
+                    texlive-texinfo))
       (synopsis "A TeXinfo primer on GNU APL")
       (description
        (string-append
