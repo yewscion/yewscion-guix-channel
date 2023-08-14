@@ -924,11 +924,11 @@ automatically if it detects that it is running under memoir. ")
                    texlive-latexmk
                    texlive-pdftexcmds
                    texlive-infwarerr
-                   texlive-latex-kvoptions
+                   texlive-kvoptions
                    texlive-fontspec
                    texlive-hologo
                    texlive-hypdoc
-                   texlive-latex-epstopdf-pkg
+                   texlive-epstopdf-pkg
                    texlive-metalogo
                    texlive-mdwtools
                    texlive-inconsolata
@@ -1026,7 +1026,7 @@ The facility is only available in PDF mode. ")
                    texlive-cm
                    texlive-pdftexcmds
                    texlive-infwarerr
-                   texlive-latex-kvoptions
+                   texlive-kvoptions
                    texlive-fontspec
                    texlive-hypdoc
                    texlive-mdwtools
