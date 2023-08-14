@@ -52,7 +52,7 @@
      (arguments
       `(#:tests? #f))
      (propagated-inputs (list
-                         biber
+                         texlive-biber
                          zip
                          unzip
                          texlive-bin
@@ -68,7 +68,7 @@
                      automake
                      python-pygments
                      texinfo
-                     texlive-base
+                     texlive-scheme-basic
                      texlive-biblatex
                      texlive-biblatex-apa
                      texlive-booktabs
@@ -92,30 +92,30 @@
                      texlive-latex-datetime2
                      texlive-latex-datetime2-english
                      texlive-latex-endfloat
-                     texlive-latex-environ
+                     texlive-environ
                      texlive-latex-everyhook
                      texlive-fancyhdr
                      texlive-fancyvrb
-                     texlive-latex-float
-                     texlive-latex-framed
+                     texlive-float
+                     texlive-framed
                      texlive-latex-fvextra
-                     texlive-latex-geometry
-                     texlive-latex-ifplatform
+                     texlive-geometry
+                     texlive-ifplatform
                      texlive-kvoptions
                      texlive-letltxmacro
                      texlive-latex-lineno
                      texlive-latex-lwarp
                      texlive-latex-minted
-                     texlive-latex-newfloat
-                     texlive-latex-newunicodechar
+                     texlive-newfloat
+                     texlive-newunicodechar
                      texlive-pdftexcmds
                      texlive-latex-printlen
                      texlive-refcount
                      texlive-latex-setspace
                      texlive-titlesec
-                     texlive-latex-trimspaces
-                     texlive-latex-upquote
-                     texlive-latex-xkeyval
+                     texlive-trimspaces
+                     texlive-upquote
+                     texlive-xkeyval
                      texlive-latex-xpatch
                      texlive-libkpathsea
                      texlive-listings
